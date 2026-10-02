@@ -1,0 +1,119 @@
+{
+  "top": {
+    "login": "登录",
+    "service": "一站式服务"
+  },
+  "nav": {
+    "news": "新闻资讯",
+    "clubs": "社团风采",
+    "activities": "活动中心",
+    "about": "关于我们",
+    "logoAlt": "校徽"
+  },
+  "sections": {
+    "news": {
+      "title": "社团要闻",
+      "en": "Club News"
+    },
+    "quickLinks": {
+      "title": "快捷入口",
+      "en": "Quick Links"
+    },
+    "clubs": {
+      "title": "社团推荐",
+      "en": "Recommended Clubs"
+    }
+  },
+  "quick": {
+    "login": {
+      "title": "用户登录",
+      "desc": "登录系统管理社团"
+    },
+    "clubs": {
+      "title": "社团列表",
+      "desc": "浏览所有社团信息"
+    },
+    "activity": {
+      "title": "活动报名",
+      "desc": "参与精彩社团活动"
+    },
+    "feedback": {
+      "title": "意见反馈",
+      "desc": "提出您的建议"
+    }
+  },
+  "clubs": {
+    "memberCount": "{count} 人",
+    "fallbackDescription": "暂无社团简介"
+  },
+  "alerts": {
+    "clubListComing": "社团列表功能即将上线",
+    "activityComing": "活动报名功能即将上线"
+  },
+  "footer": {
+    "about": {
+      "title": "关于我们",
+      "intro": "系统简介",
+      "contact": "联系方式",
+      "join": "加入我们"
+    },
+    "links": {
+      "title": "快速链接",
+      "clubManagement": "社团管理",
+      "activityCenter": "活动中心",
+      "statistics": "数据统计"
+    },
+    "help": {
+      "title": "帮助中心",
+      "guide": "使用指南",
+      "faq": "常见问题",
+      "feedback": "意见反馈"
+    },
+    "contact": {
+      "title": "联系我们"
+    },
+    "copyright": "© 2025 学生社团管理系统 版权所有",
+    "signature": {
+      "dev": "DEVELOPMENT",
+      "cn": "南风知我意"
+    }
+  },
+  "modal": {
+    "feedback": {
+      "title": "意见反馈",
+      "nameLabel": "姓名（可选）",
+      "namePlaceholder": "您的姓名",
+      "emailLabel": "邮箱（可选）",
+      "emailPlaceholder": "您的邮箱",
+      "contentLabel": "反馈内容",
+      "contentPlaceholder": "请输入您的建议或意见...",
+      "contentRequired": "请输入反馈内容",
+      "anonymousName": "匿名用户"
+    }
+  },
+  "messages": {
+    "feedbackSuccess": "感谢您的反馈！",
+    "feedbackFailed": "提交失败，请稍后重试",
+    "feedbackSubmitFailed": "提交失败"
+  },
+  "loading": {
+    "clubs": "加载中..."
+  },
+  "empty": {
+    "clubs": "暂无社团数据",
+    "recommendedClubs": "暂无推荐社团"
+  },
+  "news": {
+    "monthSuffix": "月",
+    "emptyCarousel": "暂无封面新闻",
+    "emptyTextList": "暂无文字新闻"
+  },
+  "carousel": {
+    "prev": "上一张",
+    "next": "下一张"
+  },
+  "banner": {
+    "loading": "首页轮播图加载中...",
+    "empty": "管理员暂未配置首页轮播图"
+  }
+}

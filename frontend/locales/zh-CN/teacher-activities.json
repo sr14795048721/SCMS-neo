@@ -1,0 +1,101 @@
+{
+  "meta": {
+    "title": "\u6d3b\u52a8\u7ba1\u7406 - SCMS Plus",
+    "description": "\u9762\u5411\u6559\u5e08\u7684\u793e\u56e2\u6d3b\u52a8\u521b\u5efa\u4e0e\u72b6\u6001\u7ba1\u7406\u9875\u9762"
+  },
+  "header": {
+    "title": "\u6d3b\u52a8\u7ba1\u7406"
+  },
+  "summary": {
+    "title": "\u6d3b\u52a8\u6982\u89c8",
+    "description": "\u8fd9\u91cc\u5c55\u793a\u4f60\u5f53\u524d\u53ef\u7ba1\u7406\u7684\u6d3b\u52a8\u89c4\u6a21\u548c\u5f85\u5904\u7406\u91cd\u70b9\u3002",
+    "items": {
+      "total": "\u6d3b\u52a8\u603b\u6570",
+      "draft": "\u5f85\u53d1\u5e03\u8349\u7a3f",
+      "clubs": "\u53ef\u7ba1\u7406\u793e\u56e2"
+    }
+  },
+  "form": {
+    "createTitle": "\u521b\u5efa\u6d3b\u52a8",
+    "editTitle": "\u7f16\u8f91\u6d3b\u52a8",
+    "description": "\u6d3b\u52a8\u53ea\u80fd\u843d\u5728\u4f60\u5f53\u524d\u7ed1\u5b9a\u7684\u793e\u56e2\u4e0b\uff0c\u53d1\u5e03\u524d\u90fd\u4f1a\u5148\u4ee5\u8349\u7a3f\u5f62\u5f0f\u4fdd\u5b58\u3002",
+    "fields": {
+      "club": "\u6240\u5c5e\u793e\u56e2",
+      "clubPlaceholder": "\u8bf7\u9009\u62e9\u793e\u56e2",
+      "title": "\u6d3b\u52a8\u6807\u9898",
+      "location": "\u6d3b\u52a8\u5730\u70b9",
+      "startTime": "\u5f00\u59cb\u65f6\u95f4",
+      "endTime": "\u7ed3\u675f\u65f6\u95f4",
+      "capacity": "\u62a5\u540d\u4e0a\u9650",
+      "description": "\u6d3b\u52a8\u7b80\u4ecb"
+    },
+    "create": "\u521b\u5efa\u6d3b\u52a8",
+    "save": "\u4fdd\u5b58\u4fee\u6539",
+    "reset": "\u91cd\u7f6e\u8868\u5355",
+    "submitting": "\u63d0\u4ea4\u4e2d...",
+    "invalid": "\u8bf7\u5148\u5b8c\u6574\u586b\u5199\u6d3b\u52a8\u8868\u5355",
+    "submitFailed": "\u6d3b\u52a8\u4fdd\u5b58\u5931\u8d25",
+    "created": "\u6d3b\u52a8\u5df2\u521b\u5efa",
+    "saved": "\u6d3b\u52a8\u5df2\u66f4\u65b0"
+  },
+  "list": {
+    "title": "\u6d3b\u52a8\u5217\u8868",
+    "description": "\u652f\u6301\u76f4\u63a5\u4ece\u5217\u8868\u4e2d\u7ee7\u7eed\u7f16\u8f91\u3001\u53d1\u5e03\u6216\u5173\u95ed\u6d3b\u52a8\uff0c\u4e5f\u53ef\u67e5\u770b\u5df2\u62a5\u540d\u5b66\u751f\u540d\u5355\u3002",
+    "descriptionFallback": "\u5f53\u524d\u6d3b\u52a8\u6682\u65e0\u989d\u5916\u7b80\u4ecb\u3002",
+    "locationFallback": "\u5730\u70b9\u5f85\u5b9a",
+    "empty": "\u5f53\u524d\u8fd8\u6ca1\u6709\u53ef\u7ba1\u7406\u7684\u6d3b\u52a8\u3002",
+    "meta": {
+      "time": "\u6d3b\u52a8\u65f6\u95f4",
+      "location": "\u6d3b\u52a8\u5730\u70b9",
+      "capacity": "\u62a5\u540d\u4e0a\u9650",
+      "registrationCount": "\u5df2\u62a5\u540d"
+    },
+    "actions": {
+      "edit": "\u7f16\u8f91",
+      "viewRoster": "\u67e5\u770b\u62a5\u540d\u540d\u5355",
+      "hideRoster": "\u6536\u8d77\u62a5\u540d\u540d\u5355",
+      "publish": "\u53d1\u5e03",
+      "close": "\u5173\u95ed",
+      "submitting": "\u5904\u7406\u4e2d...",
+      "loadRosterFailed": "\u62a5\u540d\u540d\u5355\u52a0\u8f7d\u5931\u8d25",
+      "failed": "\u6d3b\u52a8\u72b6\u6001\u66f4\u65b0\u5931\u8d25",
+      "published": "\u6d3b\u52a8\u5df2\u53d1\u5e03",
+      "closed": "\u6d3b\u52a8\u5df2\u5173\u95ed"
+    },
+    "registrationsTitle": "\u62a5\u540d\u540d\u5355",
+    "registrationsCount": "\u5df2\u62a5\u540d {count} \u4eba",
+    "registrationsLoading": "\u6b63\u5728\u52a0\u8f7d\u62a5\u540d\u540d\u5355...",
+    "registrationsEmpty": "\u5f53\u524d\u8fd8\u6ca1\u6709\u5b66\u751f\u62a5\u540d\u8fd9\u573a\u6d3b\u52a8\u3002"
+  },
+  "table": {
+    "registration": {
+      "displayName": "\u59d3\u540d",
+      "username": "\u8d26\u53f7",
+      "studentNo": "\u5b66\u53f7",
+      "grade": "\u5e74\u7ea7",
+      "className": "\u73ed\u7ea7",
+      "registeredAt": "\u62a5\u540d\u65f6\u95f4"
+    }
+  },
+  "status": {
+    "DRAFT": "\u8349\u7a3f",
+    "PUBLISHED": "\u5df2\u53d1\u5e03",
+    "CLOSED": "\u5df2\u5173\u95ed"
+  },
+  "common": {
+    "back": "\u8fd4\u56de\u5de5\u4f5c\u53f0",
+    "loading": "\u6b63\u5728\u52a0\u8f7d\u6d3b\u52a8\u6570\u636e...",
+    "logout": "\u9000\u51fa\u767b\u5f55",
+    "loggingOut": "\u9000\u51fa\u4e2d...",
+    "profileHint": "\u7f16\u8f91\u6559\u5e08\u8d44\u6599",
+    "defaultName": "\u6559\u5e08\u7528\u6237",
+    "timeFallback": "\u65f6\u95f4\u5f85\u5b9a",
+    "loginRequired": "\u767b\u5f55\u72b6\u6001\u5df2\u5931\u6548\uff0c\u8bf7\u91cd\u65b0\u767b\u5f55",
+    "emptyValue": "\u6682\u65e0",
+    "gradeLabels": {
+      "HIGH_1": "\u9ad8\u4e00",
+      "HIGH_2": "\u9ad8\u4e8c",
+      "HIGH_3": "\u9ad8\u4e09"
+    }
+  }
+}

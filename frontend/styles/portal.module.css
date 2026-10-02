@@ -1,0 +1,81 @@
+.page {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(139, 26, 26, 0.18), transparent 45%),
+    radial-gradient(circle at 80% 0%, rgba(15, 23, 42, 0.2), transparent 50%),
+    #f4f6fb;
+}
+
+.card {
+  width: min(680px, 100%);
+  padding: 40px 32px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 24px 48px rgba(15, 23, 42, 0.1);
+}
+
+.card h1 {
+  margin: 0;
+  color: #111827;
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  line-height: 1.25;
+}
+
+.card p {
+  margin: 14px 0 0;
+  color: #4b5563;
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+.actions {
+  margin-top: 24px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.actions a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 112px;
+  height: 42px;
+  border-radius: 999px;
+  border: 1px solid rgba(139, 26, 26, 0.22);
+  background: rgba(255, 255, 255, 0.94);
+  color: #8b1a1a;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.actions a:hover {
+  background: #8b1a1a;
+  color: #fff;
+  border-color: #8b1a1a;
+}
+
+@media (max-width: 640px) {
+  .page {
+    padding: 14px;
+  }
+
+  .card {
+    padding: 24px 18px;
+    border-radius: 16px;
+  }
+
+  .actions {
+    margin-top: 18px;
+  }
+
+  .actions a {
+    flex: 1 1 100%;
+  }
+}

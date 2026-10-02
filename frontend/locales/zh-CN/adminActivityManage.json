@@ -1,0 +1,125 @@
+{
+  "meta": {
+    "title": "活动管理 - SCMS Plus",
+    "description": "管理员活动管理页"
+  },
+  "header": {
+    "title": "活动管理",
+    "subtitle": "为不同社团创建、发布和维护活动。"
+  },
+  "actions": {
+    "back": "返回后台",
+    "create": "新建活动",
+    "search": "搜索",
+    "view": "查看",
+    "edit": "编辑",
+    "save": "保存",
+    "saving": "保存中",
+    "publish": "发布",
+    "publishing": "发布中",
+    "close": "关闭",
+    "closing": "关闭中",
+    "delete": "删除",
+    "deleting": "删除中",
+    "cancel": "取消",
+    "prevPage": "上一页",
+    "nextPage": "下一页"
+  },
+  "filters": {
+    "searchPlaceholder": "搜索活动标题、社团或地点",
+    "allClubs": "全部社团",
+    "allStatuses": "全部状态"
+  },
+  "status": {
+    "draft": "草稿",
+    "published": "已发布",
+    "closed": "已关闭"
+  },
+  "states": {
+    "loadingList": "活动列表加载中...",
+    "loadingDetail": "活动详情加载中..."
+  },
+  "empty": {
+    "title": "暂无活动",
+    "description": "当前筛选条件下没有活动数据。",
+    "registrations": "当前没有已报名学生。"
+  },
+  "fields": {
+    "club": "所属社团",
+    "clubPlaceholder": "请选择社团",
+    "title": "活动标题",
+    "description": "活动简介",
+    "location": "活动地点",
+    "startTime": "开始时间",
+    "endTime": "结束时间",
+    "capacity": "人数上限",
+    "status": "活动状态",
+    "registrationCount": "已报名人数",
+    "updatedAt": "更新时间"
+  },
+  "list": {
+    "capacity": "容量 {count}",
+    "registrationCount": "报名 {count}",
+    "noDescription": "暂无活动简介。"
+  },
+  "detail": {
+    "basicTitle": "活动基础信息",
+    "registrationsTitle": "已报名学生",
+    "registrationCount": "共 {count} 人",
+    "emptyValue": "暂无",
+    "emptyDescription": "暂无活动简介。"
+  },
+  "panel": {
+    "createTitle": "新建活动",
+    "createSubtitle": "填写活动信息后保存为草稿。",
+    "editTitle": "编辑活动",
+    "editSubtitle": "可修改活动基础信息。",
+    "viewTitle": "活动详情",
+    "viewSubtitle": "查看活动基础信息与当前报名学生。",
+    "basicEditHint": "状态通过发布与关闭动作控制。",
+    "basicViewHint": "仅已发布活动对学生公开。",
+    "registrationHint": "这里只展示当前处于已报名状态的学生。"
+  },
+  "validation": {
+    "clubRequired": "请选择所属社团。",
+    "titleRequired": "请输入活动标题。",
+    "startTimeRequired": "请选择开始时间。",
+    "endTimeRequired": "请选择结束时间。",
+    "capacityInvalid": "人数上限必须大于 0。",
+    "timeRangeInvalid": "结束时间必须晚于开始时间。",
+    "capacityBelowRegistrations": "人数上限不能小于当前已报名人数。"
+  },
+  "messages": {
+    "loadFailed": "活动列表加载失败，请稍后重试。",
+    "loadDetailFailed": "活动详情加载失败，请稍后重试。",
+    "saveFailed": "活动保存失败，请稍后重试。",
+    "createSuccess": "活动已创建为草稿。",
+    "updateSuccess": "活动已更新。",
+    "publishSuccess": "活动已发布。",
+    "publishFailed": "活动发布失败，请稍后重试。",
+    "closeSuccess": "活动已关闭。",
+    "closeFailed": "活动关闭失败，请稍后重试。",
+    "deleteSuccess": "活动已删除。",
+    "deleteFailed": "活动删除失败，请稍后重试。",
+    "deleteBlocked": "活动已有报名记录，暂不能删除。"
+  },
+  "confirm": {
+    "deleteTitle": "删除活动",
+    "deleteMessage": "确定要删除活动“{name}”吗？"
+  },
+  "table": {
+    "registration": {
+      "displayName": "姓名",
+      "username": "账号",
+      "studentNo": "学号",
+      "grade": "年级",
+      "className": "班级",
+      "registeredAt": "报名时间"
+    }
+  },
+  "grades": {
+    "HIGH_1": "高一",
+    "HIGH_2": "高二",
+    "HIGH_3": "高三"
+  }
+}

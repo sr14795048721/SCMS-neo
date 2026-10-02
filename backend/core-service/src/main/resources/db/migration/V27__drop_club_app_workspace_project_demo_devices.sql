@@ -1,0 +1,1 @@
+DROP TABLE IF EXISTS club_app_workspace_project_demo_devices;

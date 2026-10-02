@@ -1,0 +1,310 @@
+.stack {
+  display: grid;
+  gap: 18px;
+}
+
+.topBar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 360px) minmax(0, 1fr);
+  gap: 18px;
+}
+
+.panel {
+  padding: 22px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 18px 36px rgba(15, 23, 42, 0.06);
+  border: 1px solid rgba(148, 163, 184, 0.16);
+}
+
+.panelTitle {
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #18212f;
+  font-size: 1.1rem;
+}
+
+.panelHint {
+  margin: 8px 0 0;
+  color: #6b7280;
+  line-height: 1.7;
+}
+
+.formGrid {
+  margin-top: 16px;
+  display: grid;
+  gap: 12px;
+}
+
+.field {
+  display: grid;
+  gap: 8px;
+}
+
+.field label {
+  color: #475569;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 12px;
+  border: 1px solid rgba(148, 163, 184, 0.28);
+  border-radius: 14px;
+  background: #ffffff;
+  color: #111827;
+  font: inherit;
+}
+
+.field textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.formActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.primaryButton,
+.secondaryButton,
+.dangerButton,
+.backButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 0 16px;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.primaryButton {
+  border: none;
+  background: #18212f;
+  color: #ffffff;
+}
+
+.secondaryButton {
+  border: 1px solid rgba(24, 33, 47, 0.12);
+  background: #ffffff;
+  color: #18212f;
+}
+
+.backButton {
+  border: 1px solid rgba(148, 163, 184, 0.24);
+  background: rgba(255, 255, 255, 0.92);
+  color: #18212f;
+}
+
+.dangerButton {
+  border: none;
+  background: #991b1b;
+  color: #ffffff;
+}
+
+.primaryButton:disabled,
+.secondaryButton:disabled,
+.dangerButton:disabled,
+.backButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.cards {
+  display: grid;
+  gap: 14px;
+}
+
+.activityCard {
+  padding: 18px;
+  border-radius: 20px;
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  background: #ffffff;
+  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.04);
+}
+
+.head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.title {
+  margin: 0;
+  color: #111827;
+  font-size: 1.02rem;
+}
+
+.clubName {
+  margin: 6px 0 0;
+  color: #9ca3af;
+  font-size: 0.82rem;
+}
+
+.description {
+  margin: 14px 0 0;
+  color: #475569;
+  line-height: 1.75;
+}
+
+.metaGrid {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 10px;
+}
+
+.metaBox {
+  padding: 10px 12px;
+  border-radius: 16px;
+  background: #f8fafc;
+}
+
+.metaBox dt {
+  color: #94a3b8;
+  font-size: 0.75rem;
+}
+
+.metaBox dd {
+  margin: 8px 0 0;
+  color: #0f172a;
+  font-size: 0.94rem;
+  font-weight: 700;
+}
+
+.statusDraft,
+.statusPublished,
+.statusClosed {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.statusDraft {
+  background: rgba(245, 158, 11, 0.14);
+  color: #b45309;
+}
+
+.statusPublished {
+  background: rgba(22, 163, 74, 0.14);
+  color: #15803d;
+}
+
+.statusClosed {
+  background: rgba(100, 116, 139, 0.12);
+  color: #475569;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.registrationPanel {
+  margin-top: 18px;
+  padding: 16px;
+  border-radius: 18px;
+  background: #f8fafc;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+.registrationPanelHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: #18212f;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.registrationPanelHead span {
+  color: #64748b;
+  font-size: 0.82rem;
+}
+
+.registrationEmpty {
+  margin-top: 12px;
+  padding: 16px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.88);
+  color: #64748b;
+  text-align: center;
+}
+
+.tableWrap {
+  margin-top: 12px;
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  min-width: 640px;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  padding: 12px 10px;
+  text-align: center;
+  vertical-align: middle;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.88);
+  white-space: nowrap;
+}
+
+.table th {
+  color: #475569;
+  font-size: 0.77rem;
+  font-weight: 700;
+}
+
+.table td {
+  color: #18212f;
+  font-size: 0.83rem;
+  line-height: 1.45;
+}
+
+.emptyPanel {
+  padding: 26px 18px;
+  text-align: center;
+  color: #64748b;
+  line-height: 1.8;
+  border-radius: 20px;
+  background: rgba(248, 250, 252, 0.8);
+}
+
+@media (max-width: 960px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .registrationPanelHead {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

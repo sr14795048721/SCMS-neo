@@ -1,0 +1,6 @@
+scms:
+  bootstrap:
+    default-users: false
+
+project-demo:
+  bridge-secret: ${PROJECT_DEMO_BRIDGE_SECRET:}

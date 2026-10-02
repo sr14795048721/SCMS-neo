@@ -1,0 +1,40 @@
+{{- if .Values.file.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: file-service
+spec:
+  replicas: {{ .Values.file.replicaCount }}
+  selector:
+    matchLabels:
+      app: file-service
+  template:
+    metadata:
+      labels:
+        app: file-service
+    spec:
+      containers:
+        - name: file-service
+          image: {{ .Values.file.image }}
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: {{ .Values.file.port }}
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: docker
+            - name: JWT_SECRET
+              value: {{ .Values.jwtSecret | quote }}
+            - name: FILE_MINIO_ENDPOINT
+              value: {{ .Values.file.minioEndpoint | quote }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: file-service
+spec:
+  selector:
+    app: file-service
+  ports:
+    - port: {{ .Values.file.port }}
+      targetPort: {{ .Values.file.port }}
+{{- end }}

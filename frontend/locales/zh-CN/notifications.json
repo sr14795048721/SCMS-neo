@@ -1,0 +1,73 @@
+{
+  "common": {
+    "summaryTitle": "消息通知",
+    "loading": "正在加载通知列表...",
+    "loadingSummary": "正在加载通知摘要...",
+    "emptyUnread": "当前没有未读通知。",
+    "emptyRead": "当前没有已读通知。",
+    "timeFallback": "时间待定",
+    "viewAll": "查看全部",
+    "loadMore": "加载更多",
+    "loadingMore": "加载中...",
+    "tabs": {
+      "unread": "未阅读",
+      "read": "已阅读"
+    },
+    "badges": {
+      "unread": "未读",
+      "read": "已读"
+    }
+  },
+  "admin": {
+    "pageTitle": "消息通知",
+    "pageDescription": "集中查看管理员未读与已读通知，处理后会自动跳转到对应页面。",
+    "summaryDescription": "首页仅展示最近 3 条未读通知和未读总数，避免通知持续挤占管理首页空间。",
+    "backToDashboard": "返回管理员首页",
+    "unreadTag": "未读 {count} 条"
+  },
+  "teacher": {
+    "pageTitle": "消息通知",
+    "pageDescription": "集中查看教师端未读与已读通知，处理后会自动跳转到对应页面。",
+    "summaryDescription": "首页仅展示最近 3 条未读通知和未读总数，便于你快速处理重点事项。",
+    "backToDashboard": "返回教师工作台",
+    "unreadTag": "未读 {count} 条"
+  },
+  "student": {
+    "pageTitle": "消息通知",
+    "pageDescription": "集中查看活动发布、奖品处理等学生端未读与已读通知。",
+    "summaryDescription": "首页仅展示最近 3 条未读通知和未读总数，方便你及时查看活动与兑换处理结果。",
+    "backToDashboard": "返回学生首页",
+    "unreadTag": "未读 {count} 条"
+  },
+  "display": {
+    "clubCreationRequest": {
+      "newTitle": "新的建社申请",
+      "newContent": "有教师提交了新的建社申请：{name}",
+      "approvedTitle": "建社申请已通过",
+      "approvedContent": "你的建社申请已通过审核。",
+      "rejectedTitle": "建社申请未通过",
+      "rejectedContent": "你的建社申请未通过审核。"
+    },
+    "clubJoinRequest": {
+      "newTitle": "新的入社申请",
+      "newContent": "有学生向 {clubName} 提交了新的入社申请。"
+    },
+    "news": {
+      "publishedTitle": "新闻草稿已发布",
+      "publishedContent": "管理员已将你的新闻草稿发布到首页新闻流。"
+    },
+    "activity": {
+      "publishedTitle": "新活动已发布",
+      "publishedContent": "教师发布了新的活动：{activityTitle}",
+      "publishedContentWithClub": "{clubName} 发布了新的活动：{activityTitle}"
+    },
+    "rewardOrder": {
+      "createdTitle": "新的兑换申请",
+      "createdContent": "{studentName} 提交了奖品兑换申请：{rewardName}",
+      "completedTitle": "兑换申请已完成",
+      "completedContent": "你的奖品兑换申请已通过并完成处理。",
+      "rejectedTitle": "兑换申请已驳回",
+      "rejectedContent": "你的奖品兑换申请已被驳回，积分已退回。"
+    }
+  }
+}

@@ -1,0 +1,55 @@
+### login
+POST http://localhost:8080/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "admin123"
+}
+
+### register
+POST http://localhost:8080/api/v1/auth/register
+Content-Type: application/json
+
+{
+  "username": "new_student",
+  "email": "new_student@example.com",
+  "password": "123456"
+}
+
+### create club (replace {{token}})
+POST http://localhost:8080/api/v1/clubs
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "AI Club",
+  "description": "Campus AI innovation club"
+}
+
+### list public activities
+GET http://localhost:8080/api/v1/activities
+Authorization: Bearer {{token}}
+
+### create manager activity
+POST http://localhost:8080/api/v1/managers/me/activities
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "clubId": 1,
+  "title": "Spring Recruitment",
+  "description": "Recruitment open day",
+  "location": "Building A",
+  "startTime": "2030-04-01T08:00:00Z",
+  "endTime": "2030-04-01T10:00:00Z",
+  "capacity": 100
+}
+
+### publish manager activity
+POST http://localhost:8080/api/v1/managers/me/activities/1/publish
+Authorization: Bearer {{token}}
+
+### register activity
+POST http://localhost:8080/api/v1/activities/1/registrations
+Authorization: Bearer {{token}}

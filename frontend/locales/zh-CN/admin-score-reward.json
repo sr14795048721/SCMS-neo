@@ -1,0 +1,205 @@
+{
+  "meta": {
+    "title": "积分与兑换 - SCMS Plus",
+    "description": "管理员积分规则、奖品与兑换订单管理"
+  },
+  "header": {
+    "title": "积分与兑换",
+    "subtitle": "统一维护积分规则、兑换奖品和兑换订单，当前页面只提供管理员闭环能力。"
+  },
+  "navigation": {
+    "title": "功能切换",
+    "rulesHint": "当前正在查看积分规则页面，可新增、编辑和删除规则。",
+    "rewardsHint": "当前正在查看奖品配置页面，可维护奖品、库存、图片和可见范围。",
+    "ordersHint": "当前正在查看兑换订单页面，可处理待审核订单。"
+  },
+  "overview": {
+    "rulesLabel": "积分规则",
+    "rulesHint": "支持全局规则与社团规则",
+    "rewardsLabel": "奖品数量",
+    "rewardsHint": "包含启用、停用和待配置范围的奖品",
+    "pendingOrdersLabel": "待处理订单",
+    "pendingOrdersHint": "等待管理员完成或驳回",
+    "completedOrdersLabel": "已完成订单",
+    "completedOrdersHint": "已经处理完成的兑换记录"
+  },
+  "actions": {
+    "back": "返回后台",
+    "refreshAll": "刷新全部",
+    "refresh": "刷新",
+    "loading": "加载中...",
+    "reset": "重置表单",
+    "createRule": "创建规则",
+    "createReward": "创建奖品",
+    "saveChanges": "保存修改",
+    "saving": "保存中...",
+    "edit": "编辑",
+    "delete": "删除",
+    "deleting": "删除中...",
+    "cancel": "取消",
+    "cancelEdit": "取消编辑",
+    "selectImage": "选择图片",
+    "complete": "标记完成",
+    "completed": "已完成",
+    "processing": "处理中...",
+    "reject": "驳回订单",
+    "rejected": "已驳回"
+  },
+  "rules": {
+    "title": "积分规则",
+    "description": "管理员可以配置全局规则和社团规则，社团规则要求绑定有效社团。",
+    "scope": {
+      "all": "全部规则",
+      "global": "全局规则",
+      "club": "社团规则"
+    },
+    "editor": {
+      "createTitle": "创建积分规则",
+      "editTitle": "更新积分规则",
+      "clubPlaceholder": "请选择所属社团"
+    },
+    "scoreDeltaValue": "积分变动 {value}"
+  },
+  "rewards": {
+    "title": "奖品配置",
+    "description": "维护兑换奖品的所需积分、库存、状态与可见范围，支持在保存时一并上传图片。",
+    "editor": {
+      "createTitle": "创建奖品",
+      "editTitle": "更新奖品",
+      "unassignedOption": "待配置（历史商品）"
+    },
+    "imageAlt": "奖品图片预览",
+    "noImage": "暂未上传奖品图片",
+    "imageHint": "支持 JPG、PNG、WEBP，大小不超过 10MB。选择图片后会在保存奖品时一并上传。",
+    "clubHint": "仅已加入任一目标社团的学生可以看到并兑换该奖品。",
+    "clubTargetEmpty": "当前没有可选的有效社团。",
+    "scoreCostValue": "消耗积分 {value}",
+    "stockValue": "库存 {value}",
+    "imageReady": "已上传图片",
+    "imageMissing": "未上传图片",
+    "visibility": {
+      "global": "全局商品",
+      "club": "定向社团商品",
+      "unassigned": "待配置"
+    },
+    "visibilitySummary": {
+      "global": "所有学生可见",
+      "club": "仅目标社团成员可见",
+      "unassigned": "当前仅管理员可见",
+      "clubNames": "目标社团：{names}"
+    }
+  },
+  "orders": {
+    "title": "兑换订单",
+    "description": "按创建时间倒序展示兑换记录，可将待处理订单标记完成或驳回，且只允许删除已完成订单。",
+    "pendingValue": "待处理 {value}",
+    "completedValue": "已完成 {value}",
+    "rejectedValue": "已驳回 {value}",
+    "table": {
+      "reward": "奖品",
+      "student": "学生",
+      "scoreCost": "消耗积分",
+      "status": "状态",
+      "createdAt": "创建时间",
+      "lifecycle": "处理信息",
+      "actions": "操作"
+    }
+  },
+  "fields": {
+    "ruleName": "规则名称",
+    "scoreDelta": "积分变动",
+    "scopeType": "作用域",
+    "ruleStatus": "规则状态",
+    "club": "所属社团",
+    "rewardImage": "奖品图片",
+    "rewardName": "奖品名称",
+    "scoreCost": "所需积分",
+    "stock": "库存数量",
+    "rewardVisibility": "可见范围",
+    "rewardTargetClubs": "目标社团",
+    "rewardStatus": "奖品状态"
+  },
+  "filters": {
+    "scope": {
+      "all": "全部",
+      "global": "全局",
+      "club": "社团"
+    },
+    "allClubs": "全部社团",
+    "rewardVisibility": {
+      "all": "全部商品",
+      "global": "全局商品",
+      "club": "定向社团",
+      "unassigned": "待配置"
+    }
+  },
+  "status": {
+    "active": "启用",
+    "inactive": "停用",
+    "pending": "待处理",
+    "completed": "已完成",
+    "rejected": "已驳回"
+  },
+  "states": {
+    "loadingPage": "正在加载积分与兑换管理页面...",
+    "loadingRules": "正在加载积分规则...",
+    "loadingRewards": "正在加载奖品配置...",
+    "loadingOrders": "正在加载兑换订单...",
+    "notSet": "未设置"
+  },
+  "empty": {
+    "rulesTitle": "还没有积分规则",
+    "rulesDescription": "可以先从左侧创建第一条积分规则。",
+    "rewardsTitle": "还没有奖品配置",
+    "rewardsDescription": "创建奖品后即可在这里查看和编辑。",
+    "ordersTitle": "还没有兑换订单",
+    "ordersDescription": "当前没有学生兑换记录，后续订单会展示在这里。"
+  },
+  "validation": {
+    "ruleNameRequired": "请输入规则名称",
+    "ruleClubRequired": "社团规则必须选择所属社团",
+    "rewardNameRequired": "请输入奖品名称",
+    "rewardClubRequired": "定向社团商品必须至少选择一个有效社团",
+    "rewardUnassignedCreateBlocked": "新建奖品时必须选择全局或定向社团范围",
+    "scoreCostInvalid": "所需积分不能小于 0",
+    "stockInvalid": "库存数量不能小于 0",
+    "rewardImageType": "奖品图片仅支持 JPG、PNG、WEBP",
+    "rewardImageSize": "奖品图片大小不能超过 10MB"
+  },
+  "confirm": {
+    "deleteRuleTitle": "删除积分规则",
+    "deleteRuleMessage": "确定删除规则“{name}”吗？如果已有积分记录引用该规则，将无法删除。",
+    "deleteRewardTitle": "删除奖品",
+    "deleteRewardMessage": "确定删除奖品“{name}”吗？如果已有兑换订单引用该奖品，将无法删除。",
+    "deleteOrderTitle": "删除兑换订单",
+    "deleteOrderMessage": "确定删除订单“{name}”吗？此操作只建议用于清理已完成记录。",
+    "rejectOrderTitle": "驳回兑换订单",
+    "rejectOrderMessage": "确定驳回订单“{name}”吗？驳回后会退回学生积分并恢复库存。"
+  },
+  "messages": {
+    "loadClubsFailed": "社团选项加载失败，请稍后重试",
+    "loadRulesFailed": "积分规则加载失败，请稍后重试",
+    "loadRewardsFailed": "奖品配置加载失败，请稍后重试",
+    "loadOrdersFailed": "兑换订单加载失败，请稍后重试",
+    "saveRuleFailed": "积分规则保存失败，请稍后重试",
+    "createRuleSuccess": "积分规则已创建",
+    "updateRuleSuccess": "积分规则已更新",
+    "deleteRuleSuccess": "积分规则已删除",
+    "deleteRuleFailed": "积分规则删除失败，请稍后重试",
+    "deleteRuleBlocked": "该规则已产生积分记录，暂时不能删除",
+    "saveRewardFailed": "奖品保存失败，请稍后重试",
+    "uploadRewardImageFailed": "奖品图片上传失败，请稍后重试",
+    "createRewardSuccess": "奖品已创建",
+    "updateRewardSuccess": "奖品已更新",
+    "deleteRewardSuccess": "奖品已删除",
+    "deleteRewardFailed": "奖品删除失败，请稍后重试",
+    "deleteRewardBlocked": "该奖品已产生兑换订单，暂时不能删除",
+    "completeOrderSuccess": "订单已标记完成",
+    "completeOrderFailed": "订单处理失败，请稍后重试",
+    "rejectOrderSuccess": "订单已驳回并退回积分",
+    "rejectOrderFailed": "订单驳回失败，请稍后重试",
+    "deleteOrderSuccess": "订单已删除",
+    "deleteOrderFailed": "订单删除失败，请稍后重试",
+    "deleteOrderPendingBlocked": "只有已完成订单才允许删除"
+  }
+}

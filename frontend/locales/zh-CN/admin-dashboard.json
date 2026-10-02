@@ -1,0 +1,77 @@
+{
+  "meta": {
+    "title": "管理员后台 - SCMS Plus",
+    "description": "SCMS Plus 管理员工作台首页"
+  },
+  "header": {
+    "title": "管理员后台",
+    "logout": "退出登录",
+    "loggingOut": "退出中..."
+  },
+  "stats": {
+    "sectionLabel": "管理员概览统计",
+    "loadFailed": "统计数据加载失败，稍后会自动重试",
+    "users": {
+      "title": "用户总数",
+      "description": "累计注册用户"
+    },
+    "visitors": {
+      "title": "独立访客",
+      "description": "累计去重访客"
+    },
+    "today": {
+      "title": "今日访问量",
+      "description": "今日页面访问次数"
+    },
+    "sessions": {
+      "title": "在线会话",
+      "description": "最近 5 分钟活跃会话"
+    }
+  },
+  "messages": {
+    "comingSoon": "{name} 功能建设中"
+  },
+  "menu": {
+    "sectionTitle": "管理功能",
+    "homeConfig": {
+      "title": "首页配置",
+      "description": "轮播图配置"
+    },
+    "newsManage": {
+      "title": "新闻管理",
+      "description": "新闻发布与编辑"
+    },
+    "userManage": {
+      "title": "用户管理",
+      "description": "账号与角色"
+    },
+    "clubManage": {
+      "title": "社团管理",
+      "description": "社团、建社申请与成员维护"
+    },
+    "scoreReward": {
+      "title": "积分与兑换",
+      "description": "规则、奖品与订单"
+    },
+    "clubRecommend": {
+      "title": "社团推荐",
+      "description": "推荐位配置与教师推荐参考"
+    },
+    "activityManage": {
+      "title": "活动管理",
+      "description": "活动发布与查看"
+    },
+    "dataStatistics": {
+      "title": "数据统计",
+      "description": "系统统计数据"
+    },
+    "loginCarousel": {
+      "title": "登录轮播",
+      "description": "登录页轮播图"
+    },
+    "systemSettings": {
+      "title": "系统设置",
+      "description": "配置项管理"
+    }
+  }
+}

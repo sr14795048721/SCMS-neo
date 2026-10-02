@@ -1,0 +1,89 @@
+{
+  "header": {
+    "title": "新闻发布",
+    "subtitle": "教师侧新闻仅保存为草稿，管理员审核后才能发布到首页新闻流。"
+  },
+  "common": {
+    "defaultName": "教师用户",
+    "profileHint": "编辑教师资料",
+    "logout": "退出登录",
+    "loggingOut": "退出中..."
+  },
+  "actions": {
+    "back": "返回工作台",
+    "create": "新建草稿",
+    "creating": "创建中...",
+    "saveDraft": "保存草稿",
+    "saving": "保存中...",
+    "uploadCover": "上传封面",
+    "replaceCover": "替换封面",
+    "removeCover": "删除封面",
+    "uploadingCover": "上传中...",
+    "uploadBodyImage": "插入正文图片",
+    "uploadingImage": "上传中...",
+    "previous": "上一页",
+    "next": "下一页",
+    "confirm": "确认",
+    "cancel": "取消"
+  },
+  "status": {
+    "draft": "草稿"
+  },
+  "states": {
+    "checking": "正在校验教师身份...",
+    "loading": "新闻草稿加载中..."
+  },
+  "list": {
+    "sectionTitle": "草稿列表",
+    "sectionDesc": "你可以继续编辑、补充封面与正文图片，管理员会在后台统一查看这些教师稿件。",
+    "count": "共 {count} 篇草稿",
+    "pageInfo": "第 {page} / {totalPages} 页",
+    "authorFallback": "教师作者",
+    "untitled": "未命名草稿",
+    "empty": {
+      "title": "还没有新闻草稿",
+      "description": "先创建第一篇教师新闻草稿，再交由管理员统一查看和发布。"
+    }
+  },
+  "editor": {
+    "loading": "新闻详情加载中...",
+    "header": {
+      "title": "编辑新闻草稿",
+      "subtitle": "教师侧只能保存草稿，支持 Markdown 编辑、封面上传和正文图片插入。"
+    },
+    "fields": {
+      "title": "新闻标题",
+      "titlePlaceholder": "请输入新闻标题",
+      "content": "新闻正文"
+    },
+    "markdownHint": "支持标准 Markdown 语法，正文图片会插入到当前光标位置。",
+    "sideTitle": "草稿信息",
+    "meta": {
+      "author": "作者：{name}",
+      "unpublished": "尚未保存时间"
+    }
+  },
+  "confirm": {
+    "deleteTitle": "删除草稿",
+    "deleteMessage": "删除后正文图片和封面也会一起清理，确定继续吗？",
+    "removeCoverTitle": "删除封面",
+    "removeCoverMessage": "删除封面后，这篇草稿将不再保留当前封面图。"
+  },
+  "messages": {
+    "loginRequired": "登录状态已失效，请重新登录",
+    "loadFailed": "草稿列表加载失败",
+    "createFailed": "新建草稿失败",
+    "createSuccess": "草稿已创建",
+    "deleteFailed": "删除草稿失败",
+    "deleteSuccess": "草稿已删除",
+    "detailFailed": "草稿详情加载失败",
+    "saveFailed": "草稿保存失败",
+    "saveSuccess": "草稿已保存",
+    "coverUploadFailed": "封面上传失败",
+    "coverUploadSuccess": "封面已更新",
+    "coverRemoveFailed": "封面删除失败",
+    "coverRemoveSuccess": "封面已删除",
+    "assetUploadFailed": "正文图片上传失败",
+    "assetUploadSuccess": "正文图片已插入当前光标位置"
+  }
+}

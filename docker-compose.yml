@@ -1,0 +1,10 @@
+version: '3.8'
+services:
+  scms-plus:
+    build: .
+    container_name: scms-plus
+    ports:
+      - "10056:3001"
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production

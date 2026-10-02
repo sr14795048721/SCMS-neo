@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    hikari:
+      maximum-pool-size: 3
+      minimum-idle: 1
+
+scms:
+  events:
+    mode: ${EVENTS_MODE:sync}

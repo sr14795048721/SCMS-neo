@@ -1,0 +1,386 @@
+.stack {
+  display: grid;
+  gap: 18px;
+}
+
+.topBar {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.hero,
+.panel,
+.summaryCard,
+.emptyPanel {
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  box-shadow: 0 18px 36px rgba(15, 23, 42, 0.06);
+}
+
+.hero {
+  padding: 22px 24px;
+}
+
+.heroTitle {
+  margin: 0;
+  color: #18212f;
+  font-size: 1.6rem;
+}
+
+.heroDescription {
+  margin: 10px 0 0;
+  color: #475569;
+  line-height: 1.7;
+}
+
+.summaryGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+}
+
+.summaryCard {
+  padding: 18px;
+  display: grid;
+  gap: 6px;
+}
+
+.summaryLabel {
+  margin: 0;
+  color: #64748b;
+  font-size: 0.86rem;
+}
+
+.summaryValue {
+  color: #111827;
+  font-size: 1.8rem;
+}
+
+.summaryHelp {
+  color: #94a3b8;
+  font-size: 0.8rem;
+  line-height: 1.6;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(320px, 0.95fr) minmax(0, 1.35fr);
+  gap: 16px;
+}
+
+.sideColumn {
+  display: grid;
+  gap: 16px;
+}
+
+.panel,
+.emptyPanel {
+  padding: 22px;
+}
+
+.panelHead {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.panelTitle {
+  margin: 0;
+  color: #18212f;
+  font-size: 1.08rem;
+}
+
+.panelHint {
+  margin: 6px 0 0;
+  color: #64748b;
+  font-size: 0.88rem;
+  line-height: 1.65;
+}
+
+.formGrid {
+  display: grid;
+  gap: 12px;
+}
+
+.field {
+  display: grid;
+  gap: 8px;
+}
+
+.field span {
+  color: #475569;
+  font-size: 0.86rem;
+  font-weight: 600;
+}
+
+.field input,
+.field select {
+  min-height: 44px;
+  border-radius: 14px;
+  border: 1px solid rgba(148, 163, 184, 0.4);
+  padding: 0 14px;
+  font-size: 0.92rem;
+  color: #111827;
+  background: #fff;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.primaryButton,
+.secondaryButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 0 16px;
+  border-radius: 999px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.primaryButton {
+  border: none;
+  background: #18212f;
+  color: #fff;
+}
+
+.secondaryButton {
+  border: 1px solid rgba(24, 33, 47, 0.12);
+  background: #fff;
+  color: #18212f;
+}
+
+.primaryButton:disabled,
+.secondaryButton:disabled {
+  opacity: 0.62;
+  cursor: not-allowed;
+}
+
+.sessionCardList {
+  display: grid;
+  gap: 12px;
+}
+
+.sessionCard {
+  border-radius: 18px;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  background: #fff;
+  padding: 16px;
+  display: grid;
+  gap: 12px;
+}
+
+.sessionCardActive {
+  border-color: rgba(24, 33, 47, 0.22);
+}
+
+.sessionCardHead {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.sessionCardTitle {
+  margin: 0;
+  color: #111827;
+  font-size: 1rem;
+}
+
+.sessionCardMeta {
+  margin: 6px 0 0;
+  color: #64748b;
+  font-size: 0.84rem;
+}
+
+.sessionCounters {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  color: #475569;
+  font-size: 0.82rem;
+}
+
+.statusOpen,
+.statusCompleted,
+.statusPending,
+.statusCheckedIn,
+.statusCheckedOut,
+.settledBadge,
+.pendingBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.statusOpen,
+.statusCheckedIn,
+.pendingBadge {
+  background: rgba(59, 130, 246, 0.12);
+  color: #1d4ed8;
+}
+
+.statusCompleted,
+.statusCheckedOut,
+.settledBadge {
+  background: rgba(22, 163, 74, 0.12);
+  color: #15803d;
+}
+
+.statusPending {
+  background: rgba(148, 163, 184, 0.16);
+  color: #475569;
+}
+
+.sessionMetaGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.metaItem {
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: #f8fafc;
+  display: grid;
+  gap: 6px;
+}
+
+.metaItem span {
+  color: #94a3b8;
+  font-size: 0.76rem;
+}
+
+.metaItem strong {
+  color: #111827;
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.tableWrap {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 760px;
+}
+
+.table th,
+.table td {
+  padding: 14px 12px;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.85);
+  text-align: center;
+  vertical-align: middle;
+  white-space: nowrap;
+  font-size: 0.88rem;
+}
+
+.selectionCell {
+  width: 52px;
+  min-width: 52px;
+}
+
+.table th {
+  color: #64748b;
+  font-weight: 700;
+}
+
+.table td {
+  color: #111827;
+}
+
+.statusStack,
+.actionInline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: nowrap;
+}
+
+.bulkToolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+.bulkActionGroup {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.selectionHint {
+  margin: 0;
+  color: #64748b;
+  font-size: 0.84rem;
+  line-height: 1.5;
+}
+
+.tableCheckbox {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: #18212f;
+}
+
+.emptyPanel {
+  display: grid;
+  place-items: center;
+  min-height: 180px;
+  color: #64748b;
+  text-align: center;
+}
+
+@media (max-width: 1080px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .topBar,
+  .actions {
+    flex-direction: column;
+  }
+
+  .primaryButton,
+  .secondaryButton {
+    width: 100%;
+  }
+
+  .sessionCounters,
+  .sessionMetaGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .bulkToolbar,
+  .bulkActionGroup {
+    flex-direction: column;
+  }
+}

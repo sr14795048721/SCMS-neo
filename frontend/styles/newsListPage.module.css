@@ -1,0 +1,250 @@
+.page {
+  min-height: 100vh;
+  background:
+    linear-gradient(180deg, rgba(139, 26, 26, 0.08), rgba(245, 245, 245, 0)),
+    #f5f5f5;
+  color: #1f2937;
+}
+
+.hero {
+  background: linear-gradient(135deg, #731717, #8b1a1a 42%, #bf4a24);
+  color: #ffffff;
+  padding: 64px 0 54px;
+}
+
+.container {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.hero h1 {
+  margin: 0;
+  font-size: clamp(2rem, 4vw, 3rem);
+}
+
+.hero p {
+  margin: 14px 0 0;
+  max-width: 720px;
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.section {
+  padding: 32px 0 56px;
+}
+
+.toolbar {
+  margin-bottom: 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.stats {
+  color: #6b7280;
+}
+
+.grid {
+  display: grid;
+  gap: 18px;
+}
+
+.item {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: 20px;
+  padding: 18px;
+  border-radius: 24px;
+  background: #ffffff;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 30px rgba(15, 23, 42, 0.09);
+}
+
+.cover,
+.coverTextOnly {
+  width: 100%;
+  aspect-ratio: 16 / 11;
+  border-radius: 18px;
+}
+
+.cover {
+  object-fit: cover;
+  background: linear-gradient(135deg, #f3d1c6, #f1f5f9);
+}
+
+.coverTextOnly {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 18px;
+  background:
+    radial-gradient(circle at top right, rgba(255, 255, 255, 0.55), transparent 38%),
+    linear-gradient(145deg, #8b1a1a 0%, #a32a1d 45%, #c9692d 100%);
+  color: #ffffff;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14);
+}
+
+.coverTextOnlyTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.coverTextOnlyIcon {
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.14);
+  font-size: 1.2rem;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16);
+}
+
+.coverTextOnlyDate {
+  min-width: 68px;
+  padding: 10px 12px;
+  border-radius: 16px;
+  background: rgba(12, 18, 28, 0.18);
+  text-align: center;
+  backdrop-filter: blur(4px);
+}
+
+.coverTextOnlyDate strong {
+  display: block;
+  font-size: 1.65rem;
+  line-height: 1;
+}
+
+.coverTextOnlyDate span {
+  display: block;
+  margin-top: 6px;
+  font-size: 0.82rem;
+  opacity: 0.88;
+}
+
+.coverTextOnlyLines {
+  display: grid;
+  gap: 10px;
+}
+
+.coverTextOnlyLines span {
+  display: block;
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.coverTextOnlyLines span:nth-child(1) {
+  width: 82%;
+}
+
+.coverTextOnlyLines span:nth-child(2) {
+  width: 100%;
+}
+
+.coverTextOnlyLines span:nth-child(3) {
+  width: 74%;
+}
+
+.coverTextOnlyLines span:nth-child(4) {
+  width: 90%;
+}
+
+.body {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+
+.title {
+  margin: 0;
+  font-size: 1.18rem;
+  line-height: 1.5;
+  color: #111827;
+  word-break: break-word;
+}
+
+.more {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #8b1a1a;
+  font-weight: 600;
+}
+
+.empty,
+.loading {
+  padding: 68px 24px;
+  border-radius: 24px;
+  background: #ffffff;
+  text-align: center;
+  color: #6b7280;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.05);
+}
+
+.empty i,
+.loading i {
+  font-size: 40px;
+  color: #8b1a1a;
+}
+
+.empty h2 {
+  margin: 16px 0 10px;
+  color: #1e1e2f;
+}
+
+.pager {
+  margin-top: 24px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.pagerButton,
+.pagerActive {
+  min-width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 999px;
+  padding: 0 14px;
+  cursor: pointer;
+}
+
+.pagerButton {
+  background: #ffffff;
+  color: #1e1e2f;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.05);
+}
+
+.pagerActive {
+  background: #8b1a1a;
+  color: #ffffff;
+  box-shadow: 0 10px 20px rgba(139, 26, 26, 0.24);
+}
+
+@media (max-width: 780px) {
+  .item {
+    grid-template-columns: 1fr;
+  }
+}

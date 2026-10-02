@@ -1,0 +1,74 @@
+{
+  "meta": {
+    "title": "教师工作台 - SCMS Plus",
+    "description": "SCMS Plus 教师端工作台首页"
+  },
+  "header": {
+    "title": "教师工作台",
+    "subtitle": "围绕社团成员、积分、活动、草稿与通知的日常事务集中处理。",
+    "logout": "退出登录",
+    "loggingOut": "退出中...",
+    "profileHint": "编辑教师资料",
+    "defaultName": "教师用户"
+  },
+  "hero": {
+    "title": "教师工作台",
+    "description": "这里会集中展示你当前指导的社团、待审批成员申请、待处理通知与草稿类任务。进入具体页面后，可以继续处理成员、积分、活动、新闻和推荐事项。",
+    "managedClubs": "指导社团 {count} 个",
+    "pendingRequests": "待审批申请 {count} 条",
+    "draftActivities": "待发布活动 {count} 个",
+    "unreadNotifications": "未读通知 {count} 条"
+  },
+  "stats": {
+    "clubCount": {
+      "label": "指导社团",
+      "hint": "按当前教师绑定关系实时汇总"
+    },
+    "pendingRequests": {
+      "label": "待审批申请",
+      "hint": "来自学生的入社申请"
+    },
+    "members": {
+      "label": "社团成员总数",
+      "hint": "包含你名下全部社团成员"
+    },
+    "drafts": {
+      "label": "待发布活动",
+      "hint": "尚未发布的活动草稿"
+    },
+    "notifications": {
+      "label": "未读通知",
+      "hint": "需要优先处理的消息提醒"
+    }
+  },
+  "shortcuts": {
+    "sectionTitle": "常用入口",
+    "sectionHint": "",
+    "guidedClubs": {
+      "title": "指导社团",
+      "description": "查看我指导的社团，进入工作台处理成员、积分和审批"
+    },
+    "activities": {
+      "title": "活动管理",
+      "description": "创建、编辑、发布和关闭教师可管理社团下的活动"
+    },
+    "news": {
+      "title": "新闻发布",
+      "description": "维护教师新闻草稿，等待管理员统一发布到首页"
+    },
+    "recommend": {
+      "title": "社团推荐",
+      "description": "提交教师侧推荐参考，供管理员配置首页推荐位时参考"
+    },
+    "createClub": {
+      "title": "申请创建社团",
+      "description": "提交建社申请并跟进管理员审核结果"
+    }
+  },
+  "messages": {
+    "comingSoon": "{name} 功能将在后续迭代开放",
+    "loadingClubs": "正在加载你当前可管理的社团...",
+    "loginRequired": "登录状态已失效，请重新登录"
+  },
+  "loading": "正在校验教师身份..."
+}

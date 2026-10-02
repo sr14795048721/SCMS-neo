@@ -1,0 +1,416 @@
+.page {
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: #f0f2f5;
+}
+
+.header {
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.headerInner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.headerCopy h1 {
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.5rem;
+  color: #1e1e2f;
+}
+
+.headerCopy p {
+  margin: 6px 0 0;
+  color: #666666;
+}
+
+.headerActions {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 16px 40px;
+  display: grid;
+  gap: 20px;
+}
+
+.statsGrid,
+.summaryGrid,
+.chartGrid {
+  display: grid;
+  gap: 16px;
+}
+
+.statsGrid {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.summaryGrid {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.chartGrid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.statCard,
+.summaryCard,
+.chartCard,
+.tableCard {
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.02);
+}
+
+.statCard {
+  padding: 18px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.statIcon {
+  width: 54px;
+  height: 54px;
+  border-radius: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+}
+
+.blue {
+  background: #e3f2fd;
+  color: #1976d2;
+}
+
+.green {
+  background: #e8f5e9;
+  color: #388e3c;
+}
+
+.orange {
+  background: #fff3e0;
+  color: #f57c00;
+}
+
+.purple {
+  background: #f3e5f5;
+  color: #7b1fa2;
+}
+
+.statInfo strong {
+  display: block;
+  font-size: 1.8rem;
+  color: #1e1e2f;
+}
+
+.statInfo h2 {
+  margin: 4px 0 0;
+  font-size: 0.98rem;
+  color: #1f2937;
+}
+
+.statInfo p {
+  margin: 6px 0 0;
+  color: #666666;
+  line-height: 1.5;
+}
+
+.summaryCard {
+  padding: 18px;
+}
+
+.summaryCard span {
+  display: block;
+  color: #667085;
+  font-size: 0.88rem;
+}
+
+.summaryCard strong {
+  display: block;
+  margin-top: 10px;
+  font-size: 1.7rem;
+  color: #1e1e2f;
+}
+
+.summaryCard p {
+  margin: 8px 0 0;
+  color: #666666;
+  line-height: 1.5;
+}
+
+.chartCard,
+.tableCard {
+  padding: 24px;
+}
+
+.cardHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.cardHead h2 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #1e1e2f;
+}
+
+.cardHead p {
+  margin: 8px 0 0;
+  color: #666666;
+  line-height: 1.6;
+}
+
+.roleChartLayout {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: minmax(220px, 260px) minmax(0, 1fr);
+  gap: 20px;
+  align-items: center;
+}
+
+.roleDonut {
+  width: min(240px, 100%);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  position: relative;
+  margin: 0 auto;
+}
+
+.roleDonut::after {
+  content: "";
+  position: absolute;
+  inset: 20%;
+  border-radius: 50%;
+  background: #ffffff;
+}
+
+.roleDonutInner {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  text-align: center;
+  pointer-events: none;
+}
+
+.roleDonutInner span {
+  display: block;
+  color: #667085;
+  font-size: 0.88rem;
+  line-height: 1;
+}
+
+.roleDonutInner strong {
+  display: block;
+  color: #1e1e2f;
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.legendList {
+  display: grid;
+  gap: 12px;
+}
+
+.legendItem {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.legendDot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.legendCopy strong {
+  display: block;
+  color: #1f2937;
+}
+
+.legendCopy p {
+  margin: 4px 0 0;
+  color: #667085;
+}
+
+.barList {
+  margin-top: 20px;
+  display: grid;
+  gap: 16px;
+}
+
+.barRow {
+  display: grid;
+  gap: 8px;
+}
+
+.barMeta {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  color: #1f2937;
+}
+
+.barTrack {
+  height: 12px;
+  border-radius: 999px;
+  background: #edf1f7;
+  overflow: hidden;
+}
+
+.barFill {
+  height: 100%;
+  border-radius: inherit;
+}
+
+.tableWrap {
+  margin-top: 20px;
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  padding: 14px 12px;
+  border-bottom: 1px solid #eef2f7;
+  text-align: center;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.table th {
+  color: #4b5563;
+  font-size: 0.82rem;
+  font-weight: 700;
+  background: #f8fafc;
+}
+
+.table td {
+  color: #1f2937;
+  font-size: 0.84rem;
+  line-height: 1.45;
+}
+
+.emptyPanel {
+  margin-top: 20px;
+  min-height: 120px;
+  display: grid;
+  place-items: center;
+  border-radius: 16px;
+  background: #f8fafc;
+  color: #667085;
+  text-align: center;
+}
+
+.primaryButton,
+.secondaryButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 999px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+}
+
+.primaryButton {
+  background: #1e1e2f;
+  color: #ffffff;
+}
+
+.secondaryButton {
+  background: #e5e7eb;
+  color: #1e1e2f;
+}
+
+.primaryButton:hover:not(:disabled),
+.secondaryButton:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 18px rgba(15, 23, 42, 0.12);
+}
+
+.primaryButton:disabled,
+.secondaryButton:disabled {
+  opacity: 0.72;
+  cursor: wait;
+}
+
+.loadingCard {
+  width: min(460px, calc(100% - 32px));
+  margin: 72px auto;
+  padding: 28px 24px;
+  border-radius: 20px;
+  background: #ffffff;
+  box-shadow: 0 16px 30px rgba(15, 23, 42, 0.08);
+  color: #4b5563;
+  text-align: center;
+}
+
+.loadingCard p,
+.emptyPanel p {
+  margin: 0;
+  line-height: 1.7;
+}
+
+@media (max-width: 960px) {
+  .chartGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .roleChartLayout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .headerInner {
+    padding: 14px 16px;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .headerActions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .container {
+    padding: 20px 14px 32px;
+  }
+
+  .chartCard,
+  .tableCard {
+    padding: 18px;
+  }
+}

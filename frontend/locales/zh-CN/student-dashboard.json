@@ -1,0 +1,156 @@
+{
+  "meta": {
+    "title": "学生工作台 - SCMS Plus",
+    "description": "SCMS Plus 学生工作台首页"
+  },
+  "header": {
+    "title": "学生工作台",
+    "logout": "退出登录",
+    "loggingOut": "退出中...",
+    "profileHint": "编辑学生资料",
+    "defaultName": "学生用户"
+  },
+  "messages": {
+    "systemTitle": "系统消息",
+    "pendingBadge": "通知摘要",
+    "systemEmpty": "当前还没有新的系统消息。",
+    "activityActionFailed": "活动操作失败，请稍后重试",
+    "activityCanceled": "已取消活动报名",
+    "activityRegistered": "活动报名成功",
+    "clubJoinFailed": "入社申请提交失败，请稍后再试",
+    "clubJoinRequested": "已向 {name} 提交入社申请",
+    "clubJoinMemberBlocked": "你已加入社团，当前不能再申请其他社团。",
+    "clubJoinPendingBlocked": "你已有待审核的入社申请，请等待处理后再申请。"
+  },
+  "sections": {
+    "myClubs": {
+      "title": "我的社团",
+      "tag": "实时状态",
+      "loading": "正在加载社团状态...",
+      "empty": "你当前还没有加入社团，可以先在下方发现社团里发起申请。",
+      "joinedStatus": "已加入",
+      "pendingStatus": "待审核",
+      "manageAction": "管理社团",
+      "noDescription": "该社团暂未填写简介。",
+      "typeEmpty": "未填写类型",
+      "roleEmpty": "普通社员",
+      "reasonEmpty": "未填写申请理由",
+      "memberCount": "{count} 名成员",
+      "meta": {
+        "type": "类型",
+        "members": "成员数",
+        "role": "当前职务",
+        "reason": "申请理由"
+      },
+      "roles": {
+        "MEMBER": "普通社员",
+        "MINISTER": "部长",
+        "VICE_PRESIDENT": "副社长",
+        "PRESIDENT": "社长",
+        "SECRETARY": "秘书",
+        "TREASURER": "财务"
+      }
+    },
+    "activities": {
+      "title": "近期活动",
+      "tag": "可直接报名",
+      "loading": "正在加载活动列表...",
+      "untitled": "未命名活动",
+      "registered": "已报名",
+      "open": "报名中",
+      "closed": "已关闭",
+      "noDescription": "该活动暂时没有简介。",
+      "registerAction": "报名活动",
+      "cancelAction": "取消报名",
+      "closedAction": "暂不可报名",
+      "submitting": "处理中...",
+      "empty": "当前暂无可展示的活动。",
+      "emptyNoClub": "加入社团后，才可以查看并报名本社团的近期活动。",
+      "timeEmpty": "时间待定",
+      "locationEmpty": "地点待定",
+      "capacityEmpty": "不限",
+      "viewAll": "查看全部活动",
+      "meta": {
+        "time": "时间",
+        "location": "地点",
+        "capacity": "人数"
+      }
+    },
+    "discover": {
+      "title": "发现社团",
+      "tag": "申请加入",
+      "loading": "正在加载可加入社团...",
+      "memberCount": "{count} 名成员",
+      "noDescription": "该社团暂未填写简介。",
+      "applyAction": "申请加入",
+      "pendingLocked": "等待审核",
+      "submitting": "提交中...",
+      "defaultReason": "希望申请加入 {name}",
+      "empty": "当前暂无可申请加入的社团。",
+      "joinedLocked": "你已加入社团，当前不能再申请其他社团。"
+    },
+    "points": {
+      "title": "积分与兑换",
+      "tag": "实时概览",
+      "viewAll": "进入积分与兑换",
+      "cards": {
+        "points": {
+          "title": "累计积分",
+          "value": "当前累计积分 {value}"
+        },
+        "balance": {
+          "title": "可用积分",
+          "value": "当前可兑换积分 {value}"
+        },
+        "orders": {
+          "title": "最近兑换",
+          "empty": "还没有兑换记录",
+          "status": {
+            "pending": "最近一笔兑换待审核",
+            "completed": "最近一笔兑换已完成",
+            "rejected": "最近一笔兑换已驳回"
+          }
+        }
+      }
+    },
+    "insights": {
+      "title": "近期提醒",
+      "tag": "更有用的摘要",
+      "cards": {
+        "notifications": {
+          "title": "未读通知",
+          "badge": "{count} 条",
+          "empty": "当前没有新的未读通知。"
+        },
+        "club": {
+          "title": "社团状态",
+          "emptyBadge": "未加入",
+          "joinedContent": "你当前在 {clubName} 任职 {role}。",
+          "pendingContent": "你向 {clubName} 提交的入社申请仍在等待审核。",
+          "empty": "你还没有加入社团，可以先到发现社团里挑选感兴趣的社团。"
+        },
+        "activity": {
+          "title": "活动安排",
+          "emptyBadge": "暂无安排",
+          "registeredContent": "你已报名活动：{name}。",
+          "openContent": "有新的可报名活动：{name}。",
+          "empty": "当前没有新的报名安排。"
+        },
+        "reward": {
+          "title": "兑换进度",
+          "emptyBadge": "暂无兑换",
+          "content": "最近一笔兑换奖品为：{rewardName}。",
+          "empty": "你还没有提交过奖品兑换申请。"
+        }
+      },
+      "actions": {
+        "notifications": "查看消息通知",
+        "activities": "查看近期活动"
+      }
+    }
+  },
+  "timeline": {
+    "title": "消息时间线",
+    "empty": "当前暂无新的学习与社团动态。"
+  }
+}

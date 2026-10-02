@@ -1,0 +1,86 @@
+{
+  "header": {
+    "title": "数据统计",
+    "subtitle": "查看管理员侧的关键运营指标、角色结构和热门社团排行。"
+  },
+  "actions": {
+    "back": "返回后台",
+    "refresh": "刷新统计",
+    "refreshing": "刷新中..."
+  },
+  "states": {
+    "loadingPage": "正在加载管理员统计数据..."
+  },
+  "messages": {
+    "loadFailed": "管理员统计数据加载失败，请稍后重试。"
+  },
+  "overview": {
+    "cards": {
+      "totalUsers": {
+        "title": "用户总数",
+        "description": "系统内已登记的全部账号数量。"
+      },
+      "activeUsers": {
+        "title": "启用账号",
+        "description": "当前处于启用状态的账号数量。"
+      },
+      "totalClubs": {
+        "title": "社团数量",
+        "description": "系统内当前存在的社团总数。"
+      },
+      "totalActivities": {
+        "title": "活动数量",
+        "description": "系统内已创建的活动总数。"
+      }
+    },
+    "panels": {
+      "uniqueVisitors": {
+        "label": "独立访客",
+        "hint": "累计去重后的访问访客数量。"
+      },
+      "todayVisitCount": {
+        "label": "今日访问量",
+        "hint": "按上海时区统计的当日访问次数。"
+      },
+      "onlineSessions": {
+        "label": "在线会话",
+        "hint": "最近 5 分钟内保持活跃的访问会话。"
+      },
+      "activeRegistrations": {
+        "label": "有效报名",
+        "hint": "当前状态为已报名的活动报名记录数量。"
+      }
+    }
+  },
+  "charts": {
+    "roleDistribution": {
+      "title": "用户角色分布",
+      "description": "按用户角色观察系统账号结构。",
+      "totalLabel": "角色总量",
+      "student": "学生",
+      "manager": "社团管理员",
+      "admin": "系统管理员",
+      "legendValue": "{count} 人，占比 {percent}%"
+    },
+    "coreMetrics": {
+      "title": "核心规模对比",
+      "description": "对比用户、社团、活动和有效报名四项核心指标。",
+      "totalUsers": "用户总数",
+      "totalClubs": "社团数量",
+      "totalActivities": "活动数量",
+      "activeRegistrations": "有效报名"
+    }
+  },
+  "ranking": {
+    "title": "热门社团排行",
+    "description": "按成员数优先、活动数次之的规则展示前 10 个社团。",
+    "columns": {
+      "rank": "排名",
+      "clubName": "社团名称",
+      "memberCount": "成员数",
+      "activityCount": "活动数"
+    },
+    "empty": "暂无可展示的社团排行数据。",
+    "emptyClubName": "未命名社团"
+  }
+}

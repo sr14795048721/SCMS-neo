@@ -1,0 +1,122 @@
+{
+  "feedback": {
+    "contentRequired": "反馈内容不能为空",
+    "sendFailed": "反馈发送失败，请稍后重试",
+    "serviceUnavailable": "反馈服务暂不可用，请稍后重试",
+    "mail": {
+      "anonymousName": "匿名用户",
+      "unknownValue": "未知",
+      "emptyEmail": "未填写",
+      "subjectPrefix": "[SCMS Plus] 意见反馈",
+      "title": "SCMS Plus 收到一条新的意见反馈。",
+      "submittedAtLabel": "提交时间",
+      "sourceUrlLabel": "来源页面",
+      "nameLabel": "提交姓名",
+      "emailLabel": "联系邮箱",
+      "clientIpLabel": "客户端 IP",
+      "userAgentLabel": "User-Agent",
+      "contentLabel": "反馈内容"
+    }
+  },
+  "auth": {
+    "loginRequired": "请输入用户名或邮箱和密码",
+    "loginFailed": "登录失败，请稍后重试",
+    "registerRequired": "请完整填写注册信息",
+    "usernameInvalid": "用户名长度需在3到64个字符之间",
+    "emailInvalid": "邮箱格式不正确",
+    "passwordWeak": "密码需至少8位且包含大小写字母、数字和特殊字符",
+    "registerFailed": "注册失败，请稍后重试",
+    "serviceUnavailable": "认证服务暂不可用，请稍后重试"
+  },
+  "banners": [
+    {
+      "type": "image",
+      "title": "欢迎来到学生社团管理系统",
+      "desc": "连接每一份热爱，创造无限可能",
+      "src": "/image/banners/90421afc1d90437488238af7a133370a.jpg"
+    },
+    {
+      "type": "video",
+      "src": "/image/banners/704c546ea2fd4d1d971027257ff70e14.mp4"
+    },
+    {
+      "type": "image",
+      "title": "专业的管理平台",
+      "desc": "高效管理，轻松组织",
+      "src": "/image/banners/edf32e23e32f49fabf603fcc6aba5db5.jpg"
+    }
+  ],
+  "news": [
+    {
+      "id": 1,
+      "title": "2025年春季社团招新活动圆满结束",
+      "publish_date": "2025-01-15",
+      "cover_image": "/image/banners/ebd494542d0a4ee29e1c91cabc4c2b89.jpg",
+      "author_name": "管理员",
+      "views": 267,
+      "content": "<p>本次春季社团招新活动于2025年1月15日圆满结束。活动期间，各社团积极参与，展现了独特的魅力和风采。</p><p>本次招新活动吸引了超过500名新生参与，覆盖了文化、体育、科技、艺术等多个领域的社团。</p>"
+    },
+    {
+      "id": 2,
+      "title": "社团年度总结会顺利举行",
+      "publish_date": "2025-01-12",
+      "cover_image": "/image/banners/edf32e23e32f49fabf603fcc6aba5db5.jpg",
+      "author_name": "管理员",
+      "views": 198,
+      "content": "<p>年度总结会围绕社团建设、活动组织和成员成长进行了系统复盘，并确定了新学期工作目标。</p>"
+    },
+    {
+      "id": 3,
+      "title": "校园文化艺术节正式启动",
+      "publish_date": "2025-01-10",
+      "cover_image": "/image/banners/90421afc1d90437488238af7a133370a.jpg",
+      "author_name": "管理员",
+      "views": 156,
+      "content": "<p>本届校园文化艺术节由多个学生社团联合承办，包含舞台展演、创意市集和互动体验等活动。</p>"
+    },
+    {
+      "id": 4,
+      "title": "新学期社团干部培训完成",
+      "publish_date": "2025-01-08",
+      "cover_image": "/image/banners/edf32e23e32f49fabf603fcc6aba5db5.jpg",
+      "author_name": "管理员",
+      "views": 120,
+      "content": "<p>培训覆盖组织管理、活动策划、宣传协作与风险控制，帮助新任干部快速进入角色。</p>"
+    },
+    {
+      "id": 5,
+      "title": "活动中心新功能上线",
+      "publish_date": "2025-01-05",
+      "cover_image": "/image/banners/ebd494542d0a4ee29e1c91cabc4c2b89.jpg",
+      "author_name": "管理员",
+      "views": 99,
+      "content": "<p>活动中心新增在线报名、状态跟踪和消息提醒能力，提升了同学们参与活动的体验。</p>"
+    }
+  ],
+  "clubs": [
+    {
+      "id": "1",
+      "name": "篮球社",
+      "description": "热爱篮球同学的聚集地",
+      "memberCount": 36
+    },
+    {
+      "id": "2",
+      "name": "音乐社",
+      "description": "音乐爱好者的舞台",
+      "memberCount": 29
+    },
+    {
+      "id": "3",
+      "name": "编程社",
+      "description": "用代码解决真实问题",
+      "memberCount": 41
+    },
+    {
+      "id": "4",
+      "name": "摄影社",
+      "description": "用镜头记录校园生活",
+      "memberCount": 24
+    }
+  ]
+}

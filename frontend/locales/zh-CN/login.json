@@ -1,0 +1,115 @@
+{
+  "meta": {
+    "title": "学生社团管理系统 - 登录",
+    "description": "登录学生社团管理系统"
+  },
+  "brand": {
+    "name": "学生社团管理系统"
+  },
+  "carousel": {
+    "fallback": {
+      "slide1": {
+        "src": "/image/log.image/slide1.png",
+        "title": "欢迎来到学生社团管理系统",
+        "desc": "连接每一份热爱，创造无限可能"
+      },
+      "slide2": {
+        "src": "/image/log.image/slide2.png",
+        "title": "让社团管理更高效",
+        "desc": "统一协作、统一发布、统一管理"
+      }
+    }
+  },
+  "login": {
+    "headline": "欢迎来到学生社团管理系统",
+    "subtitle": "使用你的账号继续访问",
+    "identifierLabel": "用户名或邮箱",
+    "identifierPlaceholder": "请输入用户名或邮箱",
+    "passwordLabel": "密码",
+    "passwordPlaceholder": "请输入密码",
+    "rememberMe": "记住我",
+    "forgot": "忘记密码？",
+    "button": "登录",
+    "loading": "登录中...",
+    "switchText": "还没有账号？",
+    "switchAction": "立即注册",
+    "success": "登录成功，正在跳转..."
+  },
+  "register": {
+    "headline": "加入我们",
+    "subtitle": "创建你的账号开始使用",
+    "usernameLabel": "用户名",
+    "usernamePlaceholder": "请输入用户名",
+    "emailLabel": "电子邮箱",
+    "emailPlaceholder": "请输入电子邮箱",
+    "passwordLabel": "密码",
+    "passwordPlaceholder": "至少8位，含大小写字母、数字和特殊字符",
+    "confirmLabel": "确认密码",
+    "confirmPlaceholder": "再次输入密码",
+    "button": "注册",
+    "loading": "注册中...",
+    "switchText": "已有账号？",
+    "switchAction": "立即登录",
+    "success": "注册成功，请登录"
+  },
+  "feedback": {
+    "entry": "意见反馈",
+    "title": "提交意见反馈",
+    "nameLabel": "称呼",
+    "namePlaceholder": "可选，默认匿名",
+    "emailLabel": "邮箱",
+    "emailPlaceholder": "可选，用于后续联系",
+    "contentLabel": "反馈内容",
+    "contentPlaceholder": "请输入你的建议或问题",
+    "cancel": "取消",
+    "submit": "提交反馈",
+    "submitting": "提交中...",
+    "anonymousName": "匿名用户"
+  },
+  "footer": {
+    "copyright": "© 2025 学生社团管理系统",
+    "backHome": "返回总站"
+  },
+  "errors": {
+    "loginRequired": "请输入用户名或邮箱和密码",
+    "registerRequired": "请完整填写注册信息",
+    "passwordTooShort": "密码长度至少 6 位",
+    "passwordNotMatch": "两次密码输入不一致",
+    "feedbackContentRequired": "请填写反馈内容",
+    "loginFailed": "登录失败，请检查账号或密码",
+    "forgotNotAvailable": "忘记密码功能暂未开放",
+    "registerFailed": "注册失败，请稍后重试",
+    "registerInvalid": "注册参数无效，请检查输入",
+    "registerUsernameExists": "用户名已存在",
+    "registerEmailExists": "邮箱已存在",
+    "registerConflict": "注册信息冲突，请更换后重试",
+    "authServiceUnavailable": "认证服务暂不可用，请稍后重试"
+  },
+  "messages": {
+    "feedbackSuccess": "反馈提交成功，感谢你的建议",
+    "feedbackFailed": "反馈提交失败，请稍后重试"
+  },
+  "password": {
+    "show": "显示密码",
+    "hide": "隐藏密码"
+  },
+  "validation": {
+    "identifierRequired": "请输入用户名或邮箱",
+    "passwordRequired": "请输入密码",
+    "usernameRequired": "请输入用户名",
+    "usernameLength": "用户名长度需在3到64个字符之间",
+    "emailRequired": "请输入邮箱",
+    "emailInvalid": "邮箱格式不正确",
+    "passwordLength": "密码长度需在8到72个字符之间",
+    "passwordWeak": "密码需至少8位且包含大小写字母、数字和特殊字符",
+    "confirmPasswordRequired": "请再次输入确认密码",
+    "confirmPasswordMismatch": "两次密码输入不一致",
+    "passwordRule": {
+      "minLength": "至少 8 位长度",
+      "hasUpper": "至少包含 1 个大写字母",
+      "hasLower": "至少包含 1 个小写字母",
+      "hasDigit": "至少包含 1 个数字",
+      "hasSpecial": "至少包含 1 个特殊字符"
+    }
+  }
+}

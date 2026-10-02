@@ -1,0 +1,57 @@
+{
+  "header": {
+    "title": "社团推荐",
+    "subtitle": "教师推荐不会直接进入首页，仅作为管理员配置首页推荐位时的参考。"
+  },
+  "common": {
+    "defaultName": "教师用户",
+    "profileHint": "编辑教师资料",
+    "logout": "退出登录",
+    "loggingOut": "退出中...",
+    "empty": "暂无",
+    "emptyDescription": "暂无社团简介"
+  },
+  "actions": {
+    "back": "返回工作台",
+    "save": "保存推荐",
+    "saving": "保存中...",
+    "search": "搜索",
+    "add": "加入推荐",
+    "remove": "移除",
+    "up": "上移",
+    "down": "下移"
+  },
+  "states": {
+    "checking": "正在校验教师身份...",
+    "loading": "推荐数据加载中..."
+  },
+  "summary": {
+    "selected": {
+      "label": "已选推荐",
+      "hint": "最多可选择 {total} 个社团"
+    },
+    "candidates": {
+      "label": "候选社团",
+      "hint": "仅展示当前可用的有效社团"
+    }
+  },
+  "current": {
+    "title": "当前推荐顺序",
+    "subtitle": "管理员会看到你设置的推荐顺序，但不会直接同步到首页。",
+    "count": "{count}/{total} 个推荐位",
+    "slot": "推荐位 {slotNo}",
+    "emptySlot": "推荐位 {slotNo} 当前为空",
+    "memberCount": "{count} 名成员"
+  },
+  "candidate": {
+    "title": "候选社团",
+    "subtitle": "可以从所有有效社团中选择推荐对象。",
+    "searchPlaceholder": "搜索社团名称、类型或简介",
+    "empty": "暂无可添加的候选社团"
+  },
+  "messages": {
+    "loginRequired": "登录状态已失效，请重新登录",
+    "saveFailed": "教师推荐保存失败",
+    "saveSuccess": "教师推荐已保存"
+  }
+}

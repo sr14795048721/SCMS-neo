@@ -1,0 +1,98 @@
+name: scms-plus
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: scms-postgres
+    environment:
+      POSTGRES_DB: scms_dev
+      POSTGRES_USER: scms
+      POSTGRES_PASSWORD: scms
+    ports:
+      - "5433:5432"
+    mem_limit: 512m
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+      # 首次创建数据卷时自动执行全量建库脚本（V1~V33 最终状态 + 种子数据 + flyway 历史）
+      - ./db/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U scms -d scms_dev"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: scms-redis
+    command: ["redis-server", "--appendonly", "yes"]
+   # ports:
+   #   - "6379:6379"
+    mem_limit: 256m
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  core-service:
+    build:
+      context: .
+      dockerfile: core-service/Dockerfile
+      args:
+        INSTALL_FFMPEG: ${INSTALL_FFMPEG:-false}
+        UBUNTU_APT_MIRROR: ${UBUNTU_APT_MIRROR:-}
+    container_name: scms-core
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: scms_dev
+      DB_USER: scms
+      DB_PASSWORD: scms
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      FILE_SERVICE_URL: http://core-service:8081
+      JWT_SECRET: "change-this-super-secret-key-change-this-super-secret-key"
+      EVENTS_MODE: sync
+      SCMS_BOOTSTRAP_DEFAULT_USERS: ${SCMS_BOOTSTRAP_DEFAULT_USERS:-true}
+      SCMS_SUPER_ADMIN_INIT_ENABLED: ${SCMS_SUPER_ADMIN_INIT_ENABLED:-false}
+      SCMS_SUPER_ADMIN_INIT_USERNAME: ${SCMS_SUPER_ADMIN_INIT_USERNAME:-}
+      SCMS_SUPER_ADMIN_INIT_EMAIL: ${SCMS_SUPER_ADMIN_INIT_EMAIL:-}
+      SCMS_SUPER_ADMIN_INIT_PASSWORD: ${SCMS_SUPER_ADMIN_INIT_PASSWORD:-}
+      SCMS_STORAGE_BANNER_ROOT: /app/data/banners
+      SCMS_STORAGE_NEWS_ROOT: /app/data/news
+      SCMS_STORAGE_REWARD_IMAGE_ROOT: /app/data/reward-images
+    ports:
+      - "8081:8081"
+    mem_limit: 768m
+    volumes:
+      - ./data/core-banners:/app/data/banners
+      - ./data/core-news:/app/data/news
+      - ./data/core-reward-images:/app/data/reward-images
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  gateway-service:
+    build:
+      context: .
+      dockerfile: gateway-service/Dockerfile
+    container_name: scms-gateway
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      CORE_SERVICE_URL: http://core-service:8081
+      FILE_SERVICE_URL: http://core-service:8081
+      JWT_SECRET: "change-this-super-secret-key-change-this-super-secret-key"
+    ports:
+      - "18080:8080"
+    mem_limit: 384m
+    depends_on:
+      - core-service
+
+volumes:
+  pg_data:
+  redis_data:

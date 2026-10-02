@@ -1,0 +1,23 @@
+services:
+  prometheus:
+    image: prom/prometheus:v2.55.0
+    container_name: scms-prometheus
+    volumes:
+      - ./deploy/monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+    ports:
+      - "9090:9090"
+    mem_limit: 384m
+
+  grafana:
+    image: grafana/grafana:11.2.3
+    container_name: scms-grafana
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: admin
+    ports:
+      - "3000:3000"
+    mem_limit: 384m
+    depends_on:
+      - prometheus

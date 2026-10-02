@@ -1,0 +1,114 @@
+{
+  "meta": {
+    "title": "新闻管理 - SCMS Plus",
+    "description": "管理员新闻管理与 Markdown 编辑"
+  },
+  "actions": {
+    "back": "返回",
+    "create": "新建新闻",
+    "creating": "创建中...",
+    "edit": "编辑新闻",
+    "delete": "删除新闻",
+    "saveDraft": "保存草稿",
+    "saveChanges": "保存修改",
+    "saving": "保存中...",
+    "publish": "发布新闻",
+    "publishing": "发布中...",
+    "uploadCover": "上传封面",
+    "replaceCover": "替换封面",
+    "removeCover": "删除封面",
+    "uploadingCover": "上传中...",
+    "uploadBodyImage": "插入正文图片",
+    "uploadingImage": "上传中...",
+    "openPublic": "打开公开页",
+    "previewPage": "网页预览",
+    "previous": "上一页",
+    "next": "下一页"
+  },
+  "filters": {
+    "all": "全部稿件",
+    "admin": "管理员稿件",
+    "teacher": "教师稿件"
+  },
+  "status": {
+    "draft": "草稿",
+    "published": "已发布"
+  },
+  "list": {
+    "header": {
+      "title": "新闻管理",
+      "subtitle": "统一管理首页新闻、教师稿件与管理员稿件。教师稿件发布到首页的动作由管理员统一执行。"
+    },
+    "sectionTitle": "新闻列表",
+    "sectionDesc": "支持草稿保存、发布、删除与封面管理。",
+    "loading": "新闻列表加载中...",
+    "count": "共 {count} 篇新闻",
+    "pageInfo": "第 {page} / {totalPages} 页",
+    "authorFallback": "管理员",
+    "views": "{count} 次浏览",
+    "unpublished": "未发布",
+    "untitled": "未命名新闻",
+    "sourceAdmin": "管理员稿件",
+    "sourceTeacher": "教师稿件",
+    "empty": {
+      "title": "还没有新闻",
+      "description": "先创建第一篇新闻，再发布到首页和新闻列表。"
+    }
+  },
+  "editor": {
+    "loading": "新闻详情加载中...",
+    "header": {
+      "title": "编辑新闻",
+      "subtitle": "使用 Markdown 编写正文，图片会以 Markdown 语法插入到当前光标位置。"
+    },
+    "fields": {
+      "title": "新闻标题",
+      "titlePlaceholder": "请输入新闻标题",
+      "content": "新闻正文"
+    },
+    "defaultBodyImageAlt": "新闻配图",
+    "markdownHint": "支持标准 Markdown 语法与正文图片插入。",
+    "previewTitle": "内容预览",
+    "previewDescription": "这里复用公开新闻详情页的 Markdown 渲染效果。",
+    "previewEmpty": "暂无正文内容",
+    "sideTitle": "发布信息",
+    "sideDescription": "封面存在时会参与首页轮播候选；无封面时进入文字新闻列表候选。",
+    "meta": {
+      "author": "作者：{name}",
+      "views": "浏览量：{count}",
+      "unpublished": "尚未发布"
+    }
+  },
+  "preview": {
+    "loading": "预览页加载中...",
+    "close": "关闭预览",
+    "expired": "这个临时预览已失效。",
+    "previewBadge": "临时预览"
+  },
+  "confirm": {
+    "deleteTitle": "删除新闻",
+    "deleteMessage": "删除后正文图片和封面也会一起清理，确定继续吗？",
+    "removeCoverTitle": "删除封面",
+    "removeCoverMessage": "删除封面后，这篇新闻将不再进入首页轮播候选。"
+  },
+  "messages": {
+    "loadFailed": "新闻列表加载失败",
+    "createFailed": "新建新闻失败",
+    "createSuccess": "草稿已创建",
+    "deleteFailed": "删除新闻失败",
+    "deleteSuccess": "新闻已删除",
+    "detailFailed": "新闻详情加载失败",
+    "saveFailed": "保存草稿失败",
+    "saveSuccess": "草稿已保存",
+    "publishFailed": "新闻发布失败",
+    "publishSuccess": "新闻已发布",
+    "coverUploadFailed": "封面上传失败",
+    "coverUploadSuccess": "封面已更新",
+    "coverRemoveFailed": "封面删除失败",
+    "coverRemoveSuccess": "封面已删除",
+    "assetUploadFailed": "正文图片上传失败",
+    "assetUploadSuccess": "正文图片已插入当前光标位置",
+    "previewBlocked": "预览窗口被浏览器拦截了",
+    "previewUnavailable": "请先进入一篇新闻再进行预览"
+  }
+}

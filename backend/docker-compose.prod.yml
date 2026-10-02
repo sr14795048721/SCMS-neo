@@ -1,0 +1,108 @@
+name: scms-plus-prod
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: scms-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    container_name: scms-redis
+    command: ["redis-server", "--appendonly", "yes"]
+    restart: unless-stopped
+    volumes:
+      - redis_data:/data
+
+  core-service:
+    build:
+      context: .
+      dockerfile: core-service/Dockerfile
+      args:
+        INSTALL_FFMPEG: ${INSTALL_FFMPEG:-true}
+        UBUNTU_APT_MIRROR: ${UBUNTU_APT_MIRROR:-}
+    container_name: scms-core
+    restart: unless-stopped
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      DB_HOST: postgres
+      DB_PORT: ${DB_PORT}
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      FILE_SERVICE_URL: http://core-service:8081
+      JWT_SECRET: ${JWT_SECRET}
+      SCMS_JWT_ACCESS_EXPIRATION_MINUTES: ${SCMS_JWT_ACCESS_EXPIRATION_MINUTES:-120}
+      SCMS_JWT_REFRESH_EXPIRATION_DAYS: ${SCMS_JWT_REFRESH_EXPIRATION_DAYS:-30}
+      SCMS_AI_ENABLED: ${SCMS_AI_ENABLED:-true}
+      SCMS_AI_BASE_URL: ${SCMS_AI_BASE_URL:-https://api.siliconflow.cn}
+      SCMS_AI_API_KEY: ${SCMS_AI_API_KEY:-}
+      SCMS_AI_MODEL: ${SCMS_AI_MODEL:-Pro/deepseek-ai/DeepSeek-V3.1-Terminus}
+      SCMS_AI_SYSTEM_PROMPT: ${SCMS_AI_SYSTEM_PROMPT:-You are a helpful assistant}
+      SCMS_AI_TIMEOUT_SECONDS: ${SCMS_AI_TIMEOUT_SECONDS:-60}
+      EVENTS_MODE: ${EVENTS_MODE:-sync}
+      SCMS_BOOTSTRAP_DEFAULT_USERS: "false"
+
+      SCMS_ADMIN_INIT_ENABLED: ${SCMS_ADMIN_INIT_ENABLED:-false}
+      SCMS_ADMIN_INIT_USERNAME: ${SCMS_ADMIN_INIT_USERNAME:-}
+      SCMS_ADMIN_INIT_EMAIL: ${SCMS_ADMIN_INIT_EMAIL:-}
+      SCMS_ADMIN_INIT_PASSWORD: ${SCMS_ADMIN_INIT_PASSWORD:-}
+      SCMS_SUPER_ADMIN_INIT_ENABLED: ${SCMS_SUPER_ADMIN_INIT_ENABLED:-false}
+      SCMS_SUPER_ADMIN_INIT_USERNAME: ${SCMS_SUPER_ADMIN_INIT_USERNAME:-}
+      SCMS_SUPER_ADMIN_INIT_EMAIL: ${SCMS_SUPER_ADMIN_INIT_EMAIL:-}
+      SCMS_SUPER_ADMIN_INIT_PASSWORD: ${SCMS_SUPER_ADMIN_INIT_PASSWORD:-}
+      SCMS_APP_WORKSPACE_STORAGE_ENDPOINT: ${SCMS_APP_WORKSPACE_STORAGE_ENDPOINT:-}
+      SCMS_APP_WORKSPACE_STORAGE_ACCESS_KEY: ${SCMS_APP_WORKSPACE_STORAGE_ACCESS_KEY:-}
+      SCMS_APP_WORKSPACE_STORAGE_SECRET_KEY: ${SCMS_APP_WORKSPACE_STORAGE_SECRET_KEY:-}
+      SCMS_APP_WORKSPACE_STORAGE_BUCKET: ${SCMS_APP_WORKSPACE_STORAGE_BUCKET:-}
+      PROJECT_DEMO_BRIDGE_SECRET: ${PROJECT_DEMO_BRIDGE_SECRET:-}
+
+      SCMS_STORAGE_BANNER_ROOT: /app/data/banners
+      SCMS_STORAGE_NEWS_ROOT: /app/data/news
+      SCMS_STORAGE_REWARD_IMAGE_ROOT: /app/data/reward-images
+      SCMS_STORAGE_MANAGER_AVATAR_ROOT: /app/data/manager-avatars
+      SCMS_STORAGE_STUDENT_AVATAR_ROOT: /app/data/student-avatars
+    volumes:
+      - ./data/core-banners:/app/data/banners
+      - ./data/core-news:/app/data/news
+      - ./data/core-reward-images:/app/data/reward-images
+      - ./data/core-manager-avatars:/app/data/manager-avatars
+      - ./data/core-student-avatars:/app/data/student-avatars
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+
+  gateway-service:
+    build:
+      context: .
+      dockerfile: gateway-service/Dockerfile
+    container_name: scms-gateway
+    restart: unless-stopped
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      CORE_SERVICE_URL: http://core-service:8081
+      FILE_SERVICE_URL: http://core-service:8081
+      JWT_SECRET: ${JWT_SECRET}
+    ports:
+      - "18080:8080"
+    depends_on:
+      - core-service
+
+volumes:
+  redis_data:
+  postgres_data:

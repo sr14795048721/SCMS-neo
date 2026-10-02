@@ -1,0 +1,59 @@
+{
+  "meta": {
+    "title": "社团推荐 - SCMS Plus",
+    "description": "管理员配置首页社团推荐位"
+  },
+  "header": {
+    "title": "社团推荐",
+    "subtitle": "管理员维护首页推荐位，同时可以查看教师侧提交的推荐参考。"
+  },
+  "tabs": {
+    "homepage": "首页推荐位",
+    "teacher": "教师推荐参考"
+  },
+  "actions": {
+    "back": "返回后台",
+    "search": "搜索",
+    "add": "加入推荐",
+    "remove": "移除",
+    "save": "保存推荐",
+    "saving": "保存中...",
+    "up": "上移",
+    "down": "下移"
+  },
+  "states": {
+    "loading": "正在加载推荐配置...",
+    "loadingCandidates": "候选社团加载中..."
+  },
+  "current": {
+    "title": "当前推荐",
+    "subtitle": "首页会按这里的 1-4 位顺序展示推荐社团。",
+    "count": "{count}/{total} 个推荐位",
+    "slot": "推荐位 {slotNo}",
+    "emptySlot": "当前推荐位为空",
+    "emptyDescription": "暂无社团简介",
+    "memberCount": "{count} 名成员"
+  },
+  "candidate": {
+    "title": "候选社团",
+    "subtitle": "只展示当前启用中的社团，已选社团不会重复出现。",
+    "searchPlaceholder": "搜索社团名称、类型或简介",
+    "empty": "暂无可添加的候选社团"
+  },
+  "teacher": {
+    "title": "教师推荐参考",
+    "subtitle": "教师推荐不会直接影响首页，仅供管理员配置推荐位时参考。",
+    "loading": "正在加载教师推荐参考...",
+    "count": "推荐 {count} 项",
+    "emptyGroup": "当前教师还没有提交推荐。",
+    "empty": "当前没有教师推荐参考数据。"
+  },
+  "messages": {
+    "loadFailed": "推荐配置加载失败",
+    "saveFailed": "推荐配置保存失败",
+    "saveSuccess": "首页社团推荐已更新"
+  },
+  "common": {
+    "emptyValue": "暂无"
+  }
+}

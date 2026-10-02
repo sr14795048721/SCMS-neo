@@ -1,0 +1,2 @@
+export const PRIMARY_APP_CLUB_NAME =
+  "\u56fa\u539f\u5e02\u7b2c\u4e8c\u4e2d\u5b66\u4fee\u8fdc\u79d1\u6280\u793e";

@@ -1,0 +1,19 @@
+core:
+  image: scms-plus/core-service:latest
+  replicaCount: 1
+  port: 8081
+
+gateway:
+  image: scms-plus/gateway-service:latest
+  replicaCount: 1
+  port: 8080
+  coreServiceUrl: http://core-service:8081
+
+file:
+  enabled: false
+  image: scms-plus/file-service:latest
+  replicaCount: 1
+  port: 8082
+  minioEndpoint: http://minio:9000
+
+jwtSecret: change-this-super-secret-key-change-this-super-secret-key

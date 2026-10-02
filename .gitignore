@@ -1,0 +1,49 @@
+# Workspace-wide ignores for the SCMS+ aggregate directory
+
+# OS files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# IDE / editor
+.idea/
+.vscode/
+*.iml
+
+# Logs
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment / local overrides
+.env
+.env.*
+!.env.example
+*.local
+
+# Temporary / cache
+*.tmp
+*.temp
+.cache/
+
+# Backend (Maven / Docker / runtime data)
+backend/.docker/
+backend/.mvn/
+backend/target/
+backend/**/target/
+backend/data/**
+!backend/data/**/.gitkeep
+
+# Frontend (Next.js / Node)
+frontend/node_modules/
+frontend/.codex/
+frontend/.next/
+frontend/dist/
+frontend/out/
+frontend/coverage/
+frontend/.swc/
+frontend/.turbo/
+frontend/.vercel/

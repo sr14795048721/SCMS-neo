@@ -1,0 +1,134 @@
+{
+  "meta": {
+    "title": "社团课签到 - SCMS Plus",
+    "description": "教师为社团课创建签到课次并完成签到、签退与积分结算。"
+  },
+  "workspace": {
+    "openAttendance": "上课签到"
+  },
+  "header": {
+    "title": "上课签到",
+    "subtitle": "为每节社团课创建签到课次，完成签到签退并统一结算积分。"
+  },
+  "actions": {
+    "backToWorkspace": "返回社团工作台",
+    "openSession": "打开签到课次",
+    "refresh": "刷新",
+    "create": "创建课次",
+    "creating": "创建中...",
+    "settle": "结束并结算",
+    "resettle": "重新结算",
+    "settling": "结算中...",
+    "checkIn": "签到",
+    "checkOut": "签退",
+    "recheckIn": "重新签到",
+    "bulkCheckIn": "批量签到",
+    "bulkCheckOut": "批量签退",
+    "loading": "加载中..."
+  },
+  "summary": {
+    "title": "签到概览",
+    "description": "这里展示当前社团课签到的进度和可用于自动发分的积分规则。",
+    "items": {
+      "sessions": "历史课次",
+      "rules": "可用积分规则",
+      "open": "进行中课次"
+    }
+  },
+  "createForm": {
+    "title": "创建签到课次",
+    "description": "每次上课前创建一个课次，系统会自动抓取当前正式成员作为签到名单。",
+    "fields": {
+      "title": "课次标题",
+      "titlePlaceholder": "例如：第 5 次社团课",
+      "scoreRule": "积分规则",
+      "scoreRulePlaceholder": "请选择一条积分规则"
+    },
+    "validation": {
+      "titleRequired": "请先填写课次标题",
+      "scoreRuleRequired": "请先选择积分规则"
+    }
+  },
+  "sessionList": {
+    "title": "课次列表",
+    "description": "可随时重新进入历史课次继续修正签到结果并重新结算积分。",
+    "empty": "当前还没有签到课次，请先创建第一节社团课签到。",
+    "status": {
+      "OPEN": "进行中",
+      "COMPLETED": "已完成"
+    },
+    "counts": {
+      "members": "成员 {count} 人",
+      "checkedIn": "已签到 {count} 人",
+      "checkedOut": "已签退 {count} 人",
+      "settled": "已发分 {count} 人"
+    }
+  },
+  "detail": {
+    "title": "签到面板",
+    "description": "教师按学生名单点名签到、签退，课次结束后统一发放积分。",
+    "empty": "请先从左侧选择一个签到课次。",
+    "session": {
+      "rule": "积分规则",
+      "startedAt": "开始时间",
+      "endedAt": "结束时间",
+      "settledAt": "最近结算"
+    },
+    "table": {
+      "student": "学生",
+      "className": "班级",
+      "checkInAt": "签到时间",
+      "checkOutAt": "签退时间",
+      "status": "状态",
+      "action": "操作"
+    },
+    "status": {
+      "PENDING": "未签到",
+      "CHECKED_IN": "已签到",
+      "CHECKED_OUT": "已签退"
+    },
+    "settled": {
+      "yes": "已发分",
+      "no": "未发分"
+    },
+    "bulk": {
+      "selected": "当前页已选择 {count} 名学生",
+      "selectCurrentPage": "选择当前页全部学生",
+      "selectStudent": "选择学生 {name}"
+    },
+    "emptyMembers": "当前课次没有可签到的正式成员。"
+  },
+  "messages": {
+    "loginRequired": "登录状态已失效，请重新登录",
+    "loadFailed": "签到数据加载失败",
+    "sessionCreated": "签到课次已创建",
+    "sessionCreateFailed": "签到课次创建失败",
+    "memberActionFailed": "签到状态更新失败",
+    "settleFailed": "课次结算失败",
+    "settled": "课次积分已结算",
+    "memberCheckedIn": "已完成签到",
+    "memberCheckedOut": "已完成签退",
+    "memberRecheckedIn": "已重新签到",
+    "bulkCheckedIn": "当前页所选学生已批量签到",
+    "bulkCheckedOut": "当前页所选学生已批量签退",
+    "selectionRequired": "请先勾选当前页需要处理的学生",
+    "confirmSettleTitle": "结束并结算课次",
+    "confirmSettleMessage": "系统会为已签到且已签退的学生统一发放所选积分规则对应的积分，后续仍可修正并重新结算。"
+  },
+  "common": {
+    "defaultName": "教师用户",
+    "profileHint": "编辑教师资料",
+    "logout": "退出登录",
+    "loggingOut": "退出中...",
+    "cancel": "取消",
+    "timeFallback": "时间待定",
+    "nameFallback": "未填写姓名",
+    "classFallback": "未填写班级",
+    "descriptionFallback": "当前社团暂未填写简介。",
+    "gradeLabels": {
+      "HIGH_1": "高一",
+      "HIGH_2": "高二",
+      "HIGH_3": "高三"
+    }
+  }
+}

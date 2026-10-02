@@ -1,0 +1,181 @@
+{
+  "meta": {
+    "title": "用户管理 - SCMS Plus",
+    "description": "管理员查看、编辑、导入导出和重置学生与教师账号。"
+  },
+  "header": {
+    "title": "用户管理",
+    "subtitle": "统一管理学生账号与教师账号，支持搜索、编辑、批量导入导出和密码重置。"
+  },
+  "tabs": {
+    "sectionTitle": "账号面板",
+    "sectionSubtitle": "切换账号类型后可分别查看学生和教师账号明细。",
+    "students": "学生账号",
+    "managers": "教师账号"
+  },
+  "search": {
+    "studentsPlaceholder": "搜索用户名、邮箱、姓名、学号、手机号",
+    "managersPlaceholder": "搜索用户名、邮箱、姓名、工号、手机号"
+  },
+  "actions": {
+    "back": "返回",
+    "search": "搜索",
+    "createManager": "新建教师账号",
+    "confirmCreateManager": "创建教师账号",
+    "creatingManager": "创建中...",
+    "edit": "查看详情",
+    "delete": "删除账号",
+    "deleting": "删除中...",
+    "resetSingleStudentPassword": "重置当前学生密码",
+    "resettingSingleStudentPassword": "重置当前学生中...",
+    "save": "保存修改",
+    "saving": "保存中...",
+    "cancel": "取消",
+    "downloadTemplate": "下载模板",
+    "downloadingTemplate": "下载中...",
+    "importStudents": "批量导入",
+    "importingStudents": "导入中...",
+    "exportStudents": "导出数据",
+    "exportingStudents": "导出中...",
+    "resetStudentsPassword": "重置全部学生密码",
+    "resetManagersPassword": "重置全部教师密码",
+    "resettingStudents": "重置中...",
+    "resettingManagers": "重置中..."
+  },
+  "downloads": {
+    "studentTemplate": "学生导入模板.xlsx",
+    "studentExport": "学生数据导出.xlsx"
+  },
+  "states": {
+    "loading": "页面加载中...",
+    "loadingList": "列表加载中...",
+    "loadingDetail": "详情加载中..."
+  },
+  "list": {
+    "columns": {
+      "username": "用户名",
+      "email": "邮箱",
+      "name": "姓名",
+      "identity": "身份信息",
+      "contact": "联系方式",
+      "status": "状态",
+      "updatedAt": "更新时间",
+      "actions": "操作"
+    },
+    "studentNoSuffix": "号",
+    "pageInfo": "第 {page} / {totalPages} 页，共 {total} 条",
+    "emptyValue": "暂无"
+  },
+  "empty": {
+    "studentsTitle": "暂无学生账号",
+    "studentsDescription": "可以先下载模板后批量导入学生数据。",
+    "managersTitle": "暂无教师账号",
+    "managersDescription": "当前还没有可管理的教师账号。"
+  },
+  "status": {
+    "enabled": "已启用",
+    "disabled": "已停用"
+  },
+  "drawer": {
+    "studentTitle": "学生账号详情",
+    "studentSubtitle": "可修改学生账号字段与个人资料字段。",
+    "managerTitle": "教师账号详情",
+    "managerSubtitle": "可修改教师账号字段与个人资料字段。",
+    "managerCreateTitle": "新建教师账号",
+    "managerCreateSubtitle": "仅支持单个教师账号手动创建，不提供批量导入。",
+    "managerCreateBadge": "管理员手动开通",
+    "managerCreateLead": "先完成基础信息，系统会自动创建教师登录账号",
+    "managerCreateHint": "教师账号创建成功后，会立即返回初始密码，便于管理员通知教师首次登录。",
+    "readonly": {
+      "role": "角色",
+      "createdAt": "创建时间",
+      "updatedAt": "更新时间",
+      "avatar": "头像状态"
+    },
+    "hasAvatar": "已设置头像",
+    "noAvatar": "未设置头像"
+  },
+  "form": {
+    "username": "用户名",
+    "email": "邮箱",
+    "displayName": "姓名",
+    "studentNo": "学号",
+    "managerNo": "工号",
+    "grade": "年级",
+    "className": "班级",
+    "classSuffix": "班",
+    "phone": "手机号",
+    "enabled": "账号状态",
+    "bio": "个人简介"
+  },
+  "grades": {
+    "placeholder": "请选择年级",
+    "HIGH_1": "高一",
+    "HIGH_2": "高二",
+    "HIGH_3": "高三"
+  },
+  "confirm": {
+    "resetStudentsTitle": "重置全部学生密码",
+    "resetStudentsMessage": "确认后将把当前全部学生账号密码统一重置为默认密码。",
+    "resetSingleStudentTitle": "重置当前学生密码",
+    "resetSingleStudentMessage": "确认后将把当前学生账号密码重置为默认密码 student123。",
+    "resetManagersTitle": "重置全部教师密码",
+    "resetManagersMessage": "确认后将把当前全部教师账号密码统一重置为默认密码。",
+    "deleteStudentTitle": "删除学生账号",
+    "deleteStudentMessage": "删除后将同步清理该学生的资料、通知和活动报名记录，且无法恢复。",
+    "deleteManagerTitle": "删除教师账号",
+    "deleteManagerMessage": "删除后将同步清理该教师的资料与通知；若该教师仍关联已创建的社团或活动，则无法删除。"
+  },
+  "importResult": {
+    "title": "导入结果",
+    "totalRows": "处理行数",
+    "successCount": "成功数量",
+    "failureCount": "失败数量",
+    "failureRow": "第 {rowNumber} 行",
+    "emptyEmail": "未填写邮箱",
+    "noFailures": "本次导入没有失败记录。",
+    "reasons": {
+      "REQUIRED_USERNAME": "用户名不能为空",
+      "INVALID_USERNAME": "用户名长度或格式不符合要求",
+      "REQUIRED_EMAIL": "邮箱不能为空",
+      "INVALID_EMAIL": "邮箱格式不正确",
+      "DUPLICATE_EMAIL_IN_FILE": "导入文件中存在重复邮箱",
+      "DUPLICATE_USERNAME_IN_FILE": "导入文件中存在重复用户名",
+      "REQUIRED_DISPLAY_NAME": "姓名不能为空",
+      "INVALID_DISPLAY_NAME": "姓名长度不符合要求",
+      "INVALID_STUDENT_NO": "学号长度不符合要求",
+      "INVALID_GRADE": "年级只能是高一、高二或高三",
+      "INVALID_CLASS_NAME": "班级数据不合法",
+      "INVALID_PHONE": "手机号长度不符合要求",
+      "INVALID_BIO": "个人简介长度不符合要求",
+      "INVALID_ENABLED": "是否启用列填写不合法",
+      "CONFLICT": "用户名或邮箱已存在",
+      "SYSTEM_ERROR": "该行导入时发生系统错误",
+      "default": "导入失败"
+    }
+  },
+  "messages": {
+    "loadStudentsFailed": "学生列表加载失败",
+    "loadManagersFailed": "教师列表加载失败",
+    "loadDetailFailed": "账号详情加载失败",
+    "createManagerFailed": "教师账号创建失败",
+    "createManagerSuccess": "教师账号已创建，初始密码为 {password}",
+    "deleteStudentFailed": "学生账号删除失败",
+    "deleteStudentSuccess": "学生账号已删除",
+    "deleteManagerFailed": "教师账号删除失败",
+    "deleteManagerSuccess": "教师账号已删除",
+    "deleteManagerBlocked": "该教师仍关联已创建的社团或活动，暂不能删除",
+    "saveStudentFailed": "学生资料保存失败",
+    "saveStudentSuccess": "学生资料已更新",
+    "saveManagerFailed": "教师资料保存失败",
+    "saveManagerSuccess": "教师资料已更新",
+    "importFailed": "学生导入失败",
+    "importFinished": "导入完成：成功 {successCount} 条，失败 {failureCount} 条",
+    "downloadFailed": "文件下载失败",
+    "resetFailed": "密码重置失败",
+    "resetSingleStudentFailed": "当前学生密码重置失败",
+    "resetSingleStudentSuccess": "已重置当前学生密码，默认密码为 {password}",
+    "resetStudentsSuccess": "已重置 {count} 个学生账号密码，默认密码为 {password}",
+    "resetManagersSuccess": "已重置 {count} 个教师账号密码，默认密码为 {password}"
+  }
+}

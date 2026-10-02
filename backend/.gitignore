@@ -1,0 +1,23 @@
+# Maven
+target/
+.mvn/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Env and secrets
+.env
+*.local
+
+# Logs
+*.log
+logs/
+
+# Docker volumes
+.docker/

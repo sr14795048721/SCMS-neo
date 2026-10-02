@@ -1,0 +1,458 @@
+.stack {
+  display: grid;
+  gap: 16px;
+}
+
+.topBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.inlineActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.backButton,
+.primaryButton,
+.secondaryButton,
+.ghostButton,
+.dangerButton,
+.iconButton,
+.addProjectButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 42px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+
+.backButton {
+  padding: 0 14px;
+  border: 1px solid rgba(148, 163, 184, 0.24);
+  background: rgba(255, 255, 255, 0.9);
+  color: #18212f;
+}
+
+.primaryButton {
+  padding: 0 16px;
+  border: none;
+  background: #18212f;
+  color: #ffffff;
+  box-shadow: 0 12px 24px rgba(24, 33, 47, 0.14);
+}
+
+.secondaryButton {
+  padding: 0 16px;
+  border: 1px solid rgba(24, 33, 47, 0.12);
+  background: #ffffff;
+  color: #18212f;
+}
+
+.ghostButton,
+.iconButton,
+.addProjectButton {
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  background: #ffffff;
+  color: #18212f;
+}
+
+.dangerButton {
+  padding: 0 14px;
+  border: none;
+  background: #991b1b;
+  color: #ffffff;
+}
+
+.iconButton {
+  width: 42px;
+  padding: 0;
+}
+
+.addProjectButton {
+  width: 100%;
+  padding: 0 16px;
+}
+
+.backButton:hover,
+.primaryButton:hover:not(:disabled),
+.secondaryButton:hover:not(:disabled),
+.ghostButton:hover:not(:disabled),
+.dangerButton:hover:not(:disabled),
+.iconButton:hover:not(:disabled),
+.addProjectButton:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.primaryButton:disabled,
+.secondaryButton:disabled,
+.ghostButton:disabled,
+.dangerButton:disabled,
+.iconButton:disabled,
+.addProjectButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.hero,
+.groupCard,
+.projectCard,
+.emptyCard,
+.materialCard {
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 18px 36px rgba(15, 23, 42, 0.06);
+  border: 1px solid rgba(148, 163, 184, 0.16);
+}
+
+.hero {
+  padding: 24px;
+  background:
+    radial-gradient(circle at top right, rgba(217, 119, 6, 0.18), transparent 36%),
+    linear-gradient(135deg, rgba(24, 33, 47, 0.98) 0%, rgba(63, 43, 32, 0.95) 100%);
+  color: #f8fafc;
+}
+
+.heroTitle {
+  margin: 0;
+  font-size: 1.6rem;
+}
+
+.heroMeta {
+  margin-top: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.heroPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  color: #f8fafc;
+  font-size: 0.88rem;
+  white-space: nowrap;
+}
+
+.groupCard,
+.emptyCard {
+  padding: 18px;
+}
+
+.groupHead,
+.projectBody {
+  display: grid;
+  gap: 14px;
+}
+
+.groupFields,
+.projectFields {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.groupActions,
+.projectActions,
+.materialActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.projects {
+  margin-top: 16px;
+  display: grid;
+  gap: 12px;
+}
+
+.projectCard {
+  padding: 14px;
+  display: grid;
+  gap: 18px;
+  grid-template-columns: 148px minmax(0, 1fr);
+  align-items: start;
+}
+
+.projectCover {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border-radius: 18px;
+  background: linear-gradient(135deg, rgba(24, 33, 47, 0.08), rgba(217, 119, 6, 0.12));
+}
+
+.projectCover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.coverPlaceholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.field {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+}
+
+.fieldWide {
+  grid-column: 1 / -1;
+}
+
+.field span {
+  color: #475569;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.field input,
+.field textarea,
+.field select {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  min-height: 46px;
+  padding: 11px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(148, 163, 184, 0.28);
+  background: #ffffff;
+  color: #111827;
+  font: inherit;
+  line-height: 1.5;
+  letter-spacing: 0;
+}
+
+.field input[readonly] {
+  background: #f8fafc;
+  color: #475569;
+}
+
+.field textarea {
+  min-height: 110px;
+  line-height: 1.6;
+  resize: vertical;
+}
+
+.field input:focus,
+.field textarea:focus,
+.field select:focus {
+  outline: none;
+  border-color: rgba(24, 33, 47, 0.22);
+  box-shadow: 0 0 0 3px rgba(24, 33, 47, 0.06);
+}
+
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 38px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  background: rgba(248, 250, 252, 0.92);
+  color: #334155;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.compactToggle {
+  min-height: 36px;
+  padding: 0 14px;
+}
+
+.materialsSection {
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+  border-radius: 20px;
+  background: #f8fafc;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+}
+
+.materialsHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.materialsHead strong {
+  color: #18212f;
+  font-size: 0.98rem;
+}
+
+.materialList {
+  display: grid;
+  gap: 8px;
+}
+
+.materialCard {
+  padding: 16px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  align-items: start;
+  background: #ffffff;
+}
+
+.materialMain {
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+}
+
+.materialTopRow {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: minmax(156px, 188px) minmax(0, 1fr);
+}
+
+.materialActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.actionCluster {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.compactIconButton,
+.inlineDangerButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 36px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform 0.18s ease, border-color 0.18s ease, background-color 0.18s ease, color 0.18s ease;
+}
+
+.compactIconButton {
+  width: 36px;
+  border: 1px solid rgba(148, 163, 184, 0.26);
+  background: #ffffff;
+  color: #334155;
+}
+
+.inlineDangerButton {
+  padding: 0 12px;
+  border: 1px solid rgba(185, 28, 28, 0.14);
+  background: rgba(185, 28, 28, 0.06);
+  color: #b91c1c;
+  font-size: 0.86rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.compactIconButton:hover:not(:disabled),
+.inlineDangerButton:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.compactIconButton:disabled,
+.inlineDangerButton:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.emptyInline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 84px;
+  border-radius: 18px;
+  border: 1px dashed rgba(148, 163, 184, 0.24);
+  color: #64748b;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.emptyCard {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 160px;
+}
+
+@media (max-width: 1100px) {
+  .projectFields {
+    grid-template-columns: 1fr;
+  }
+
+  .materialTopRow {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .topBar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .inlineActions {
+    width: 100%;
+  }
+
+  .inlineActions > button {
+    flex: 1 1 auto;
+  }
+
+  .projectCard {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 680px) {
+  .materialsHead,
+  .groupActions,
+  .projectActions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .materialsHead > button,
+  .groupActions > button,
+  .projectActions > button,
+  .projectActions > div,
+  .materialActions > button,
+  .materialActions > div {
+    width: 100%;
+  }
+
+  .actionCluster {
+    justify-content: flex-start;
+  }
+
+  .materialTopRow {
+    grid-template-columns: 1fr;
+  }
+}

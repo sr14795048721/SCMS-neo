@@ -1,0 +1,87 @@
+{
+  "meta": {
+    "title": "登录轮播配置 - SCMS Plus",
+    "description": "管理员登录页轮播图配置"
+  },
+  "page": {
+    "loading": "正在加载登录轮播配置..."
+  },
+  "header": {
+    "title": "登录轮播配置",
+    "subtitle": "管理登录页轮播素材、顺序与展示文案，修改后会即时生效。"
+  },
+  "section": {
+    "title": "登录轮播列表",
+    "description": "支持图片与视频轮播素材。视频上传完成后会自动生成封面，并按当前顺序展示到登录页。"
+  },
+  "fields": {
+    "order": "顺序",
+    "title": "标题",
+    "desc": "描述",
+    "type": "类型",
+    "media": "当前素材"
+  },
+  "types": {
+    "image": "图片",
+    "video": "视频"
+  },
+  "actions": {
+    "back": "返回后台",
+    "preview": "预览登录页",
+    "recompress": "重新压缩图片",
+    "recompressing": "压缩中...",
+    "add": "添加轮播图",
+    "creating": "创建中...",
+    "moveUp": "上移",
+    "moveDown": "下移",
+    "delete": "删除",
+    "uploadFile": "上传素材",
+    "replaceFile": "替换素材"
+  },
+  "preview": {
+    "empty": "当前还没有上传素材。",
+    "imageAlt": "登录轮播图片预览",
+    "videoAlt": "登录轮播视频封面预览",
+    "posterReady": "视频封面已自动生成。"
+  },
+  "upload": {
+    "imageLimit": "支持 JPG / PNG / WebP，最大 10MB",
+    "videoLimit": "支持 MP4 / WebM / OGG，最大 200MB"
+  },
+  "empty": {
+    "title": "还没有登录轮播图",
+    "description": "点击右上角“添加轮播图”开始配置登录页轮播内容。"
+  },
+  "confirm": {
+    "deleteTitle": "删除轮播图",
+    "delete": "确定要删除这条登录轮播图吗？",
+    "changeTypeTitle": "切换轮播类型",
+    "changeType": "切换类型会清空当前素材并删除已有文件，确认继续吗？",
+    "recompressTitle": "重新压缩轮播图片",
+    "recompress": "将会对当前登录页轮播中的图片素材执行一次重新压缩，并跳过已经处理到当前版本的图片。确定继续吗？",
+    "recompressAction": "开始压缩"
+  },
+  "validation": {
+    "imageType": "图片仅支持 JPG、PNG、WebP 格式",
+    "imageSize": "图片大小不能超过 10MB",
+    "videoType": "视频仅支持 MP4、WebM、OGG 格式",
+    "videoSize": "视频大小不能超过 200MB"
+  },
+  "messages": {
+    "loadFailed": "登录轮播配置加载失败，请稍后重试",
+    "createSuccess": "轮播图已创建",
+    "createFailed": "轮播图创建失败",
+    "updateFailed": "轮播图更新失败",
+    "typeChangeSuccess": "轮播图类型已切换",
+    "typeChangeFailed": "轮播图类型切换失败",
+    "deleteSuccess": "轮播图已删除",
+    "deleteFailed": "轮播图删除失败",
+    "uploadSuccess": "素材上传成功",
+    "uploadFailed": "素材上传失败",
+    "reorderFailed": "轮播图排序保存失败",
+    "recompressFailed": "重新压缩失败，请稍后重试",
+    "recompressSuccess": "重新压缩完成，已处理 {processedCount} 条，跳过 {skippedCount} 条。",
+    "recompressPartial": "重新压缩完成，已处理 {processedCount} 条，跳过 {skippedCount} 条，失败 {failedCount} 条。",
+    "recompressNoop": "当前没有需要重新压缩的登录轮播图片，已跳过 {skippedCount} 条。"
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "header": {
+    "title": "申请创建社团",
+    "subtitle": "填写建社信息并提交后，管理员会在后台统一审核。通过后，你会自动成为该社团的管理教师。"
+  },
+  "common": {
+    "defaultName": "教师用户",
+    "profileHint": "编辑教师资料",
+    "logout": "退出登录",
+    "loggingOut": "退出中...",
+    "empty": "暂无",
+    "emptyDescription": "暂无简介"
+  },
+  "actions": {
+    "back": "返回工作台",
+    "submit": "提交申请",
+    "submitting": "提交中..."
+  },
+  "states": {
+    "checking": "正在校验教师身份...",
+    "loading": "申请记录加载中..."
+  },
+  "form": {
+    "title": "新建建社申请",
+    "subtitle": "请尽量使用正式、清晰的社团名称和类型，便于管理员审核。",
+    "pendingHint": "当前已有待审核的建社申请，请等待管理员处理后再提交新的申请。",
+    "fields": {
+      "name": "社团名称",
+      "type": "社团类型",
+      "description": "社团简介",
+      "applyReason": "申请理由"
+    }
+  },
+  "guide": {
+    "title": "填写提示",
+    "subtitle": "提交前建议先确认名称、定位和运营思路。",
+    "step1": "社团名称建议直接使用校内正式口径，避免与现有社团重复。",
+    "step2": "社团简介应说明定位、活动方向和目标成员。",
+    "step3": "申请理由可以补充筹备情况、指导计划或现实需求。"
+  },
+  "history": {
+    "title": "申请记录",
+    "subtitle": "这里会保留你提交过的建社申请及当前审核状态。",
+    "reason": "申请理由：{reason}",
+    "empty": "当前还没有建社申请记录。"
+  },
+  "status": {
+    "pending": "待审核",
+    "approved": "已通过",
+    "rejected": "已驳回"
+  },
+  "messages": {
+    "loginRequired": "登录状态已失效，请重新登录",
+    "validation": "请先填写社团名称、社团类型和申请理由。",
+    "loadFailed": "建社申请记录加载失败",
+    "submitFailed": "建社申请提交失败",
+    "submitSuccess": "建社申请已提交",
+    "pendingBlocked": "当前已有待审核的建社申请，请等待管理员处理后再提交新的申请。",
+    "nameConflict": "该社团名称已存在，请更换一个名称后再提交。",
+    "nameTooLong": "社团名称最多12个字"
+  }
+}

@@ -1,0 +1,20 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: file-api
+          uri: ${FILE_SERVICE_URL:http://file-service:8082}
+          predicates:
+            - Path=/api/v1/files/**
+        - id: core-iot-api
+          uri: ${CORE_SERVICE_URL:http://core-service:8081}
+          predicates:
+            - Path=/api/iot/v1/**
+        - id: core-demo-observer
+          uri: ${CORE_SERVICE_URL:http://core-service:8081}
+          predicates:
+            - Path=/api/demo-observer/**
+        - id: core-api
+          uri: ${CORE_SERVICE_URL:http://core-service:8081}
+          predicates:
+            - Path=/api/v1/**

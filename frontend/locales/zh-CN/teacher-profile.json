@@ -1,0 +1,80 @@
+{
+  "meta": {
+    "title": "教师资料 - SCMS Plus",
+    "description": "SCMS Plus 教师资料与安全设置"
+  },
+  "header": {
+    "back": "返回工作台",
+    "logout": "退出登录",
+    "loggingOut": "退出中...",
+    "profileHint": "维护个人资料",
+    "defaultName": "教师用户"
+  },
+  "profile": {
+    "title": "个人资料",
+    "description": "完善教师展示信息，便于后续业务页面直接复用。",
+    "avatarTitle": "头像与展示信息",
+    "avatarHint": "支持常见图片格式，可裁剪后上传。",
+    "avatarEmpty": "暂无头像",
+    "avatarEdit": "编辑头像",
+    "save": "保存资料",
+    "saving": "保存中..."
+  },
+  "security": {
+    "title": "安全资料",
+    "description": "修改账户密码后，将重新登录以确保账户安全。",
+    "save": "修改密码",
+    "saving": "提交中..."
+  },
+  "labels": {
+    "displayName": "姓名",
+    "managerNo": "工号",
+    "email": "邮箱",
+    "phone": "手机号",
+    "bio": "个人简介",
+    "currentPassword": "当前密码",
+    "newPassword": "新密码",
+    "confirmPassword": "确认新密码"
+  },
+  "placeholders": {
+    "displayName": "请输入教师姓名",
+    "managerNo": "请输入工号",
+    "phone": "请输入手机号",
+    "bio": "请输入个人简介或指导方向",
+    "currentPassword": "请输入当前密码",
+    "newPassword": "请输入新密码",
+    "confirmPassword": "请再次输入新密码"
+  },
+  "helper": {
+    "emailReadonly": "邮箱由系统账户统一维护，此处仅展示。"
+  },
+  "avatarEditor": {
+    "title": "编辑头像",
+    "subtitle": "拖拽图片调整位置，滚轮缩放，也支持连续旋转微调。",
+    "dragHint": "拖拽调整位置，滚轮缩放图片",
+    "empty": "请选择一张图片开始编辑。",
+    "replace": "更换图片",
+    "reset": "重置",
+    "zoom": "缩放",
+    "rotate": "旋转",
+    "rotateLeft": "左转 15°",
+    "rotateRight": "右转 15°",
+    "rotateReset": "回正",
+    "circle": "圆形",
+    "cancel": "取消",
+    "submit": "上传头像",
+    "submitting": "上传中...",
+    "preview": "预览"
+  },
+  "messages": {
+    "loadFailed": "教师资料加载失败，请稍后重试。",
+    "profileSaved": "教师资料已更新。",
+    "avatarSaved": "头像已更新。",
+    "passwordUpdated": "密码修改成功，请重新登录。",
+    "loginRequired": "登录状态已失效，请重新登录。",
+    "invalidImage": "请选择 JPG、PNG、WEBP 等常见图片文件。",
+    "avatarTooLarge": "头像图片不能超过 10MB。",
+    "passwordMismatch": "两次输入的新密码不一致。",
+    "requestFailed": "操作失败，请稍后重试。"
+  }
+}

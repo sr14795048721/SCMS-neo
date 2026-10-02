@@ -1,0 +1,107 @@
+{
+  "meta": {
+    "title": "学生资料 - SCMS Plus",
+    "description": "SCMS Plus 学生资料与账户安全设置"
+  },
+  "header": {
+    "back": "返回工作台",
+    "logout": "退出登录",
+    "loggingOut": "退出中...",
+    "profileHint": "维护学生资料",
+    "defaultName": "学生用户"
+  },
+  "profile": {
+    "title": "个人资料",
+    "description": "完善学生展示信息，便于后续个人中心与业务页面复用。",
+    "avatarTitle": "头像与基础展示",
+    "avatarHint": "支持常见图片格式，可裁剪后上传。",
+    "avatarEdit": "编辑头像",
+    "save": "保存资料",
+    "saving": "保存中..."
+  },
+  "completion": {
+    "title": "请先完善个人资料",
+    "description": "学生端已启用资料完整性校验。补全姓名、学号、年级和班级后，才能继续使用活动、社团、通知和积分等功能。",
+    "badge": "需先完成",
+    "pendingLabel": "当前待完善字段",
+    "checking": "正在检查资料完整性...",
+    "redirectNotice": "请先完善个人资料后再继续使用学生端功能。",
+    "requiredFields.displayName": "姓名",
+    "requiredFields.studentNo": "学号",
+    "requiredFields.grade": "年级",
+    "requiredFields.className": "班级"
+  },
+  "security": {
+    "title": "安全资料",
+    "description": "修改密码成功后，将重新登录以确保账户安全。",
+    "save": "修改密码",
+    "saving": "提交中..."
+  },
+  "labels": {
+    "displayName": "姓名",
+    "studentNo": "学号",
+    "grade": "年级",
+    "className": "班级",
+    "email": "邮箱",
+    "phone": "手机号",
+    "bio": "个人简介",
+    "currentPassword": "当前密码",
+    "newPassword": "新密码",
+    "confirmPassword": "确认新密码"
+  },
+  "placeholders": {
+    "displayName": "请输入学生姓名",
+    "studentNo": "请输入学号",
+    "grade": "请选择年级",
+    "className": "请输入数字",
+    "phone": "请输入手机号",
+    "bio": "请输入个人简介或兴趣方向",
+    "currentPassword": "请输入当前密码",
+    "newPassword": "请输入新密码",
+    "confirmPassword": "请再次输入新密码"
+  },
+  "helper": {
+    "emailReadonly": "邮箱由系统账户统一维护，此处仅展示。",
+    "classSuffix": "班"
+  },
+  "gradeOptions": {
+    "HIGH_1": "高一",
+    "HIGH_2": "高二",
+    "HIGH_3": "高三"
+  },
+  "avatarEditor": {
+    "title": "编辑头像",
+    "subtitle": "拖拽图片调整位置，滚轮缩放，也支持连续旋转微调。",
+    "dragHint": "拖拽调整位置，滚轮缩放图片",
+    "empty": "请选择一张图片开始编辑。",
+    "replace": "更换图片",
+    "reset": "重置",
+    "zoom": "缩放",
+    "rotate": "旋转",
+    "rotateLeft": "左转 15°",
+    "rotateRight": "右转 15°",
+    "rotateReset": "回正",
+    "circle": "圆形",
+    "cancel": "取消",
+    "submit": "上传头像",
+    "submitting": "上传中...",
+    "preview": "预览"
+  },
+  "messages": {
+    "loadFailed": "学生资料加载失败，请稍后重试。",
+    "profileSaved": "学生资料已更新。",
+    "profileCompletedUnlocked": "个人资料已完善，现在可以正常使用学生端功能。",
+    "avatarSaved": "头像已更新。",
+    "passwordUpdated": "密码修改成功，请重新登录。",
+    "loginRequired": "登录状态已失效，请重新登录。",
+    "invalidImage": "请选择 JPG、PNG、WEBP 等常见图片文件。",
+    "avatarTooLarge": "头像图片不能超过 10MB。",
+    "passwordMismatch": "两次输入的新密码不一致。",
+    "requestFailed": "操作失败，请稍后重试。",
+    "displayNameRequired": "请输入姓名。",
+    "studentNoRequired": "请输入学号。",
+    "gradeRequired": "请选择年级。",
+    "classNameRequired": "请输入班级。",
+    "invalidClassName": "请输入有效班级。"
+  }
+}

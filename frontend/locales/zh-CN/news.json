@@ -1,0 +1,34 @@
+{
+  "page": {
+    "title": "新闻详情"
+  },
+  "action": {
+    "back": "返回"
+  },
+  "meta": {
+    "authorFallback": "管理员",
+    "views": "{count} 次浏览"
+  },
+  "content": {
+    "empty": "暂无内容"
+  },
+  "state": {
+    "loading": "加载中...",
+    "notFound": "新闻不存在或尚未发布",
+    "loadFailed": "加载失败，请稍后重试"
+  },
+  "list": {
+    "meta": {
+      "title": "社团要闻",
+      "description": "查看全部已发布的社团新闻"
+    },
+    "title": "社团要闻",
+    "subtitle": "按照发布时间查看全部已发布新闻，点击任一条即可进入正文详情。",
+    "count": "共 {count} 篇新闻",
+    "readMore": "查看详情",
+    "empty": {
+      "title": "暂无新闻",
+      "description": "管理员暂未发布任何新闻。"
+    }
+  }
+}

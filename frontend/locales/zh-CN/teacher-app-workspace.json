@@ -1,0 +1,118 @@
+{
+  "header": {
+    "title": "App 工作台",
+    "subtitle": "修远科技社",
+    "logout": "退出登录",
+    "loggingOut": "退出中...",
+    "profileHint": "编辑教师资料",
+    "defaultName": "教师用户"
+  },
+  "states": {
+    "checking": "正在校验教师身份...",
+    "loading": "加载中...",
+    "emptyMaterials": "暂无资料项"
+  },
+  "summary": {
+    "groups": "{count} 个分组",
+    "projects": "{count} 个项目",
+    "materials": "{count} 个资料项"
+  },
+  "fields": {
+    "groupTitle": "分组标题",
+    "groupSubtitle": "分组副标题",
+    "projectTitle": "项目标题",
+    "projectSubtitle": "项目副标题",
+    "projectKey": "项目标识",
+    "projectKeyPlaceholder": "例如 cycling-guardian",
+    "coverUrl": "封面地址",
+    "summary": "项目简介",
+    "materials": "项目资料",
+    "materialSection": "资料分类",
+    "materialTitle": "资料标题",
+    "storagePath": "存储路径",
+    "storagePathPlaceholder": "例如 projects/cycling-guardian/overview/project-summary.txt"
+  },
+  "sections": {
+    "overview": "项目总览",
+    "report": "研究报告",
+    "attachments": "附件材料",
+    "images": "图片资料",
+    "poster": "海报物料",
+    "videos": "视频与演示",
+    "other": "其他"
+  },
+  "actions": {
+    "back": "返回",
+    "save": "保存",
+    "saving": "保存中...",
+    "open": "配置工作台",
+    "addGroup": "新增分组",
+    "deleteGroup": "删除分组",
+    "addProject": "新增项目",
+    "deleteProject": "删除项目",
+    "addMaterial": "新增资料",
+    "deleteMaterial": "删除资料",
+    "moveUp": "上移",
+    "moveDown": "下移",
+    "visible": "显示",
+    "hidden": "隐藏"
+  },
+  "preview": {
+    "empty": "封面预览",
+    "alt": "项目封面"
+  },
+  "messages": {
+    "loginRequired": "登录状态已失效，请重新登录",
+    "loadFailed": "加载失败",
+    "saveFailed": "保存失败",
+    "saved": "已保存",
+    "unavailable": "当前社团暂不提供该入口"
+  },
+  "demo": {
+    "header": {
+      "title": "项目 Demo"
+    },
+    "sections": {
+      "overview": "总览",
+      "steps": "演示步骤"
+    },
+    "fields": {
+      "overviewTitle": "总览标题",
+      "overviewBody": "总览文案",
+      "stepTitle": "步骤标题",
+      "stepDescription": "步骤描述",
+      "triggerType": "触发方式",
+      "stepTag": "步骤标签",
+      "stepTagPlaceholder": "例如 树莓派侧 / 教师端 / 问卷模块",
+      "actionKey": "操作页标识",
+      "actionKeyPlaceholder": "例如 qingyu-huxin-esp32-provision"
+    },
+    "stepTriggers": {
+      "SCENE": "场景推进",
+      "AUTO": "自动触发",
+      "MANUAL": "手动触发",
+      "DEVICE": "设备联动"
+    },
+    "legacyStepTags": {
+      "HELMET": "头盔侧",
+      "WATCH": "腕表侧",
+      "CLOUD": "云端"
+    },
+    "actions": {
+      "open": "配置 Demo",
+      "back": "返回工作台",
+      "save": "保存",
+      "saving": "保存中...",
+      "addStep": "新增步骤",
+      "deleteStep": "删除步骤"
+    },
+    "states": {
+      "emptySteps": "暂无步骤"
+    },
+    "messages": {
+      "loadFailed": "Demo 配置加载失败",
+      "saveFailed": "Demo 配置保存失败",
+      "saved": "Demo 配置已保存"
+    }
+  }
+}

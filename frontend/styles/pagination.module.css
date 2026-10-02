@@ -1,0 +1,68 @@
+.pagination {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+}
+
+.pageList {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.pagerButton,
+.pageChip {
+  border: 1px solid rgba(168, 42, 17, 0.16);
+  background: rgba(255, 255, 255, 0.92);
+  color: #852611;
+  border-radius: 999px;
+  font: inherit;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.pagerButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.65rem 1rem;
+}
+
+.pageChip {
+  min-width: 2.5rem;
+  padding: 0.6rem 0.85rem;
+}
+
+.pageChipActive {
+  background: linear-gradient(135deg, #bb3d18, #8c2512);
+  border-color: transparent;
+  color: #fff;
+}
+
+.pagerButton:disabled,
+.pageChip:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.pageInfo {
+  color: rgba(74, 35, 20, 0.72);
+  font-size: 0.92rem;
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .pagination {
+    justify-content: center;
+  }
+
+  .pageInfo {
+    order: 3;
+    width: 100%;
+    text-align: center;
+  }
+}

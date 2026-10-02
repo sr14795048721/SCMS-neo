@@ -1,0 +1,25 @@
+{
+  "auth": {
+    "checking": "正在验证登录状态...",
+    "loginRequired": "请先登录后再访问该页面",
+    "noPermission": "当前账号无权访问该页面"
+  },
+  "actions": {
+    "backHome": "返回首页",
+    "goLogin": "前往登录"
+  },
+  "pages": {
+    "student": {
+      "title": "学生工作台",
+      "description": "你已使用学生角色登录，后续将接入学生端功能。"
+    },
+    "clubAdmin": {
+      "title": "社团管理工作台",
+      "description": "你已使用社团管理员角色登录，后续将接入社团管理功能。"
+    },
+    "sysAdmin": {
+      "title": "系统管理工作台",
+      "description": "你已使用系统管理员角色登录，后续将接入系统管理功能。"
+    }
+  }
+}

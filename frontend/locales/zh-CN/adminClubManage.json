@@ -1,0 +1,152 @@
+{
+  "meta": {
+    "title": "社团管理 - SCMS Plus",
+    "description": "管理员查看、创建、编辑、删除社团，并维护教师绑定与建社申请。"
+  },
+  "header": {
+    "title": "社团管理",
+    "subtitle": "统一维护社团基础资料、教师绑定关系、学生成员只读明细，以及教师建社申请审核。"
+  },
+  "tabs": {
+    "clubs": "社团列表",
+    "requests": "建社申请"
+  },
+  "actions": {
+    "back": "返回",
+    "create": "新建社团",
+    "search": "搜索",
+    "view": "查看详情",
+    "edit": "编辑",
+    "delete": "删除",
+    "deleting": "删除中...",
+    "prevPage": "上一页",
+    "nextPage": "下一页",
+    "save": "保存",
+    "saving": "保存中...",
+    "cancel": "取消"
+  },
+  "filters": {
+    "searchPlaceholder": "搜索社团名称、类型或简介",
+    "allStatuses": "全部状态"
+  },
+  "status": {
+    "active": "启用中",
+    "inactive": "已停用"
+  },
+  "states": {
+    "loadingList": "社团列表加载中...",
+    "loadingDetail": "社团详情加载中...",
+    "loadingManagers": "教师选项加载中..."
+  },
+  "list": {
+    "memberCount": "{count} 名成员",
+    "managerCount": "{count} 位教师",
+    "noDescription": "暂无社团简介"
+  },
+  "requests": {
+    "title": "建社申请",
+    "subtitle": "查看教师提交的建社申请，并在审核通过后自动创建真实社团与教师绑定。",
+    "loading": "建社申请加载中...",
+    "applicant": "申请教师：{name}",
+    "reason": "申请理由：{reason}",
+    "approve": "通过",
+    "reject": "驳回",
+    "approveFailed": "建社申请通过失败",
+    "approveSuccess": "建社申请已通过",
+    "rejectFailed": "建社申请驳回失败",
+    "rejectSuccess": "建社申请已驳回",
+    "emptyTitle": "暂无建社申请",
+    "emptyDescription": "教师提交的建社申请会显示在这里。",
+    "status": {
+      "pending": "待审核",
+      "approved": "已通过",
+      "rejected": "已驳回"
+    },
+    "loadFailed": "建社申请加载失败"
+  },
+  "panel": {
+    "createBadge": "创建模式",
+    "editBadge": "编辑模式",
+    "viewBadge": "详情查看",
+    "createTitle": "新建社团",
+    "editTitle": "编辑社团",
+    "viewTitle": "社团详情",
+    "viewSubtitle": "查看社团基础信息、教师绑定和学生成员。",
+    "editSubtitle": "支持修改社团字段并重新绑定多位教师。",
+    "basicSectionHint": "先补齐社团基础资料，再决定是否在前台公开展示。",
+    "managerSectionViewHint": "这里展示当前已绑定的教师账号信息。",
+    "managerSectionEditHint": "通过搜索快速添加或移除教师绑定，支持一个社团绑定多位教师。",
+    "studentSectionHint": "学生成员本期为真实只读展示，暂不提供人工维护入口。",
+    "createGuideTitle": "创建提示",
+    "createGuideDescription": "新建时先把社团核心信息录准，后续可以随时回来调整。",
+    "createGuideStep1": "名称和类型建议直接使用校内正式口径，方便前台列表统一展示。",
+    "createGuideStep2": "状态设为启用后，社团会进入公共列表；停用状态则只在后台保留。",
+    "createGuideStep3": "教师绑定支持多选，创建完成后可继续查看真实学生成员。"
+  },
+  "detail": {
+    "basicTitle": "基础信息",
+    "managersTitle": "已绑定教师",
+    "studentsTitle": "已加入学生",
+    "managerCount": "共 {count} 位教师",
+    "studentCount": "共 {count} 名学生",
+    "emptyValue": "暂无",
+    "emptyDescription": "暂无社团简介"
+  },
+  "fields": {
+    "name": "社团名称",
+    "type": "社团类型",
+    "status": "社团状态",
+    "description": "社团简介",
+    "createdAt": "创建时间",
+    "memberCount": "成员人数",
+    "managerCount": "教师人数",
+    "managerSearch": "搜索教师",
+    "managerSearchPlaceholder": "按姓名、用户名或工号搜索教师"
+  },
+  "table": {
+    "manager": {
+      "displayName": "教师姓名",
+      "username": "用户名",
+      "managerNo": "工号",
+      "phone": "手机号"
+    },
+    "student": {
+      "displayName": "学生姓名",
+      "username": "用户名",
+      "studentNo": "学号",
+      "grade": "年级",
+      "className": "班级"
+    }
+  },
+  "empty": {
+    "title": "暂无社团数据",
+    "description": "可以先创建一个社团，再逐步补充教师绑定和成员信息。",
+    "students": "当前暂无学生成员数据",
+    "managers": "当前未绑定教师",
+    "managerOptions": "未找到可绑定的教师账号"
+  },
+  "confirm": {
+    "deleteTitle": "删除社团",
+    "deleteMessage": "确认删除社团“{name}”吗？若该社团已关联活动，将无法删除。"
+  },
+  "validation": {
+    "nameRequired": "请填写社团名称",
+    "nameTooLong": "社团名称最多12个字",
+    "typeRequired": "请填写社团类型"
+  },
+  "messages": {
+    "loadFailed": "社团列表加载失败",
+    "loadDetailFailed": "社团详情加载失败",
+    "saveFailed": "社团保存失败",
+    "createSuccess": "社团已创建",
+    "updateSuccess": "社团已更新",
+    "deleteFailed": "社团删除失败",
+    "deleteBlocked": "该社团仍有关联活动，暂时不能删除",
+    "deleteSuccess": "社团已删除"
+  },
+  "grades": {
+    "HIGH_1": "高一",
+    "HIGH_2": "高二",
+    "HIGH_3": "高三"
+  }
+}

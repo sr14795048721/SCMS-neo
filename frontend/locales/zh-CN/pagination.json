@@ -1,0 +1,5 @@
+{
+  "prev": "上一页",
+  "next": "下一页",
+  "status": "第 {page} / {total} 页"
+}
