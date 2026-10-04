@@ -46,4 +46,5 @@ frontend/out/
 frontend/coverage/
 frontend/.swc/
 frontend/.turbo/
+frontend/*.tsbuildinfo
 frontend/.vercel/

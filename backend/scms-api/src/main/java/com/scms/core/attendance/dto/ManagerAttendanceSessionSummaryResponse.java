@@ -10,6 +10,7 @@ public record ManagerAttendanceSessionSummaryResponse(
         String scoreRuleName,
         int scoreDelta,
         String status,
+        String shareToken,
         int totalMembers,
         int checkedInCount,
         int checkedOutCount,

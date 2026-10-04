@@ -35,7 +35,8 @@ export type I18nNamespace =
   | "studentActivities"
   | "studentClubCadre"
   | "studentScoreRewards"
-  | "studentProfile";
+  | "studentProfile"
+  | "publicAttendanceSign";
 export type MessageMap = Record<string, string>;
 export type NamespaceMessages = Record<I18nNamespace, MessageMap>;
 export type TranslationVars = Record<string, string | number>;

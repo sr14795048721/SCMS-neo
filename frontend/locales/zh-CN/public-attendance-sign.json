@@ -1,0 +1,67 @@
+{
+  "meta": {
+    "title": "社团课签到 - SCMS Plus",
+    "description": "免登录手写签名签到，输入姓名与学号完成签到。"
+  },
+  "page": {
+    "title": "社团课签到",
+    "subtitle": "输入姓名与学号，并手写签名完成签到"
+  },
+  "session": {
+    "club": "所属社团",
+    "rule": "本次积分",
+    "scoreValue": "+{delta} 积分",
+    "startedAt": "开始时间",
+    "statusOPEN": "进行中",
+    "statusCOMPLETED": "已结束"
+  },
+  "form": {
+    "name": "姓名",
+    "namePlaceholder": "请输入你的姓名",
+    "studentNo": "学号",
+    "studentNoPlaceholder": "请输入你的学号",
+    "signature": "手写签名",
+    "signatureHint": "请使用鼠标或手指在框内签名",
+    "clear": "重写",
+    "submit": "确认签到",
+    "submitting": "签到中...",
+    "nameRequired": "请先填写姓名",
+    "studentNoRequired": "请先填写学号",
+    "signatureRequired": "请先完成手写签名"
+  },
+  "state": {
+    "loading": "正在加载签到课次...",
+    "invalid": "签到入口无效或课次不存在",
+    "invalidHint": "请向社团干部确认签到链接是否正确。",
+    "ended": "本次签到已结束",
+    "endedHint": "本次签到课次已结束，无法继续签到。",
+    "signFailed": "签到失败，请重试",
+    "networkFailed": "签到服务暂时不可用，请稍后重试"
+  },
+  "result": {
+    "title": "签到成功",
+    "name": "姓名",
+    "role": "角色",
+    "class": "班级",
+    "time": "签到时间",
+    "hint": "签到积分将由社团干部统一结算"
+  },
+  "role": {
+    "PRESIDENT": "社长",
+    "VICE_PRESIDENT": "副社长",
+    "MINISTER": "部长",
+    "SECRETARY": "秘书",
+    "TREASURER": "财务",
+    "MEMBER": "成员"
+  },
+  "common": {
+    "gradeLabels": {
+      "HIGH_1": "高一",
+      "HIGH_2": "高二",
+      "HIGH_3": "高三"
+    },
+    "classFallback": "未填写班级",
+    "timeFallback": "时间待定",
+    "authorFallback": "未填写姓名"
+  }
+}

@@ -5,8 +5,6 @@ import com.scms.core.attendance.domain.AttendanceRecordStatus;
 import com.scms.core.attendance.domain.AttendanceSessionEntity;
 import com.scms.core.attendance.domain.AttendanceSessionStatus;
 import com.scms.core.attendance.dto.ManagerAttendanceSessionCreateRequest;
-import com.scms.core.attendance.dto.ManagerAttendanceMarkRequest;
-import com.scms.core.attendance.dto.ManagerAttendanceBulkMarkRequest;
 import com.scms.core.attendance.dto.ManagerAttendanceSessionDetailResponse;
 import com.scms.core.attendance.dto.ManagerAttendanceSessionMemberResponse;
 import com.scms.core.attendance.dto.ManagerAttendanceSessionSummaryResponse;
@@ -36,6 +34,7 @@ import com.scms.core.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.nio.file.Path;
 import java.time.Instant;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
@@ -44,6 +43,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -60,6 +60,7 @@ public class ManagerAttendanceSessionService {
     private final UserRepository userRepository;
     private final CurrentUserProvider currentUserProvider;
     private final AuditService auditService;
+    private final AttendanceSignatureStorageService signatureStorageService;
 
     public ManagerAttendanceSessionService(AttendanceSessionRepository attendanceSessionRepository,
                                            AttendanceRecordRepository attendanceRecordRepository,
@@ -71,7 +72,8 @@ public class ManagerAttendanceSessionService {
                                            StudentInfoRepository studentInfoRepository,
                                            UserRepository userRepository,
                                            CurrentUserProvider currentUserProvider,
-                                           AuditService auditService) {
+                                           AuditService auditService,
+                                           AttendanceSignatureStorageService signatureStorageService) {
         this.attendanceSessionRepository = attendanceSessionRepository;
         this.attendanceRecordRepository = attendanceRecordRepository;
         this.clubRepository = clubRepository;
@@ -83,6 +85,7 @@ public class ManagerAttendanceSessionService {
         this.userRepository = userRepository;
         this.currentUserProvider = currentUserProvider;
         this.auditService = auditService;
+        this.signatureStorageService = signatureStorageService;
     }
 
     @Transactional(readOnly = true)
@@ -112,6 +115,7 @@ public class ManagerAttendanceSessionService {
         session.setCreatedBy(manager.userId());
         session.setStatus(AttendanceSessionStatus.OPEN);
         session.setStartedAt(Instant.now());
+        session.setShareToken(generateShareToken());
         AttendanceSessionEntity savedSession = attendanceSessionRepository.save(session);
 
         List<ClubStudentMemberEntity> members = clubStudentMemberRepository.findAllByClubId(clubId);
@@ -138,127 +142,6 @@ public class ManagerAttendanceSessionService {
     }
 
     @Transactional
-    public ManagerAttendanceSessionDetailResponse checkIn(Long clubId, Long sessionId, ManagerAttendanceMarkRequest request) {
-        AuthenticatedUser manager = requireManagerAccessToClub(clubId);
-        AttendanceSessionEntity session = getRequiredSession(clubId, sessionId);
-        AttendanceRecordEntity record = getRequiredRecord(sessionId, request.studentUserId());
-        validateSessionStudentMembership(clubId, record.getStudentUserId());
-
-        Instant now = Instant.now();
-        record.setCheckInAt(now);
-        record.setCheckOutAt(null);
-        record.setStatus(AttendanceRecordStatus.CHECKED_IN);
-        record.setSettled(false);
-        attendanceRecordRepository.save(record);
-
-        if (session.getStatus() == AttendanceSessionStatus.COMPLETED) {
-            auditService.create(
-                    "MANAGER_ATTENDANCE_RECORD_RECHECKED_IN",
-                    manager.userId(),
-                    "ATTENDANCE_SESSION",
-                    String.valueOf(sessionId),
-                    "Club manager re-opened attendance for student " + record.getStudentUserId()
-            );
-        }
-
-        return buildDetail(session);
-    }
-
-    @Transactional
-    public ManagerAttendanceSessionDetailResponse bulkCheckIn(Long clubId,
-                                                              Long sessionId,
-                                                              ManagerAttendanceBulkMarkRequest request) {
-        AuthenticatedUser manager = requireManagerAccessToClub(clubId);
-        AttendanceSessionEntity session = getRequiredSession(clubId, sessionId);
-        List<Long> studentUserIds = normalizeBulkStudentUserIds(request);
-        List<AttendanceRecordEntity> records = attendanceRecordRepository.findAllBySessionIdOrderByCreatedAtAscIdAsc(sessionId);
-        Map<Long, AttendanceRecordEntity> recordMap = records.stream()
-                .collect(Collectors.toMap(AttendanceRecordEntity::getStudentUserId, item -> item, (left, right) -> left, LinkedHashMap::new));
-
-        Instant now = Instant.now();
-        List<AttendanceRecordEntity> changedRecords = studentUserIds.stream()
-                .map(recordMap::get)
-                .filter(Objects::nonNull)
-                .peek(record -> validateSessionStudentMembership(clubId, record.getStudentUserId()))
-                .peek(record -> {
-                    record.setCheckInAt(now);
-                    record.setCheckOutAt(null);
-                    record.setStatus(AttendanceRecordStatus.CHECKED_IN);
-                    record.setSettled(false);
-                })
-                .toList();
-
-        if (!changedRecords.isEmpty()) {
-            attendanceRecordRepository.saveAll(changedRecords);
-            auditService.create(
-                    "MANAGER_ATTENDANCE_RECORDS_BULK_CHECKED_IN",
-                    manager.userId(),
-                    "ATTENDANCE_SESSION",
-                    String.valueOf(sessionId),
-                    "Club manager bulk checked in " + changedRecords.size() + " students"
-            );
-        }
-
-        return buildDetail(session);
-    }
-
-    @Transactional
-    public ManagerAttendanceSessionDetailResponse checkOut(Long clubId, Long sessionId, ManagerAttendanceMarkRequest request) {
-        requireManagerAccessToClub(clubId);
-        AttendanceSessionEntity session = getRequiredSession(clubId, sessionId);
-        AttendanceRecordEntity record = getRequiredRecord(sessionId, request.studentUserId());
-        validateSessionStudentMembership(clubId, record.getStudentUserId());
-
-        if (record.getStatus() != AttendanceRecordStatus.CHECKED_IN || record.getCheckInAt() == null) {
-            throw new BusinessException(ErrorCode.CONFLICT, "student must be checked in before check out");
-        }
-
-        record.setCheckOutAt(Instant.now());
-        record.setStatus(AttendanceRecordStatus.CHECKED_OUT);
-        record.setSettled(false);
-        attendanceRecordRepository.save(record);
-        return buildDetail(session);
-    }
-
-    @Transactional
-    public ManagerAttendanceSessionDetailResponse bulkCheckOut(Long clubId,
-                                                               Long sessionId,
-                                                               ManagerAttendanceBulkMarkRequest request) {
-        AuthenticatedUser manager = requireManagerAccessToClub(clubId);
-        AttendanceSessionEntity session = getRequiredSession(clubId, sessionId);
-        List<Long> studentUserIds = normalizeBulkStudentUserIds(request);
-        List<AttendanceRecordEntity> records = attendanceRecordRepository.findAllBySessionIdOrderByCreatedAtAscIdAsc(sessionId);
-        Map<Long, AttendanceRecordEntity> recordMap = records.stream()
-                .collect(Collectors.toMap(AttendanceRecordEntity::getStudentUserId, item -> item, (left, right) -> left, LinkedHashMap::new));
-
-        Instant now = Instant.now();
-        List<AttendanceRecordEntity> changedRecords = studentUserIds.stream()
-                .map(recordMap::get)
-                .filter(Objects::nonNull)
-                .peek(record -> validateSessionStudentMembership(clubId, record.getStudentUserId()))
-                .filter(record -> record.getStatus() == AttendanceRecordStatus.CHECKED_IN && record.getCheckInAt() != null)
-                .peek(record -> {
-                    record.setCheckOutAt(now);
-                    record.setStatus(AttendanceRecordStatus.CHECKED_OUT);
-                    record.setSettled(false);
-                })
-                .toList();
-
-        if (!changedRecords.isEmpty()) {
-            attendanceRecordRepository.saveAll(changedRecords);
-            auditService.create(
-                    "MANAGER_ATTENDANCE_RECORDS_BULK_CHECKED_OUT",
-                    manager.userId(),
-                    "ATTENDANCE_SESSION",
-                    String.valueOf(sessionId),
-                    "Club manager bulk checked out " + changedRecords.size() + " students"
-            );
-        }
-
-        return buildDetail(session);
-    }
-
-    @Transactional
     public ManagerAttendanceSessionDetailResponse settle(Long clubId, Long sessionId) {
         AuthenticatedUser manager = requireManagerAccessToClub(clubId);
         AttendanceSessionEntity session = getRequiredSession(clubId, sessionId);
@@ -269,9 +152,10 @@ public class ManagerAttendanceSessionService {
 
         Instant now = Instant.now();
         for (AttendanceRecordEntity record : records) {
-            boolean shouldSettle = record.getStatus() == AttendanceRecordStatus.CHECKED_OUT
-                    && record.getCheckInAt() != null
-                    && record.getCheckOutAt() != null;
+            // Signed check-in (or historical check-out) counts; unmarked students get nothing.
+            boolean shouldSettle = record.getCheckInAt() != null
+                    && (record.getStatus() == AttendanceRecordStatus.CHECKED_IN
+                    || record.getStatus() == AttendanceRecordStatus.CHECKED_OUT);
             record.setSettled(shouldSettle);
             if (shouldSettle) {
                 ScoreRecordEntity scoreRecord = new ScoreRecordEntity();
@@ -302,6 +186,23 @@ public class ManagerAttendanceSessionService {
         return buildDetail(savedSession);
     }
 
+    @Transactional(readOnly = true)
+    public Path resolveSignature(Long clubId, Long sessionId, Long studentUserId) {
+        requireManagerAccessToClub(clubId);
+        AttendanceSessionEntity session = getRequiredSession(clubId, sessionId);
+        AttendanceRecordEntity record = attendanceRecordRepository
+                .findBySessionIdAndStudentUserId(session.getId(), studentUserId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND, "attendance record not found"));
+        if (record.getSignaturePath() == null || record.getSignaturePath().isBlank()) {
+            throw new BusinessException(ErrorCode.NOT_FOUND, "attendance signature not found");
+        }
+        return signatureStorageService.resolveContent(record.getSignaturePath());
+    }
+
+    private String generateShareToken() {
+        return UUID.randomUUID().toString().replace("-", "");
+    }
+
     private ManagerAttendanceSessionDetailResponse buildDetail(AttendanceSessionEntity session) {
         ManagerAttendanceSessionSummaryResponse summary = buildSummaries(List.of(session)).get(0);
         List<AttendanceRecordEntity> records = attendanceRecordRepository.findAllBySessionIdOrderByCreatedAtAscIdAsc(session.getId());
@@ -324,6 +225,9 @@ public class ManagerAttendanceSessionService {
                             info == null ? "" : defaultString(info.getGrade()),
                             info == null ? "" : defaultString(info.getClassName()),
                             record.getStatus().name(),
+                            record.getSignedName(),
+                            record.getSignedRole(),
+                            record.getSignaturePath(),
                             record.getCheckInAt(),
                             record.getCheckOutAt(),
                             record.isSettled()
@@ -362,6 +266,7 @@ public class ManagerAttendanceSessionService {
                             rule == null ? "" : defaultString(rule.getName()),
                             rule == null ? 0 : rule.getScoreDelta(),
                             session.getStatus().name(),
+                            session.getShareToken(),
                             sessionRecords.size(),
                             (int) checkedInCount,
                             (int) checkedOutCount,
@@ -381,11 +286,6 @@ public class ManagerAttendanceSessionService {
                 .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND, "attendance session not found"));
     }
 
-    private AttendanceRecordEntity getRequiredRecord(Long sessionId, Long studentUserId) {
-        return attendanceRecordRepository.findBySessionIdAndStudentUserId(sessionId, studentUserId)
-                .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND, "attendance record not found"));
-    }
-
     private ScoreRuleEntity getValidScoreRuleForClub(Long clubId, Long scoreRuleId) {
         ScoreRuleEntity rule = scoreRuleRepository.findById(scoreRuleId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND, "score rule not found"));
@@ -399,25 +299,6 @@ public class ManagerAttendanceSessionService {
             throw new BusinessException(ErrorCode.FORBIDDEN, "score rule is unavailable for attendance");
         }
         return rule;
-    }
-
-    private void validateSessionStudentMembership(Long clubId, Long studentUserId) {
-        if (!clubStudentMemberRepository.existsByClubIdAndStudentUserId(clubId, studentUserId)) {
-            throw new BusinessException(ErrorCode.CONFLICT, "student is no longer a club member");
-        }
-    }
-
-    private List<Long> normalizeBulkStudentUserIds(ManagerAttendanceBulkMarkRequest request) {
-        List<Long> studentUserIds = request.studentUserIds() == null
-                ? List.of()
-                : request.studentUserIds().stream()
-                .filter(Objects::nonNull)
-                .distinct()
-                .toList();
-        if (studentUserIds.isEmpty()) {
-            throw new BusinessException(ErrorCode.VALIDATION_ERROR, "student user ids are required");
-        }
-        return studentUserIds;
     }
 
     private ClubEntity getRequiredClub(Long clubId) {

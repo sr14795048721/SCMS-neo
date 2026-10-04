@@ -33,6 +33,9 @@ public class AttendanceSessionEntity {
     @Column(name = "created_by", nullable = false)
     private Long createdBy;
 
+    @Column(name = "share_token", nullable = false, unique = true, length = 64)
+    private String shareToken;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 32)
     private AttendanceSessionStatus status = AttendanceSessionStatus.OPEN;
@@ -101,6 +104,14 @@ public class AttendanceSessionEntity {
 
     public void setCreatedBy(Long createdBy) {
         this.createdBy = createdBy;
+    }
+
+    public String getShareToken() {
+        return shareToken;
+    }
+
+    public void setShareToken(String shareToken) {
+        this.shareToken = shareToken;
     }
 
     public AttendanceSessionStatus getStatus() {

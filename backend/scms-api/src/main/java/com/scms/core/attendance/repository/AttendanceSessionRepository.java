@@ -13,6 +13,8 @@ public interface AttendanceSessionRepository extends JpaRepository<AttendanceSes
 
     Optional<AttendanceSessionEntity> findByIdAndClubId(Long id, Long clubId);
 
+    Optional<AttendanceSessionEntity> findByShareToken(String shareToken);
+
     @Modifying
     @Query("""
             delete from AttendanceSessionEntity s

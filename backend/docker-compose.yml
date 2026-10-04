@@ -46,6 +46,7 @@ services:
       SCMS_STORAGE_BANNER_ROOT: /app/data/banners
       SCMS_STORAGE_NEWS_ROOT: /app/data/news
       SCMS_STORAGE_REWARD_IMAGE_ROOT: /app/data/reward-images
+      SCMS_STORAGE_ATTENDANCE_SIGNATURE_ROOT: /app/data/attendance-signatures
     ports:
       - "8080:8080"
     mem_limit: 768m
@@ -53,6 +54,7 @@ services:
       - ./data/core-banners:/app/data/banners
       - ./data/core-news:/app/data/news
       - ./data/core-reward-images:/app/data/reward-images
+      - ./data/core-attendance-signatures:/app/data/attendance-signatures
     depends_on:
       postgres:
         condition: service_healthy

@@ -39,7 +39,8 @@ const LOADERS: Record<LocaleCode, LocaleLoaders> = {
     studentActivities: () => import("../../locales/zh-CN/student-activities.json"),
     studentClubCadre: () => import("../../locales/zh-CN/student-club-cadre.json"),
     studentScoreRewards: () => import("../../locales/zh-CN/student-score-rewards.json"),
-    studentProfile: () => import("../../locales/zh-CN/student-profile.json")
+    studentProfile: () => import("../../locales/zh-CN/student-profile.json"),
+    publicAttendanceSign: () => import("../../locales/zh-CN/public-attendance-sign.json")
   }
 };
 

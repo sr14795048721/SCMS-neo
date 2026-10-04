@@ -5,18 +5,22 @@ import { useRouter } from "next/navigation";
 import { PaginationBar } from "../common/PaginationBar";
 import { PortalShell } from "../portal/PortalShell";
 import {
-  bulkMarkManagerAttendanceRequest,
   createManagerAttendanceSessionRequest,
   fetchManagerAttendanceSessionDetailRequest,
   fetchManagerAttendanceSessionsRequest,
-  markManagerAttendanceRequest,
   settleManagerAttendanceSessionRequest
 } from "../../lib/manager/attendanceClient";
-import { ManagerAttendanceSessionDetail, ManagerAttendanceSessionMember, ManagerAttendanceSessionSummary } from "../../lib/manager/attendanceTypes";
+import {
+  buildManagerAttendanceSignatureUrl,
+  ManagerAttendanceSessionDetail,
+  ManagerAttendanceSessionMember,
+  ManagerAttendanceSessionSummary
+} from "../../lib/manager/attendanceTypes";
 import { fetchManagerClubDetailRequest } from "../../lib/manager/clubClient";
 import { fetchManagerScoreRulesRequest } from "../../lib/manager/scoreClient";
 import { ManagerClubDetail } from "../../lib/manager/clubTypes";
 import { ManagerScoreRule } from "../../lib/manager/scoreTypes";
+import { authorizedFetch } from "../../lib/auth/client";
 import { useT } from "../../lib/i18n/useT";
 import { useConfirm } from "../../lib/notify/useConfirm";
 import { useNotify } from "../../lib/notify/useNotify";
@@ -55,6 +59,12 @@ type SessionFormState = {
   scoreRuleId: string;
 };
 
+type SignaturePreviewState = {
+  url: string;
+  name: string;
+  role: string;
+};
+
 const EMPTY_FORM: SessionFormState = {
   title: "",
   scoreRuleId: ""
@@ -77,16 +87,6 @@ function formatDateTime(value: string | null, fallback: string) {
     hour: "2-digit",
     minute: "2-digit"
   }).format(date);
-}
-
-function resolveMemberActionLabel(member: ManagerAttendanceSessionMember, t: ReturnType<typeof useT>) {
-  if (member.status === "CHECKED_IN") {
-    return t("actions.checkOut");
-  }
-  if (member.status === "CHECKED_OUT") {
-    return t("actions.recheckIn");
-  }
-  return t("actions.checkIn");
 }
 
 function resolveMemberStatusClass(status: string, stylesMap: Record<string, string>) {
@@ -119,6 +119,13 @@ function resolveClassName(member: ManagerAttendanceSessionMember, fallback: stri
   return parts.length ? parts.join("") : fallback;
 }
 
+function resolveRoleLabel(role: string, t: ReturnType<typeof useT>) {
+  if (!role) {
+    return "";
+  }
+  return t(`detail.roleLabels.${role}`);
+}
+
 export function TeacherAttendancePage({ clubId }: { clubId: number }) {
   const t = useT("teacherAttendance");
   const tPagination = useT("pagination");
@@ -133,16 +140,20 @@ export function TeacherAttendancePage({ clubId }: { clubId: number }) {
   const [selectedSession, setSelectedSession] = useState<ManagerAttendanceSessionDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
-  const [memberActionStudentId, setMemberActionStudentId] = useState<number | null>(null);
   const [settling, setSettling] = useState(false);
   const [sessionPage, setSessionPage] = useState(1);
   const [memberPage, setMemberPage] = useState(1);
-  const [selectedMemberIds, setSelectedMemberIds] = useState<number[]>([]);
-  const [bulkAction, setBulkAction] = useState<"bulk-check-in" | "bulk-check-out" | null>(null);
+  const [shareOrigin, setShareOrigin] = useState("");
+  const [signaturePreview, setSignaturePreview] = useState<SignaturePreviewState | null>(null);
+  const [signatureLoadingId, setSignatureLoadingId] = useState<number | null>(null);
   const [form, setForm] = useState<SessionFormState>(EMPTY_FORM);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "auto" });
+  }, []);
+
+  useEffect(() => {
+    setShareOrigin(window.location.origin);
   }, []);
 
   useEffect(() => {
@@ -154,12 +165,7 @@ export function TeacherAttendancePage({ clubId }: { clubId: number }) {
 
   useEffect(() => {
     setMemberPage(1);
-    setSelectedMemberIds([]);
   }, [selectedSessionId]);
-
-  useEffect(() => {
-    setSelectedMemberIds([]);
-  }, [memberPage]);
 
   const pagedSessions = useMemo(() => paginateItems(sessions, sessionPage, 6), [sessionPage, sessions]);
   const pagedMembers = useMemo(
@@ -168,8 +174,8 @@ export function TeacherAttendancePage({ clubId }: { clubId: number }) {
   );
   const activeRuleOptions = useMemo(() => rules.filter((rule) => rule.status === "ACTIVE"), [rules]);
   const openSessionCount = useMemo(() => sessions.filter((session) => session.status === "OPEN").length, [sessions]);
-  const currentPageMemberIds = useMemo(() => pagedMembers.items.map((member) => member.studentUserId), [pagedMembers.items]);
-  const allCurrentPageSelected = currentPageMemberIds.length > 0 && currentPageMemberIds.every((id) => selectedMemberIds.includes(id));
+  const shareToken = selectedSession?.session.shareToken || "";
+  const shareUrl = shareOrigin && shareToken ? `${shareOrigin}/attendance/sign/${shareToken}` : "";
 
   if (portal.checking) {
     return (
@@ -299,7 +305,6 @@ export function TeacherAttendancePage({ clubId }: { clubId: number }) {
                         <div className={styles.sessionCounters}>
                           <span>{t("sessionList.counts.members", { count: session.totalMembers })}</span>
                           <span>{t("sessionList.counts.checkedIn", { count: session.checkedInCount })}</span>
-                          <span>{t("sessionList.counts.checkedOut", { count: session.checkedOutCount })}</span>
                           <span>{t("sessionList.counts.settled", { count: session.settledCount })}</span>
                         </div>
                         <div className={styles.actions}>
@@ -363,84 +368,63 @@ export function TeacherAttendancePage({ clubId }: { clubId: number }) {
                   </div>
                 </section>
 
+                {shareUrl ? (
+                  <section className={styles.shareCard}>
+                    <h4 className={styles.shareTitle}>{t("detail.share.title")}</h4>
+                    <p className={styles.shareHint}>{t("detail.share.hint")}</p>
+                    <code className={styles.shareLink}>{shareUrl}</code>
+                    <div className={styles.shareActions}>
+                      <button type="button" className={styles.secondaryButton} onClick={() => void handleCopyShareLink()}>
+                        <i className="fas fa-copy" />
+                        {t("actions.copyShareLink")}
+                      </button>
+                      <a className={styles.secondaryButton} href={`/attendance/sign/${shareToken}`} target="_blank" rel="noreferrer">
+                        <i className="fas fa-arrow-up-right-from-square" />
+                        {t("actions.openSignPage")}
+                      </a>
+                    </div>
+                  </section>
+                ) : null}
+
                 {selectedSession.members.length ? (
                   <>
-                    <div className={styles.bulkToolbar}>
-                      <p className={styles.selectionHint}>{t("detail.bulk.selected", { count: selectedMemberIds.length })}</p>
-                      <div className={styles.bulkActionGroup}>
-                        <button
-                          type="button"
-                          className={styles.secondaryButton}
-                          disabled={selectedMemberIds.length === 0 || bulkAction !== null}
-                          onClick={() => void handleBulkAction("bulk-check-in")}
-                        >
-                          {bulkAction === "bulk-check-in" ? t("actions.loading") : t("actions.bulkCheckIn")}
-                        </button>
-                        <button
-                          type="button"
-                          className={styles.secondaryButton}
-                          disabled={selectedMemberIds.length === 0 || bulkAction !== null}
-                          onClick={() => void handleBulkAction("bulk-check-out")}
-                        >
-                          {bulkAction === "bulk-check-out" ? t("actions.loading") : t("actions.bulkCheckOut")}
-                        </button>
-                      </div>
-                    </div>
                     <div className={styles.tableWrap}>
                       <table className={styles.table}>
                         <thead>
                           <tr>
-                            <th className={styles.selectionCell}>
-                              <input
-                                type="checkbox"
-                                className={styles.tableCheckbox}
-                                aria-label={t("detail.bulk.selectCurrentPage")}
-                                checked={allCurrentPageSelected}
-                                onChange={(event) => handleToggleCurrentPage(event.target.checked)}
-                              />
-                            </th>
                             <th>{t("detail.table.student")}</th>
                             <th>{t("detail.table.className")}</th>
+                            <th>{t("detail.table.signature")}</th>
                             <th>{t("detail.table.checkInAt")}</th>
-                            <th>{t("detail.table.checkOutAt")}</th>
                             <th>{t("detail.table.status")}</th>
-                            <th>{t("detail.table.action")}</th>
                           </tr>
                         </thead>
                         <tbody>
                           {pagedMembers.items.map((member) => (
                             <tr key={member.studentUserId}>
-                              <td className={styles.selectionCell}>
-                                <input
-                                  type="checkbox"
-                                  className={styles.tableCheckbox}
-                                  aria-label={t("detail.bulk.selectStudent", { name: member.displayName || t("common.nameFallback") })}
-                                  checked={selectedMemberIds.includes(member.studentUserId)}
-                                  onChange={() => toggleMemberSelection(member.studentUserId)}
-                                />
-                              </td>
                               <td>{member.displayName || t("common.nameFallback")}</td>
                               <td>{resolveClassName(member, t("common.classFallback"), t)}</td>
+                              <td>
+                                {member.signaturePath ? (
+                                  <button
+                                    type="button"
+                                    className={styles.signatureCellButton}
+                                    disabled={signatureLoadingId === member.studentUserId}
+                                    onClick={() => void handleViewSignature(member)}
+                                  >
+                                    {signatureLoadingId === member.studentUserId ? t("actions.loading") : t("actions.viewSignature")}
+                                  </button>
+                                ) : (
+                                  <span>-</span>
+                                )}
+                              </td>
                               <td>{formatDateTime(member.checkInAt, t("common.timeFallback"))}</td>
-                              <td>{formatDateTime(member.checkOutAt, t("common.timeFallback"))}</td>
                               <td>
                                 <div className={styles.statusStack}>
                                   <span className={resolveMemberStatusClass(member.status, styles)}>{t(`detail.status.${member.status}`)}</span>
                                   <span className={member.settled ? styles.settledBadge : styles.pendingBadge}>
                                     {member.settled ? t("detail.settled.yes") : t("detail.settled.no")}
                                   </span>
-                                </div>
-                              </td>
-                              <td>
-                                <div className={styles.actionInline}>
-                                  <button
-                                    type="button"
-                                    className={styles.secondaryButton}
-                                    disabled={memberActionStudentId === member.studentUserId || bulkAction !== null}
-                                    onClick={() => void handleMemberAction(member)}
-                                  >
-                                    {memberActionStudentId === member.studentUserId ? t("actions.loading") : resolveMemberActionLabel(member, t)}
-                                  </button>
                                 </div>
                               </td>
                             </tr>
@@ -471,6 +455,23 @@ export function TeacherAttendancePage({ clubId }: { clubId: number }) {
           </article>
         </section>
       </section>
+
+      {signaturePreview ? (
+        <div className={styles.signatureOverlay} onClick={closeSignaturePreview}>
+          <div className={styles.signatureDialog} onClick={(event) => event.stopPropagation()}>
+            <div className={styles.signatureDialogHead}>
+              <div className={styles.signatureDialogInfo}>
+                <strong>{signaturePreview.name}</strong>
+                <span>{resolveRoleLabel(signaturePreview.role, t)}</span>
+              </div>
+              <button type="button" className={styles.secondaryButton} onClick={closeSignaturePreview} aria-label="close">
+                <i className="fas fa-xmark" />
+              </button>
+            </div>
+            <img className={styles.signatureImage} src={signaturePreview.url} alt={signaturePreview.name} />
+          </div>
+        </div>
+      ) : null}
     </PortalShell>
   );
 
@@ -552,7 +553,6 @@ export function TeacherAttendancePage({ clubId }: { clubId: number }) {
       setSelectedSessionId(sessionId);
       setSelectedSession(result.data);
       setMemberPage(1);
-      setSelectedMemberIds([]);
     } finally {
       if (withLoading) {
         setLoading(false);
@@ -593,7 +593,6 @@ export function TeacherAttendancePage({ clubId }: { clubId: number }) {
       setSelectedSession(result.data);
       setSelectedSessionId(result.data.session.sessionId);
       setMemberPage(1);
-      setSelectedMemberIds([]);
       notify.success(t("messages.sessionCreated"));
       await loadData(result.data.session.sessionId);
     } finally {
@@ -601,56 +600,29 @@ export function TeacherAttendancePage({ clubId }: { clubId: number }) {
     }
   }
 
-  async function handleMemberAction(member: ManagerAttendanceSessionMember) {
-    if (!selectedSession?.session.sessionId) {
+  async function handleCopyShareLink() {
+    if (!shareUrl) {
       return;
     }
-
-    const action = member.status === "CHECKED_IN" ? "check-out" : "check-in";
-    setMemberActionStudentId(member.studentUserId);
     try {
-      const response = await markManagerAttendanceRequest(clubId, selectedSession.session.sessionId, action, {
-        studentUserId: member.studentUserId
-      });
-      if (!response) {
-        notify.warning(t("messages.loginRequired"));
-        router.replace("/login");
-        return;
-      }
-      if (!(await portal.handleAuthStatus(response.status))) {
-        return;
-      }
-      const result = (await response.json().catch(() => null)) as SessionDetailResponse | null;
-      if (!response.ok || result?.success !== true || !result.data) {
-        notify.error(result?.message || t("messages.memberActionFailed"));
-        return;
-      }
-
-      setSelectedSession(result.data);
-      notify.success(
-        member.status === "CHECKED_IN"
-          ? t("messages.memberCheckedOut")
-          : member.status === "CHECKED_OUT"
-            ? t("messages.memberRecheckedIn")
-            : t("messages.memberCheckedIn")
-      );
-      await refreshSessionSummaries(result.data.session.sessionId);
-    } finally {
-      setMemberActionStudentId(null);
+      await navigator.clipboard.writeText(shareUrl);
+      notify.success(t("messages.shareLinkCopied"));
+    } catch {
+      notify.error(t("messages.shareLinkCopyFailed"));
     }
   }
 
-  async function handleBulkAction(action: "bulk-check-in" | "bulk-check-out") {
-    if (!selectedSession?.session.sessionId || selectedMemberIds.length === 0) {
-      notify.warning(t("messages.selectionRequired"));
+  async function handleViewSignature(member: ManagerAttendanceSessionMember) {
+    if (!selectedSession?.session.sessionId || signatureLoadingId !== null) {
       return;
     }
 
-    setBulkAction(action);
+    setSignatureLoadingId(member.studentUserId);
     try {
-      const response = await bulkMarkManagerAttendanceRequest(clubId, selectedSession.session.sessionId, action, {
-        studentUserIds: selectedMemberIds
-      });
+      const response = await authorizedFetch(
+        buildManagerAttendanceSignatureUrl(clubId, selectedSession.session.sessionId, member.studentUserId),
+        { cache: "no-store" }
+      );
       if (!response) {
         notify.warning(t("messages.loginRequired"));
         router.replace("/login");
@@ -659,19 +631,31 @@ export function TeacherAttendancePage({ clubId }: { clubId: number }) {
       if (!(await portal.handleAuthStatus(response.status))) {
         return;
       }
-      const result = (await response.json().catch(() => null)) as SessionDetailResponse | null;
-      if (!response.ok || result?.success !== true || !result.data) {
-        notify.error(result?.message || t("messages.memberActionFailed"));
+      const contentType = response.headers.get("content-type") || "";
+      if (!response.ok || contentType.includes("application/json")) {
+        notify.error(t("messages.signatureLoadFailed"));
         return;
       }
-
-      setSelectedSession(result.data);
-      setSelectedMemberIds([]);
-      notify.success(action === "bulk-check-in" ? t("messages.bulkCheckedIn") : t("messages.bulkCheckedOut"));
-      await refreshSessionSummaries(result.data.session.sessionId);
+      const blob = await response.blob();
+      setSignaturePreview({
+        url: URL.createObjectURL(blob),
+        name: member.signedName || member.displayName || t("common.nameFallback"),
+        role: member.signedRole
+      });
+    } catch {
+      notify.error(t("messages.signatureLoadFailed"));
     } finally {
-      setBulkAction(null);
+      setSignatureLoadingId(null);
     }
+  }
+
+  function closeSignaturePreview() {
+    setSignaturePreview((prev) => {
+      if (prev) {
+        URL.revokeObjectURL(prev.url);
+      }
+      return null;
+    });
   }
 
   async function handleSettle() {
@@ -732,20 +716,5 @@ export function TeacherAttendancePage({ clubId }: { clubId: number }) {
     if (nextSessions.some((item) => item.sessionId === preferredSessionId)) {
       setSelectedSessionId(preferredSessionId);
     }
-  }
-
-  function handleToggleCurrentPage(checked: boolean) {
-    if (!currentPageMemberIds.length) {
-      return;
-    }
-    setSelectedMemberIds(checked ? currentPageMemberIds : []);
-  }
-
-  function toggleMemberSelection(studentUserId: number) {
-    setSelectedMemberIds((prev) => (
-      prev.includes(studentUserId)
-        ? prev.filter((id) => id !== studentUserId)
-        : [...prev, studentUserId]
-    ));
   }
 }

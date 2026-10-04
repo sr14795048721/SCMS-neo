@@ -6,6 +6,7 @@ export type ManagerAttendanceSessionSummary = {
   scoreRuleName: string;
   scoreDelta: number;
   status: string;
+  shareToken: string;
   totalMembers: number;
   checkedInCount: number;
   checkedOutCount: number;
@@ -23,6 +24,9 @@ export type ManagerAttendanceSessionMember = {
   grade: string;
   className: string;
   status: string;
+  signedName: string;
+  signedRole: string;
+  signaturePath: string;
   checkInAt: string | null;
   checkOutAt: string | null;
   settled: boolean;
@@ -38,10 +42,6 @@ export type CreateAttendanceSessionPayload = {
   scoreRuleId: number;
 };
 
-export type MarkAttendancePayload = {
-  studentUserId: number;
-};
-
-export type BulkMarkAttendancePayload = {
-  studentUserIds: number[];
-};
+export function buildManagerAttendanceSignatureUrl(clubId: number, sessionId: number, studentUserId: number) {
+  return `/api/manager/clubs/${clubId}/attendance-sessions/${sessionId}/records/${studentUserId}/signature`;
+}

@@ -68,6 +68,7 @@ scms:
     reward-image-root: ${SCMS_STORAGE_REWARD_IMAGE_ROOT:./data/core-reward-images}
     manager-avatar-root: ${SCMS_STORAGE_MANAGER_AVATAR_ROOT:./data/manager-avatars}
     student-avatar-root: ${SCMS_STORAGE_STUDENT_AVATAR_ROOT:./data/student-avatars}
+    attendance-signature-root: ${SCMS_STORAGE_ATTENDANCE_SIGNATURE_ROOT:./data/attendance-signatures}
   media:
     ffmpeg-path: ${SCMS_MEDIA_FFMPEG_PATH:ffmpeg}
     banner-image-max-width: ${SCMS_MEDIA_BANNER_IMAGE_MAX_WIDTH:1600}

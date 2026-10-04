@@ -4,12 +4,11 @@ import com.scms.core.attendance.domain.AttendanceRecordEntity;
 import com.scms.core.attendance.domain.AttendanceRecordStatus;
 import com.scms.core.attendance.domain.AttendanceSessionEntity;
 import com.scms.core.attendance.domain.AttendanceSessionStatus;
-import com.scms.core.attendance.dto.ManagerAttendanceMarkRequest;
-import com.scms.core.attendance.dto.ManagerAttendanceBulkMarkRequest;
 import com.scms.core.attendance.dto.ManagerAttendanceSessionCreateRequest;
 import com.scms.core.attendance.dto.ManagerAttendanceSessionDetailResponse;
 import com.scms.core.attendance.repository.AttendanceRecordRepository;
 import com.scms.core.attendance.repository.AttendanceSessionRepository;
+import com.scms.core.attendance.service.AttendanceSignatureStorageService;
 import com.scms.core.attendance.service.ManagerAttendanceSessionService;
 import com.scms.core.audit.service.AuditService;
 import com.scms.core.club.domain.ClubEntity;
@@ -36,6 +35,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
+import java.nio.file.Path;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -44,10 +44,12 @@ import java.util.Map;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyCollection;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -67,6 +69,7 @@ class ManagerAttendanceSessionServiceTest {
     private UserRepository userRepository;
     private CurrentUserProvider currentUserProvider;
     private AuditService auditService;
+    private AttendanceSignatureStorageService signatureStorageService;
     private ManagerAttendanceSessionService service;
 
     @BeforeEach
@@ -82,6 +85,7 @@ class ManagerAttendanceSessionServiceTest {
         userRepository = mock(UserRepository.class);
         currentUserProvider = mock(CurrentUserProvider.class);
         auditService = mock(AuditService.class);
+        signatureStorageService = mock(AttendanceSignatureStorageService.class);
         service = new ManagerAttendanceSessionService(
                 attendanceSessionRepository,
                 attendanceRecordRepository,
@@ -93,20 +97,21 @@ class ManagerAttendanceSessionServiceTest {
                 studentInfoRepository,
                 userRepository,
                 currentUserProvider,
-                auditService
+                auditService,
+                signatureStorageService
         );
     }
 
     @Test
-    void createSessionShouldSnapshotCurrentMembers() {
+    void createSessionShouldSnapshotCurrentMembersWithShareToken() {
         ClubEntity club = club(3L, "Art Club");
         ScoreRuleEntity rule = scoreRule(7L, "签到积分", 2, 3L);
         ClubStudentMemberEntity firstMember = member(3L, 21L);
         ClubStudentMemberEntity secondMember = member(3L, 22L);
         UserEntity firstStudent = studentUser(21L, "student-21");
         UserEntity secondStudent = studentUser(22L, "student-22");
-        StudentInfoEntity firstInfo = studentInfo(21L, "张三", "HIGH_1", "1");
-        StudentInfoEntity secondInfo = studentInfo(22L, "李四", "HIGH_2", "2");
+        StudentInfoEntity firstInfo = studentInfo(21L, "张三", "2025001", "HIGH_1", "1");
+        StudentInfoEntity secondInfo = studentInfo(22L, "李四", "2025002", "HIGH_2", "2");
         List<AttendanceRecordEntity> savedRecords = new ArrayList<>();
         Map<Long, AttendanceSessionEntity> sessions = new LinkedHashMap<>();
 
@@ -116,7 +121,7 @@ class ManagerAttendanceSessionServiceTest {
         when(scoreRuleRepository.findById(7L)).thenReturn(Optional.of(rule));
         when(clubStudentMemberRepository.findAllByClubId(3L)).thenReturn(List.of(firstMember, secondMember));
         when(scoreRuleRepository.findAllById(List.of(7L))).thenReturn(List.of(rule));
-        when(userRepository.findAllByIdInAndRole(anyCollection(), org.mockito.ArgumentMatchers.eq(UserRole.STUDENT)))
+        when(userRepository.findAllByIdInAndRole(anyCollection(), eq(UserRole.STUDENT)))
                 .thenReturn(List.of(firstStudent, secondStudent));
         when(studentInfoRepository.findAllByUserIdIn(anyCollection())).thenReturn(List.of(firstInfo, secondInfo));
 
@@ -142,6 +147,8 @@ class ManagerAttendanceSessionServiceTest {
         ManagerAttendanceSessionDetailResponse response = service.createSession(3L, new ManagerAttendanceSessionCreateRequest("第1次社团课", 7L));
 
         assertEquals(15L, response.session().sessionId());
+        assertNotNull(response.session().shareToken());
+        assertFalse(response.session().shareToken().isBlank());
         assertEquals(2, response.members().size());
         assertEquals("张三", response.members().get(0).displayName());
         assertEquals(AttendanceRecordStatus.PENDING.name(), response.members().get(0).status());
@@ -149,7 +156,7 @@ class ManagerAttendanceSessionServiceTest {
     }
 
     @Test
-    void settleShouldOnlyCreateScoresForCheckedOutMembers() {
+    void settleShouldCreateScoresForSignedInMembersOnly() {
         AttendanceSessionEntity session = new AttendanceSessionEntity();
         setId(session, 18L);
         session.setClubId(3L);
@@ -159,11 +166,13 @@ class ManagerAttendanceSessionServiceTest {
         session.setStatus(AttendanceSessionStatus.OPEN);
 
         ScoreRuleEntity rule = scoreRule(7L, "签到积分", 3, 3L);
-        AttendanceRecordEntity checkedOut = attendanceRecord(18L, 21L, AttendanceRecordStatus.CHECKED_OUT);
+        AttendanceRecordEntity checkedIn = attendanceRecord(18L, 21L, AttendanceRecordStatus.CHECKED_IN);
+        checkedIn.setCheckInAt(Instant.parse("2026-04-06T09:00:00Z"));
+        AttendanceRecordEntity checkedOut = attendanceRecord(18L, 22L, AttendanceRecordStatus.CHECKED_OUT);
         checkedOut.setCheckInAt(Instant.parse("2026-04-06T09:00:00Z"));
         checkedOut.setCheckOutAt(Instant.parse("2026-04-06T10:00:00Z"));
-        AttendanceRecordEntity pending = attendanceRecord(18L, 22L, AttendanceRecordStatus.PENDING);
-        List<AttendanceRecordEntity> records = new ArrayList<>(List.of(checkedOut, pending));
+        AttendanceRecordEntity pending = attendanceRecord(18L, 23L, AttendanceRecordStatus.PENDING);
+        List<AttendanceRecordEntity> records = new ArrayList<>(List.of(checkedIn, checkedOut, pending));
         List<ScoreRecordEntity> savedScoreRecords = new ArrayList<>();
 
         when(currentUserProvider.getRequiredUser()).thenReturn(new AuthenticatedUser(9L, "manager", UserRole.CLUB_MANAGER));
@@ -175,13 +184,15 @@ class ManagerAttendanceSessionServiceTest {
         when(attendanceRecordRepository.findAllBySessionIdIn(List.of(18L))).thenAnswer(invocation -> List.copyOf(records));
         when(attendanceRecordRepository.saveAll(anyCollection())).thenAnswer(invocation -> invocation.getArgument(0));
         when(attendanceSessionRepository.save(any(AttendanceSessionEntity.class))).thenAnswer(invocation -> invocation.getArgument(0));
-        when(userRepository.findAllByIdInAndRole(anyCollection(), org.mockito.ArgumentMatchers.eq(UserRole.STUDENT))).thenReturn(List.of(
+        when(userRepository.findAllByIdInAndRole(anyCollection(), eq(UserRole.STUDENT))).thenReturn(List.of(
                 studentUser(21L, "student-21"),
-                studentUser(22L, "student-22")
+                studentUser(22L, "student-22"),
+                studentUser(23L, "student-23")
         ));
         when(studentInfoRepository.findAllByUserIdIn(anyCollection())).thenReturn(List.of(
-                studentInfo(21L, "张三", "HIGH_1", "1"),
-                studentInfo(22L, "李四", "HIGH_2", "2")
+                studentInfo(21L, "张三", "2025001", "HIGH_1", "1"),
+                studentInfo(22L, "李四", "2025002", "HIGH_2", "2"),
+                studentInfo(23L, "王五", "2025003", "HIGH_3", "3")
         ));
         when(scoreRecordRepository.save(any(ScoreRecordEntity.class))).thenAnswer(invocation -> {
             ScoreRecordEntity entity = invocation.getArgument(0);
@@ -192,8 +203,8 @@ class ManagerAttendanceSessionServiceTest {
         ManagerAttendanceSessionDetailResponse response = service.settle(3L, 18L);
 
         assertEquals(AttendanceSessionStatus.COMPLETED.name(), response.session().status());
-        assertEquals(1, response.session().settledCount());
-        assertEquals(1, savedScoreRecords.size());
+        assertEquals(2, response.session().settledCount());
+        assertEquals(2, savedScoreRecords.size());
         assertEquals(18L, savedScoreRecords.get(0).getAttendanceSessionId());
         assertEquals(3, savedScoreRecords.get(0).getScoreDelta());
         assertEquals("社团课签到：第2次社团课", savedScoreRecords.get(0).getReason());
@@ -201,88 +212,7 @@ class ManagerAttendanceSessionServiceTest {
     }
 
     @Test
-    void bulkCheckInShouldUpdateSelectedRecordsOnly() {
-        AttendanceSessionEntity session = new AttendanceSessionEntity();
-        setId(session, 18L);
-        session.setClubId(3L);
-        session.setTitle("第 3 次社团课");
-        session.setScoreRuleId(7L);
-        session.setCreatedBy(9L);
-        session.setStatus(AttendanceSessionStatus.OPEN);
-
-        AttendanceRecordEntity first = attendanceRecord(18L, 21L, AttendanceRecordStatus.PENDING);
-        AttendanceRecordEntity second = attendanceRecord(18L, 22L, AttendanceRecordStatus.PENDING);
-        AttendanceRecordEntity third = attendanceRecord(18L, 23L, AttendanceRecordStatus.PENDING);
-        List<AttendanceRecordEntity> records = new ArrayList<>(List.of(first, second, third));
-
-        when(currentUserProvider.getRequiredUser()).thenReturn(new AuthenticatedUser(9L, "manager", UserRole.CLUB_MANAGER));
-        when(clubManagerBindingRepository.existsByClubIdAndManagerUserId(3L, 9L)).thenReturn(true);
-        when(attendanceSessionRepository.findByIdAndClubId(18L, 3L)).thenReturn(Optional.of(session));
-        when(attendanceRecordRepository.findAllBySessionIdOrderByCreatedAtAscIdAsc(18L)).thenAnswer(invocation -> List.copyOf(records));
-        when(attendanceRecordRepository.findAllBySessionIdIn(List.of(18L))).thenAnswer(invocation -> List.copyOf(records));
-        when(attendanceRecordRepository.saveAll(anyCollection())).thenAnswer(invocation -> invocation.getArgument(0));
-        when(scoreRuleRepository.findAllById(List.of(7L))).thenReturn(List.of(scoreRule(7L, "签到积分", 3, 3L)));
-        when(clubStudentMemberRepository.existsByClubIdAndStudentUserId(3L, 21L)).thenReturn(true);
-        when(clubStudentMemberRepository.existsByClubIdAndStudentUserId(3L, 22L)).thenReturn(true);
-        when(userRepository.findAllByIdInAndRole(anyCollection(), org.mockito.ArgumentMatchers.eq(UserRole.STUDENT))).thenReturn(List.of(
-                studentUser(21L, "student-21"),
-                studentUser(22L, "student-22"),
-                studentUser(23L, "student-23")
-        ));
-        when(studentInfoRepository.findAllByUserIdIn(anyCollection())).thenReturn(List.of(
-                studentInfo(21L, "张三", "HIGH_1", "1"),
-                studentInfo(22L, "李四", "HIGH_2", "2"),
-                studentInfo(23L, "王五", "HIGH_3", "3")
-        ));
-
-        ManagerAttendanceSessionDetailResponse response = service.bulkCheckIn(3L, 18L, new ManagerAttendanceBulkMarkRequest(List.of(21L, 22L)));
-
-        assertEquals(AttendanceRecordStatus.CHECKED_IN.name(), response.members().get(0).status());
-        assertEquals(AttendanceRecordStatus.CHECKED_IN.name(), response.members().get(1).status());
-        assertEquals(AttendanceRecordStatus.PENDING.name(), response.members().get(2).status());
-    }
-
-    @Test
-    void bulkCheckOutShouldSkipMembersWhoAreNotCheckedIn() {
-        AttendanceSessionEntity session = new AttendanceSessionEntity();
-        setId(session, 18L);
-        session.setClubId(3L);
-        session.setTitle("第 3 次社团课");
-        session.setScoreRuleId(7L);
-        session.setCreatedBy(9L);
-        session.setStatus(AttendanceSessionStatus.OPEN);
-
-        AttendanceRecordEntity first = attendanceRecord(18L, 21L, AttendanceRecordStatus.CHECKED_IN);
-        first.setCheckInAt(Instant.parse("2026-04-06T09:00:00Z"));
-        AttendanceRecordEntity second = attendanceRecord(18L, 22L, AttendanceRecordStatus.PENDING);
-        List<AttendanceRecordEntity> records = new ArrayList<>(List.of(first, second));
-
-        when(currentUserProvider.getRequiredUser()).thenReturn(new AuthenticatedUser(9L, "manager", UserRole.CLUB_MANAGER));
-        when(clubManagerBindingRepository.existsByClubIdAndManagerUserId(3L, 9L)).thenReturn(true);
-        when(attendanceSessionRepository.findByIdAndClubId(18L, 3L)).thenReturn(Optional.of(session));
-        when(attendanceRecordRepository.findAllBySessionIdOrderByCreatedAtAscIdAsc(18L)).thenAnswer(invocation -> List.copyOf(records));
-        when(attendanceRecordRepository.findAllBySessionIdIn(List.of(18L))).thenAnswer(invocation -> List.copyOf(records));
-        when(attendanceRecordRepository.saveAll(anyCollection())).thenAnswer(invocation -> invocation.getArgument(0));
-        when(scoreRuleRepository.findAllById(List.of(7L))).thenReturn(List.of(scoreRule(7L, "签到积分", 3, 3L)));
-        when(clubStudentMemberRepository.existsByClubIdAndStudentUserId(3L, 21L)).thenReturn(true);
-        when(clubStudentMemberRepository.existsByClubIdAndStudentUserId(3L, 22L)).thenReturn(true);
-        when(userRepository.findAllByIdInAndRole(anyCollection(), org.mockito.ArgumentMatchers.eq(UserRole.STUDENT))).thenReturn(List.of(
-                studentUser(21L, "student-21"),
-                studentUser(22L, "student-22")
-        ));
-        when(studentInfoRepository.findAllByUserIdIn(anyCollection())).thenReturn(List.of(
-                studentInfo(21L, "张三", "HIGH_1", "1"),
-                studentInfo(22L, "李四", "HIGH_2", "2")
-        ));
-
-        ManagerAttendanceSessionDetailResponse response = service.bulkCheckOut(3L, 18L, new ManagerAttendanceBulkMarkRequest(List.of(21L, 22L)));
-
-        assertEquals(AttendanceRecordStatus.CHECKED_OUT.name(), response.members().get(0).status());
-        assertEquals(AttendanceRecordStatus.PENDING.name(), response.members().get(1).status());
-    }
-
-    @Test
-    void checkOutShouldRejectWhenStudentHasNotCheckedIn() {
+    void resolveSignatureShouldReturnStoredSignatureForOwner() {
         AttendanceSessionEntity session = new AttendanceSessionEntity();
         setId(session, 18L);
         session.setClubId(3L);
@@ -291,21 +221,43 @@ class ManagerAttendanceSessionServiceTest {
         session.setCreatedBy(9L);
         session.setStatus(AttendanceSessionStatus.OPEN);
 
-        AttendanceRecordEntity pending = attendanceRecord(18L, 22L, AttendanceRecordStatus.PENDING);
+        AttendanceRecordEntity signed = attendanceRecord(18L, 21L, AttendanceRecordStatus.CHECKED_IN);
+        signed.setSignaturePath("abc.png");
 
         when(currentUserProvider.getRequiredUser()).thenReturn(new AuthenticatedUser(9L, "manager", UserRole.CLUB_MANAGER));
         when(clubManagerBindingRepository.existsByClubIdAndManagerUserId(3L, 9L)).thenReturn(true);
         when(attendanceSessionRepository.findByIdAndClubId(18L, 3L)).thenReturn(Optional.of(session));
-        when(attendanceRecordRepository.findBySessionIdAndStudentUserId(18L, 22L)).thenReturn(Optional.of(pending));
-        when(clubStudentMemberRepository.existsByClubIdAndStudentUserId(3L, 22L)).thenReturn(true);
+        when(attendanceRecordRepository.findBySessionIdAndStudentUserId(18L, 21L)).thenReturn(Optional.of(signed));
+        when(signatureStorageService.resolveContent("abc.png")).thenReturn(Path.of("data/attendance-signatures/abc.png"));
+
+        Path resolved = service.resolveSignature(3L, 18L, 21L);
+
+        assertEquals(Path.of("data/attendance-signatures/abc.png"), resolved);
+    }
+
+    @Test
+    void resolveSignatureShouldRejectWhenSignatureMissing() {
+        AttendanceSessionEntity session = new AttendanceSessionEntity();
+        setId(session, 18L);
+        session.setClubId(3L);
+        session.setTitle("第2次社团课");
+        session.setScoreRuleId(7L);
+        session.setCreatedBy(9L);
+        session.setStatus(AttendanceSessionStatus.OPEN);
+
+        AttendanceRecordEntity pending = attendanceRecord(18L, 21L, AttendanceRecordStatus.PENDING);
+
+        when(currentUserProvider.getRequiredUser()).thenReturn(new AuthenticatedUser(9L, "manager", UserRole.CLUB_MANAGER));
+        when(clubManagerBindingRepository.existsByClubIdAndManagerUserId(3L, 9L)).thenReturn(true);
+        when(attendanceSessionRepository.findByIdAndClubId(18L, 3L)).thenReturn(Optional.of(session));
+        when(attendanceRecordRepository.findBySessionIdAndStudentUserId(18L, 21L)).thenReturn(Optional.of(pending));
 
         BusinessException exception = assertThrows(
                 BusinessException.class,
-                () -> service.checkOut(3L, 18L, new ManagerAttendanceMarkRequest(22L))
+                () -> service.resolveSignature(3L, 18L, 21L)
         );
 
-        assertEquals(ErrorCode.CONFLICT, exception.getErrorCode());
-        assertEquals("student must be checked in before check out", exception.getMessage());
+        assertEquals(ErrorCode.NOT_FOUND, exception.getErrorCode());
     }
 
     private ClubEntity club(Long id, String name) {
@@ -341,11 +293,12 @@ class ManagerAttendanceSessionServiceTest {
         return entity;
     }
 
-    private StudentInfoEntity studentInfo(Long userId, String displayName, String grade, String className) {
+    private StudentInfoEntity studentInfo(Long userId, String displayName, String studentNo, String grade, String className) {
         StudentInfoEntity entity = new StudentInfoEntity();
         setId(entity, userId);
         entity.setUserId(userId);
         entity.setDisplayName(displayName);
+        entity.setStudentNo(studentNo);
         entity.setGrade(grade);
         entity.setClassName(className);
         return entity;

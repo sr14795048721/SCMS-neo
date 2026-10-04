@@ -31,6 +31,8 @@ public final class PublicApiRequestMatchers {
             prefix("GET", "/api/v1/public/login-banners/"),
             exact("GET", "/api/v1/public/news"),
             prefix("GET", "/api/v1/public/news/"),
+            prefix("GET", "/api/v1/public/attendance/sessions/"),
+            prefix("POST", "/api/v1/public/attendance/sessions/"),
             exact("GET", "/api/v1/public/app-releases/check"),
             exact("POST", "/api/v1/integration/project-demo/risk-sync")
     };

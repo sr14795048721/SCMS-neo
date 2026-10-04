@@ -8,6 +8,9 @@ public record ManagerAttendanceSessionMemberResponse(
         String grade,
         String className,
         String status,
+        String signedName,
+        String signedRole,
+        String signaturePath,
         Instant checkInAt,
         Instant checkOutAt,
         boolean settled

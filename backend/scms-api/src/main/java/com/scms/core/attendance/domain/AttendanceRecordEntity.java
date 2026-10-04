@@ -40,6 +40,15 @@ public class AttendanceRecordEntity {
     @Column(nullable = false)
     private boolean settled = false;
 
+    @Column(name = "signed_name", length = 120)
+    private String signedName;
+
+    @Column(name = "signed_role", length = 32)
+    private String signedRole;
+
+    @Column(name = "signature_path", length = 255)
+    private String signaturePath;
+
     @Column(name = "created_at", nullable = false)
     private Instant createdAt;
 
@@ -108,6 +117,30 @@ public class AttendanceRecordEntity {
 
     public void setSettled(boolean settled) {
         this.settled = settled;
+    }
+
+    public String getSignedName() {
+        return signedName;
+    }
+
+    public void setSignedName(String signedName) {
+        this.signedName = signedName;
+    }
+
+    public String getSignedRole() {
+        return signedRole;
+    }
+
+    public void setSignedRole(String signedRole) {
+        this.signedRole = signedRole;
+    }
+
+    public String getSignaturePath() {
+        return signaturePath;
+    }
+
+    public void setSignaturePath(String signaturePath) {
+        this.signaturePath = signaturePath;
     }
 
     public Instant getCreatedAt() {

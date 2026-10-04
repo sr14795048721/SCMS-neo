@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { createForwardHeaders, fetchWithCoreFallback, parseJsonSafely } from "./backend";
+import { createForwardHeaders, createProxyHeaders, fetchWithCoreFallback, parseJsonSafely } from "./backend";
 
 type FailureConfig = {
   failureCode: string;
@@ -22,6 +22,7 @@ type BackendAttendanceSessionSummary = {
   scoreRuleName?: string;
   scoreDelta?: number;
   status?: string;
+  shareToken?: string;
   totalMembers?: number;
   checkedInCount?: number;
   checkedOutCount?: number;
@@ -39,6 +40,9 @@ type BackendAttendanceSessionMember = {
   grade?: string;
   className?: string;
   status?: string;
+  signedName?: string;
+  signedRole?: string;
+  signaturePath?: string;
   checkInAt?: string | null;
   checkOutAt?: string | null;
   settled?: boolean;
@@ -97,6 +101,7 @@ function normalizeSummary(item?: BackendAttendanceSessionSummary | null) {
     scoreRuleName: String(item?.scoreRuleName || ""),
     scoreDelta: Number(item?.scoreDelta || 0),
     status: String(item?.status || ""),
+    shareToken: String(item?.shareToken || ""),
     totalMembers: Number(item?.totalMembers || 0),
     checkedInCount: Number(item?.checkedInCount || 0),
     checkedOutCount: Number(item?.checkedOutCount || 0),
@@ -116,6 +121,9 @@ function normalizeMember(item?: BackendAttendanceSessionMember | null) {
     grade: String(item?.grade || ""),
     className: String(item?.className || ""),
     status: String(item?.status || ""),
+    signedName: String(item?.signedName || ""),
+    signedRole: String(item?.signedRole || ""),
+    signaturePath: String(item?.signaturePath || ""),
     checkInAt: item?.checkInAt ? String(item.checkInAt) : null,
     checkOutAt: item?.checkOutAt ? String(item.checkOutAt) : null,
     settled: Boolean(item?.settled)
@@ -179,23 +187,19 @@ export async function proxyManagerAttendanceSessionDetail(
   request: Request,
   clubId: string,
   sessionId: string,
-  action: "detail" | "check-in" | "check-out" | "bulk-check-in" | "bulk-check-out" | "settle",
+  action: "detail" | "settle",
   failure: FailureConfig
 ) {
   const authorization = request.headers.get("authorization");
-  const body = action === "check-in" || action === "check-out" || action === "bulk-check-in" || action === "bulk-check-out"
-    ? await request.text()
-    : undefined;
   const suffix =
     action === "detail"
       ? `/api/v1/managers/me/clubs/${clubId}/attendance-sessions/${sessionId}`
-      : `/api/v1/managers/me/clubs/${clubId}/attendance-sessions/${sessionId}/${action}`;
+      : `/api/v1/managers/me/clubs/${clubId}/attendance-sessions/${sessionId}/settle`;
 
   try {
     const response = await fetchWithCoreFallback(suffix, {
       method: action === "detail" ? "GET" : "POST",
       headers: createForwardHeaders("application/json", authorization),
-      body,
       cache: "no-store"
     });
     const data = await parseJsonSafely<BackendResponse<BackendAttendanceSessionDetail>>(response);
@@ -211,6 +215,47 @@ export async function proxyManagerAttendanceSessionDetail(
       },
       { headers: NO_STORE_HEADERS }
     );
+  } catch {
+    return createUnavailableResponse(failure);
+  }
+}
+
+export async function proxyManagerAttendanceSignature(
+  request: Request,
+  clubId: string,
+  sessionId: string,
+  studentUserId: string,
+  failure: FailureConfig
+) {
+  const authorization = request.headers.get("authorization");
+
+  try {
+    const response = await fetchWithCoreFallback(
+      `/api/v1/managers/me/clubs/${clubId}/attendance-sessions/${sessionId}/records/${studentUserId}/signature`,
+      {
+        method: "GET",
+        headers: createProxyHeaders(authorization),
+        cache: "no-store"
+      }
+    );
+    const contentType = response.headers.get("content-type") || "";
+
+    if (!response.ok || contentType.includes("application/json")) {
+      const data = await parseJsonSafely<BackendResponse<null>>(response);
+      return createFailureResponse(response.status, data?.code, data?.message, failure);
+    }
+
+    const headers = new Headers(NO_STORE_HEADERS);
+    headers.set("Content-Type", contentType || "application/octet-stream");
+    const contentLength = response.headers.get("content-length");
+    if (contentLength) {
+      headers.set("Content-Length", contentLength);
+    }
+
+    return new NextResponse(response.body, {
+      status: response.status,
+      headers
+    });
   } catch {
     return createUnavailableResponse(failure);
   }

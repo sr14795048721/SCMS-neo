@@ -1,14 +1,14 @@
 {
   "meta": {
     "title": "社团课签到 - SCMS Plus",
-    "description": "教师为社团课创建签到课次并完成签到、签退与积分结算。"
+    "description": "成员通过分享链接手写签名签到，干部核对签名并统一结算积分。"
   },
   "workspace": {
     "openAttendance": "上课签到"
   },
   "header": {
     "title": "上课签到",
-    "subtitle": "为每节社团课创建签到课次，完成签到签退并统一结算积分。"
+    "subtitle": "创建签到课次并分享链接，成员手写签名签到后统一结算积分。"
   },
   "actions": {
     "backToWorkspace": "返回社团工作台",
@@ -19,11 +19,9 @@
     "settle": "结束并结算",
     "resettle": "重新结算",
     "settling": "结算中...",
-    "checkIn": "签到",
-    "checkOut": "签退",
-    "recheckIn": "重新签到",
-    "bulkCheckIn": "批量签到",
-    "bulkCheckOut": "批量签退",
+    "copyShareLink": "复制链接",
+    "openSignPage": "打开签到页",
+    "viewSignature": "查看",
     "loading": "加载中..."
   },
   "summary": {
@@ -37,7 +35,7 @@
   },
   "createForm": {
     "title": "创建签到课次",
-    "description": "每次上课前创建一个课次，系统会自动抓取当前正式成员作为签到名单。",
+    "description": "每次上课前创建一个课次，系统自动抓取正式成员名单并生成签到分享链接。",
     "fields": {
       "title": "课次标题",
       "titlePlaceholder": "例如：第 5 次社团课",
@@ -51,7 +49,7 @@
   },
   "sessionList": {
     "title": "课次列表",
-    "description": "可随时重新进入历史课次继续修正签到结果并重新结算积分。",
+    "description": "可随时重新进入历史课次核对签名并重新结算积分。",
     "empty": "当前还没有签到课次，请先创建第一节社团课签到。",
     "status": {
       "OPEN": "进行中",
@@ -60,13 +58,12 @@
     "counts": {
       "members": "成员 {count} 人",
       "checkedIn": "已签到 {count} 人",
-      "checkedOut": "已签退 {count} 人",
       "settled": "已发分 {count} 人"
     }
   },
   "detail": {
     "title": "签到面板",
-    "description": "教师按学生名单点名签到、签退，课次结束后统一发放积分。",
+    "description": "成员通过分享链接手写签名签到，干部在此核对签名并统一结算积分。",
     "empty": "请先从左侧选择一个签到课次。",
     "session": {
       "rule": "积分规则",
@@ -74,27 +71,34 @@
       "endedAt": "结束时间",
       "settledAt": "最近结算"
     },
+    "share": {
+      "title": "签到入口",
+      "hint": "将链接分享到班级群，成员打开后输入姓名与学号并手写签名即可签到，杜绝代签。",
+      "linkLabel": "签到链接"
+    },
     "table": {
       "student": "学生",
       "className": "班级",
+      "signature": "签名",
       "checkInAt": "签到时间",
-      "checkOutAt": "签退时间",
-      "status": "状态",
-      "action": "操作"
+      "status": "状态"
     },
     "status": {
       "PENDING": "未签到",
       "CHECKED_IN": "已签到",
       "CHECKED_OUT": "已签退"
     },
+    "roleLabels": {
+      "PRESIDENT": "社长",
+      "VICE_PRESIDENT": "副社长",
+      "MINISTER": "部长",
+      "SECRETARY": "秘书",
+      "TREASURER": "财务",
+      "MEMBER": "成员"
+    },
     "settled": {
       "yes": "已发分",
       "no": "未发分"
-    },
-    "bulk": {
-      "selected": "当前页已选择 {count} 名学生",
-      "selectCurrentPage": "选择当前页全部学生",
-      "selectStudent": "选择学生 {name}"
     },
     "emptyMembers": "当前课次没有可签到的正式成员。"
   },
@@ -103,17 +107,13 @@
     "loadFailed": "签到数据加载失败",
     "sessionCreated": "签到课次已创建",
     "sessionCreateFailed": "签到课次创建失败",
-    "memberActionFailed": "签到状态更新失败",
     "settleFailed": "课次结算失败",
     "settled": "课次积分已结算",
-    "memberCheckedIn": "已完成签到",
-    "memberCheckedOut": "已完成签退",
-    "memberRecheckedIn": "已重新签到",
-    "bulkCheckedIn": "当前页所选学生已批量签到",
-    "bulkCheckedOut": "当前页所选学生已批量签退",
-    "selectionRequired": "请先勾选当前页需要处理的学生",
+    "shareLinkCopied": "签到链接已复制",
+    "shareLinkCopyFailed": "复制失败，请手动复制链接",
+    "signatureLoadFailed": "签名查看失败",
     "confirmSettleTitle": "结束并结算课次",
-    "confirmSettleMessage": "系统会为已签到且已签退的学生统一发放所选积分规则对应的积分，后续仍可修正并重新结算。"
+    "confirmSettleMessage": "系统会为已完成手写签到的学生统一发放所选积分规则对应的积分，后续仍可重新结算。"
   },
   "common": {
     "defaultName": "教师用户",

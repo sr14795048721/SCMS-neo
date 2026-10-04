@@ -64,12 +64,14 @@ services:
       SCMS_STORAGE_REWARD_IMAGE_ROOT: /app/data/reward-images
       SCMS_STORAGE_MANAGER_AVATAR_ROOT: /app/data/manager-avatars
       SCMS_STORAGE_STUDENT_AVATAR_ROOT: /app/data/student-avatars
+      SCMS_STORAGE_ATTENDANCE_SIGNATURE_ROOT: /app/data/attendance-signatures
     volumes:
       - ./data/core-banners:/app/data/banners
       - ./data/core-news:/app/data/news
       - ./data/core-reward-images:/app/data/reward-images
       - ./data/core-manager-avatars:/app/data/manager-avatars
       - ./data/core-student-avatars:/app/data/student-avatars
+      - ./data/core-attendance-signatures:/app/data/attendance-signatures
     ports:
       - "18080:8080"
     depends_on:
