@@ -176,7 +176,8 @@ export function TeacherAttendancePage({ clubId }: { clubId: number }) {
   const activeRuleOptions = useMemo(() => rules.filter((rule) => rule.status === "ACTIVE"), [rules]);
   const openSessionCount = useMemo(() => sessions.filter((session) => session.status === "OPEN").length, [sessions]);
   const shareToken = selectedSession?.session.shareToken || "";
-  const shareUrl = shareOrigin && shareToken ? `${shareOrigin}/attendance/sign/${shareToken}` : "";
+  // 复制分享用的绝对链接：/scms 与 next.config.mjs 的 basePath 保持一致（字符串拼接不会自动带 basePath）
+  const shareUrl = shareOrigin && shareToken ? `${shareOrigin}/scms/attendance/sign/${shareToken}` : "";
 
   if (portal.checking) {
     return (
