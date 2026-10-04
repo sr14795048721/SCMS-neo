@@ -9,6 +9,7 @@ import com.scms.core.score.dto.ScoreRuleResponse;
 import com.scms.core.score.service.ScoreService;
 import jakarta.validation.Valid;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -46,6 +47,13 @@ public class ManagerScoreController {
     public ApiResponse<ClubScoreRecordResponse> createRecord(@PathVariable("clubId") Long clubId,
                                                              @Valid @RequestBody ClubScoreRecordMutationRequest request) {
         return responseFactory.success(scoreService.addClubScore(clubId, request));
+    }
+
+    @DeleteMapping("/score-records/{recordId}")
+    public ApiResponse<Void> deleteRecord(@PathVariable("clubId") Long clubId,
+                                          @PathVariable("recordId") Long recordId) {
+        scoreService.deleteClubScoreRecord(clubId, recordId);
+        return responseFactory.success(null);
     }
 
     @GetMapping("/score-rankings")

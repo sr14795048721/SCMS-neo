@@ -3,13 +3,15 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { PaginationBar } from "../common/PaginationBar";
-import { AdminClubOption } from "../../lib/admin-club/types";
+import { AdminClubDetail, AdminClubOption, AdminClubStudent } from "../../lib/admin-club/types";
 import { authorizedFetch } from "../../lib/auth/client";
 import { useRoleGate } from "../../lib/auth/useRoleGate";
 import {
   AdminRewardItem,
   AdminRewardMutationPayload,
   AdminRewardOrder,
+  AdminScoreRecord,
+  AdminScoreRecordMutationPayload,
   AdminScoreRule,
   AdminScoreRuleMutationPayload,
   RewardVisibilityScope
@@ -40,9 +42,17 @@ const EMPTY_REWARD_FORM: AdminRewardMutationPayload = {
   status: "ACTIVE"
 };
 
+const EMPTY_RECORD_FORM: AdminScoreRecordMutationPayload = {
+  clubId: 0,
+  userId: 0,
+  ruleId: null,
+  scoreDelta: 0,
+  reason: ""
+};
+
 type RuleViewFilter = "ALL" | "GLOBAL" | "CLUB";
 type RewardViewFilter = "ALL" | RewardVisibilityScope;
-type AdminPage = "rules" | "rewards" | "orders";
+type AdminPage = "rules" | "rewards" | "orders" | "records";
 
 type ApiResponse<T> = {
   success?: boolean;
@@ -102,6 +112,16 @@ export function SysAdminScoreReward() {
   const [rewardImageFile, setRewardImageFile] = useState<File | null>(null);
   const [rewardImagePreviewUrl, setRewardImagePreviewUrl] = useState("");
   const [rewardAssetUrls, setRewardAssetUrls] = useState<Record<number, string>>({});
+
+  const [scoreRecords, setScoreRecords] = useState<AdminScoreRecord[]>([]);
+  const [scoreRecordsLoading, setScoreRecordsLoading] = useState(false);
+  const [recordClubFilter, setRecordClubFilter] = useState<string>("ALL");
+  const [recordPage, setRecordPage] = useState(1);
+  const [recordForm, setRecordForm] = useState<AdminScoreRecordMutationPayload>(EMPTY_RECORD_FORM);
+  const [clubStudents, setClubStudents] = useState<AdminClubStudent[]>([]);
+  const [clubStudentsLoading, setClubStudentsLoading] = useState(false);
+  const [savingRecord, setSavingRecord] = useState(false);
+  const [deletingRecordId, setDeletingRecordId] = useState<number | null>(null);
 
   useEffect(() => {
     if (authorized) {
@@ -187,6 +207,13 @@ export function SysAdminScoreReward() {
   const pagedRules = paginateItems(visibleRules, rulePage, 10);
   const pagedRewards = paginateItems(visibleRewards, rewardPage, 10);
   const pagedOrders = paginateItems(orders, orderPage, 10);
+  const visibleScoreRecords = scoreRecords.filter((record) => {
+    return recordClubFilter === "ALL" || String(record.clubId) === recordClubFilter;
+  });
+  const pagedScoreRecords = paginateItems(visibleScoreRecords, recordPage, 10);
+  const recordRuleOptions = rules.filter(
+    (rule) => rule.status === "ACTIVE" && (rule.scopeType === "GLOBAL" || rule.clubId === recordForm.clubId)
+  );
 
   return (
     <main className={styles.page}>
@@ -269,6 +296,13 @@ export function SysAdminScoreReward() {
               onClick={() => setActivePage("orders")}
             >
               {t("orders.title")}
+            </button>
+            <button
+              type="button"
+              className={`${styles.filterChip} ${activePage === "records" ? styles.filterChipActive : ""}`}
+              onClick={() => setActivePage("records")}
+            >
+              {t("scoreRecords.title")}
             </button>
           </div>
         </section>
@@ -939,13 +973,260 @@ export function SysAdminScoreReward() {
           )}
         </section>
         ) : null}
+
+        {activePage === "records" ? (
+        <section className={styles.sectionCard}>
+          <div className={styles.sectionHead}>
+            <div>
+              <h2>{t("scoreRecords.title")}</h2>
+              <p>{t("scoreRecords.description")}</p>
+            </div>
+            <div className={styles.sectionActions}>
+              <button
+                type="button"
+                className={styles.secondaryButton}
+                onClick={() => void loadScoreRecords()}
+                disabled={scoreRecordsLoading}
+              >
+                <i className="fas fa-rotate-right" />
+                {scoreRecordsLoading ? t("actions.loading") : t("actions.refresh")}
+              </button>
+            </div>
+          </div>
+
+          <div className={styles.sectionGrid}>
+            <article className={styles.editorCard}>
+              <div className={styles.editorHead}>
+                <div>
+                  <h3>{t("scoreRecords.form.title")}</h3>
+                </div>
+              </div>
+
+              <form
+                className={styles.formGrid}
+                onSubmit={(event) => {
+                  event.preventDefault();
+                  void handleRecordSave();
+                }}
+              >
+                <label className={styles.field}>
+                  <span>{t("scoreRecords.form.club")}</span>
+                  <select
+                    value={recordForm.clubId > 0 ? String(recordForm.clubId) : ""}
+                    onChange={(event) => void handleRecordClubChange(event.target.value)}
+                    className={styles.select}
+                  >
+                    <option value="">{t("scoreRecords.form.clubPlaceholder")}</option>
+                    {clubs.map((club) => (
+                      <option key={club.id} value={club.id}>
+                        {club.name}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+
+                <label className={styles.field}>
+                  <span>{t("scoreRecords.form.student")}</span>
+                  <select
+                    value={recordForm.userId > 0 ? String(recordForm.userId) : ""}
+                    onChange={(event) =>
+                      setRecordForm((prev) => ({
+                        ...prev,
+                        userId: event.target.value ? Number(event.target.value) : 0
+                      }))
+                    }
+                    className={styles.select}
+                    disabled={!recordForm.clubId || clubStudentsLoading}
+                  >
+                    <option value="">
+                      {clubStudentsLoading
+                        ? t("scoreRecords.form.studentLoading")
+                        : t("scoreRecords.form.studentPlaceholder")}
+                    </option>
+                    {clubStudents.map((student) => (
+                      <option key={student.userId} value={student.userId}>
+                        {student.displayName
+                          ? `${student.displayName}（${student.studentNo || student.username}）`
+                          : student.username}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+
+                <label className={styles.field}>
+                  <span>{t("scoreRecords.form.rule")}</span>
+                  <select
+                    value={recordForm.ruleId == null ? "" : String(recordForm.ruleId)}
+                    onChange={(event) => {
+                      const ruleId = event.target.value ? Number(event.target.value) : null;
+                      setRecordForm((prev) => {
+                        const rule = ruleId == null ? null : rules.find((item) => item.id === ruleId) || null;
+                        return {
+                          ...prev,
+                          ruleId,
+                          scoreDelta: rule ? rule.scoreDelta : prev.scoreDelta
+                        };
+                      });
+                    }}
+                    className={styles.select}
+                    disabled={!recordForm.clubId}
+                  >
+                    <option value="">{t("scoreRecords.form.rulePlaceholder")}</option>
+                    {recordRuleOptions.map((rule) => (
+                      <option key={rule.id} value={rule.id}>
+                        {`${rule.name}（${formatSigned(rule.scoreDelta)}）`}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+
+                <label className={styles.field}>
+                  <span>{t("scoreRecords.form.delta")}</span>
+                  <input
+                    type="number"
+                    value={String(recordForm.scoreDelta)}
+                    onChange={(event) => setRecordForm((prev) => ({ ...prev, scoreDelta: toInteger(event.target.value) }))}
+                    className={styles.input}
+                    disabled={recordForm.ruleId != null}
+                  />
+                </label>
+
+                <label className={`${styles.field} ${styles.fieldWide}`}>
+                  <span>{t("scoreRecords.form.reason")}</span>
+                  <input
+                    value={recordForm.reason}
+                    onChange={(event) => setRecordForm((prev) => ({ ...prev, reason: event.target.value.slice(0, 200) }))}
+                    className={styles.input}
+                    maxLength={200}
+                    placeholder={t("scoreRecords.form.reasonPlaceholder")}
+                  />
+                </label>
+
+                <p className={styles.formHint}>{t("scoreRecords.form.deltaHint")}</p>
+
+                <div className={`${styles.formActions} ${styles.fieldWide}`}>
+                  <button type="button" className={styles.secondaryButton} onClick={resetRecordForm} disabled={savingRecord}>
+                    <i className="fas fa-eraser" />
+                    {t("actions.reset")}
+                  </button>
+                  <button type="submit" className={styles.primaryButton} disabled={savingRecord}>
+                    <i className="fas fa-plus" />
+                    {savingRecord ? t("actions.saving") : t("scoreRecords.form.submit")}
+                  </button>
+                </div>
+              </form>
+            </article>
+
+            <article className={styles.listCard}>
+              <div className={styles.listToolbar}>
+                <div className={styles.filterGroup}>
+                  <select
+                    value={recordClubFilter}
+                    onChange={(event) => {
+                      setRecordClubFilter(event.target.value);
+                      setRecordPage(1);
+                    }}
+                    className={styles.filterSelect}
+                  >
+                    <option value="ALL">{t("scoreRecords.filter.allClubs")}</option>
+                    {clubs.map((club) => (
+                      <option key={club.id} value={club.id}>
+                        {club.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <span className={styles.summaryPill}>{t("scoreRecords.totalValue", { value: visibleScoreRecords.length })}</span>
+              </div>
+
+              {scoreRecordsLoading ? (
+                <div className={styles.inlineState}>{t("states.loadingScoreRecords")}</div>
+              ) : !visibleScoreRecords.length ? (
+                <div className={styles.emptyState}>
+                  <i className="fas fa-list-ul" />
+                  <h3>{t("scoreRecords.empty.title")}</h3>
+                  <p>{t("scoreRecords.empty.description")}</p>
+                </div>
+              ) : (
+                <>
+                <div className={styles.tableWrapper}>
+                  <table className={styles.dataTable}>
+                    <thead>
+                      <tr>
+                        <th>{t("scoreRecords.table.createdAt")}</th>
+                        <th>{t("scoreRecords.table.club")}</th>
+                        <th>{t("scoreRecords.table.student")}</th>
+                        <th>{t("scoreRecords.table.delta")}</th>
+                        <th>{t("scoreRecords.table.rule")}</th>
+                        <th>{t("scoreRecords.table.reason")}</th>
+                        <th>{t("scoreRecords.table.operator")}</th>
+                        <th>{t("scoreRecords.table.actions")}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {pagedScoreRecords.items.map((record) => (
+                        <tr key={record.id}>
+                          <td>{formatDateTime(record.createdAt, t("states.notSet"))}</td>
+                          <td>
+                            <div className={styles.tablePrimary}>{record.clubName || t("states.notSet")}</div>
+                          </td>
+                          <td>
+                            <div className={styles.tablePrimary}>
+                              {record.displayName || record.username || `#${record.userId}`}
+                            </div>
+                            <div className={styles.tableSecondary}>{record.studentNo || record.username || ""}</div>
+                          </td>
+                          <td>
+                            <span
+                              className={`${styles.statusBadge} ${
+                                record.scoreDelta >= 0 ? styles.statusActive : styles.statusInactive
+                              }`}
+                            >
+                              {formatSigned(record.scoreDelta)}
+                            </span>
+                          </td>
+                          <td>{record.ruleName || t("scoreRecords.table.manual")}</td>
+                          <td>{record.reason || t("states.notSet")}</td>
+                          <td>{record.operatorName || t("states.notSet")}</td>
+                          <td>
+                            <div className={styles.itemActions}>
+                              <button
+                                type="button"
+                                className={`${styles.rowAction} ${styles.rowDangerAction}`}
+                                onClick={() => void handleRecordDelete(record)}
+                                disabled={deletingRecordId === record.id}
+                              >
+                                <i className="fas fa-rotate-left" />
+                                {deletingRecordId === record.id ? t("actions.deleting") : t("actions.revoke")}
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                <PaginationBar
+                  currentPage={pagedScoreRecords.page}
+                  totalPages={pagedScoreRecords.totalPages}
+                  prevLabel={tPagination("prev")}
+                  nextLabel={tPagination("next")}
+                  pageLabel={tPagination("status", { page: pagedScoreRecords.page, total: pagedScoreRecords.totalPages })}
+                  onPageChange={setRecordPage}
+                />
+                </>
+              )}
+            </article>
+          </div>
+        </section>
+        ) : null}
       </section>
     </main>
   );
 
   async function loadInitialData() {
     setPageLoading(true);
-    await Promise.all([loadClubs(), loadRules(), loadRewards(), loadOrders()]);
+    await Promise.all([loadClubs(), loadRules(), loadRewards(), loadOrders(), loadScoreRecords()]);
     setPageLoading(false);
   }
 
@@ -1044,6 +1325,56 @@ export function SysAdminScoreReward() {
       notify.error(t("messages.loadOrdersFailed"));
     } finally {
       setOrdersLoading(false);
+    }
+  }
+
+  async function loadScoreRecords() {
+    setScoreRecordsLoading(true);
+    try {
+      const response = await fetchWithAuthorization("/api/admin/score-records", {
+        method: "GET"
+      });
+      if (!response) {
+        return;
+      }
+      if (!(await handleAuthStatus(response.status))) {
+        return;
+      }
+      const result = (await response.json().catch(() => null)) as ApiResponse<AdminScoreRecord[]> | null;
+      if (!response.ok || result?.success !== true || !Array.isArray(result.data)) {
+        notify.error(result?.message || t("messages.loadScoreRecordsFailed"));
+        return;
+      }
+      setScoreRecords(result.data);
+    } catch {
+      notify.error(t("messages.loadScoreRecordsFailed"));
+    } finally {
+      setScoreRecordsLoading(false);
+    }
+  }
+
+  async function loadClubStudents(clubId: number) {
+    setClubStudentsLoading(true);
+    try {
+      const response = await fetchWithAuthorization(`/api/admin/clubs/${clubId}`, {
+        method: "GET"
+      });
+      if (!response) {
+        return;
+      }
+      if (!(await handleAuthStatus(response.status))) {
+        return;
+      }
+      const result = (await response.json().catch(() => null)) as ApiResponse<AdminClubDetail> | null;
+      if (!response.ok || result?.success !== true || !result.data || !Array.isArray(result.data.students)) {
+        notify.error(result?.message || t("messages.loadClubStudentsFailed"));
+        return;
+      }
+      setClubStudents(result.data.students);
+    } catch {
+      notify.error(t("messages.loadClubStudentsFailed"));
+    } finally {
+      setClubStudentsLoading(false);
     }
   }
 
@@ -1338,6 +1669,90 @@ export function SysAdminScoreReward() {
     }
   }
 
+  async function handleRecordClubChange(value: string) {
+    const clubId = value ? Number(value) : 0;
+    setRecordForm((prev) => ({ ...prev, clubId, userId: 0, ruleId: null }));
+    setClubStudents([]);
+    if (clubId > 0) {
+      await loadClubStudents(clubId);
+    }
+  }
+
+  async function handleRecordSave() {
+    const payload = buildRecordPayload();
+    if (!payload) {
+      return;
+    }
+
+    setSavingRecord(true);
+    try {
+      const response = await fetchWithAuthorization("/api/admin/score-records", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+      });
+      if (!response) {
+        return;
+      }
+      if (!(await handleAuthStatus(response.status))) {
+        return;
+      }
+      const result = (await response.json().catch(() => null)) as ApiResponse<AdminScoreRecord> | null;
+      if (!response.ok || result?.success !== true || !result.data) {
+        notify.error(result?.message || t("messages.saveRecordFailed"));
+        return;
+      }
+      notify.success(t("messages.saveRecordSuccess"));
+      setRecordForm((prev) => ({ ...EMPTY_RECORD_FORM, clubId: prev.clubId }));
+      await loadScoreRecords();
+    } catch {
+      notify.error(t("messages.saveRecordFailed"));
+    } finally {
+      setSavingRecord(false);
+    }
+  }
+
+  async function handleRecordDelete(record: AdminScoreRecord) {
+    const accepted = await confirm.confirm({
+      title: t("confirm.deleteRecordTitle"),
+      message: t("confirm.deleteRecordMessage", {
+        name: record.displayName || record.username || `#${record.userId}`
+      }),
+      confirmText: t("actions.delete"),
+      cancelText: t("actions.cancel"),
+      tone: "danger"
+    });
+    if (!accepted) {
+      return;
+    }
+
+    setDeletingRecordId(record.id);
+    try {
+      const response = await fetchWithAuthorization(`/api/admin/score-records/${record.id}`, {
+        method: "DELETE"
+      });
+      if (!response) {
+        return;
+      }
+      if (!(await handleAuthStatus(response.status))) {
+        return;
+      }
+      const result = (await response.json().catch(() => null)) as BasicResponse | null;
+      if (!response.ok || result?.success !== true) {
+        notify.error(result?.message || t("messages.deleteRecordFailed"));
+        return;
+      }
+      notify.success(t("messages.deleteRecordSuccess"));
+      setScoreRecords((prev) => prev.filter((item) => item.id !== record.id));
+    } catch {
+      notify.error(t("messages.deleteRecordFailed"));
+    } finally {
+      setDeletingRecordId(null);
+    }
+  }
+
   async function loadRewardAssets(items: AdminRewardItem[]) {
     const nextEntries = await Promise.all(
       items
@@ -1497,6 +1912,35 @@ export function SysAdminScoreReward() {
       clubIds: rewardForm.visibilityScope === "CLUB" ? rewardForm.clubIds : [],
       status: rewardForm.status
     } satisfies AdminRewardMutationPayload;
+  }
+
+  function resetRecordForm() {
+    setRecordForm(EMPTY_RECORD_FORM);
+    setClubStudents([]);
+  }
+
+  function buildRecordPayload() {
+    if (!recordForm.clubId || recordForm.clubId <= 0) {
+      notify.warning(t("validation.recordClubRequired"));
+      return null;
+    }
+    if (!recordForm.userId || recordForm.userId <= 0) {
+      notify.warning(t("validation.recordStudentRequired"));
+      return null;
+    }
+    if (!recordForm.scoreDelta) {
+      notify.warning(t("validation.recordDeltaRequired"));
+      return null;
+    }
+    const rule = recordForm.ruleId == null ? null : rules.find((item) => item.id === recordForm.ruleId) || null;
+    const reason = recordForm.reason.trim() || (rule ? `Applied rule: ${rule.name}` : "Manual score adjustment");
+    return {
+      clubId: recordForm.clubId,
+      userId: recordForm.userId,
+      ruleId: recordForm.ruleId,
+      scoreDelta: recordForm.scoreDelta,
+      reason
+    } satisfies AdminScoreRecordMutationPayload;
   }
 
   async function handleAuthStatus(status: number) {

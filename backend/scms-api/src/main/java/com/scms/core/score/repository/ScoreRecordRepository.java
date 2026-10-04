@@ -15,6 +15,8 @@ import java.util.List;
 public interface ScoreRecordRepository extends JpaRepository<ScoreRecordEntity, Long> {
     List<ScoreRecordEntity> findAllByClubIdOrderByCreatedAtDescIdDesc(Long clubId);
 
+    List<ScoreRecordEntity> findAllByOrderByCreatedAtDescIdDesc();
+
     long countByRuleId(Long ruleId);
 
     void deleteAllByClubId(Long clubId);

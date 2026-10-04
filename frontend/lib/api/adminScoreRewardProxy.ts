@@ -32,6 +32,23 @@ type BackendScoreRule = {
   updatedAt?: string | null;
 };
 
+type BackendScoreRecord = {
+  id?: number;
+  clubId?: number;
+  clubName?: string;
+  userId?: number;
+  username?: string;
+  displayName?: string;
+  studentNo?: string;
+  ruleId?: number | null;
+  ruleName?: string;
+  scoreDelta?: number;
+  reason?: string;
+  operatorUserId?: number;
+  operatorName?: string;
+  createdAt?: string | null;
+};
+
 type BackendRewardItem = {
   id?: number;
   name?: string;
@@ -223,6 +240,109 @@ export async function proxyAdminScoreRuleDetail(
       },
       { headers: NO_STORE_HEADERS }
     );
+  } catch {
+    return createUnavailableResponse(failure);
+  }
+}
+
+function normalizeScoreRecord(item?: BackendScoreRecord | null) {
+  return {
+    id: Number(item?.id || 0),
+    clubId: Number(item?.clubId || 0),
+    clubName: String(item?.clubName || ""),
+    userId: Number(item?.userId || 0),
+    username: String(item?.username || ""),
+    displayName: String(item?.displayName || ""),
+    studentNo: String(item?.studentNo || ""),
+    ruleId: item?.ruleId == null ? null : Number(item.ruleId),
+    ruleName: String(item?.ruleName || ""),
+    scoreDelta: Number(item?.scoreDelta || 0),
+    reason: String(item?.reason || ""),
+    operatorUserId: Number(item?.operatorUserId || 0),
+    operatorName: String(item?.operatorName || ""),
+    createdAt: item?.createdAt ? String(item.createdAt) : null
+  };
+}
+
+export async function proxyAdminScoreRecords(request: Request, failure: FailureConfig) {
+  const authorization = request.headers.get("authorization");
+  const sourceUrl = new URL(request.url);
+  const clubId = sourceUrl.searchParams.get("clubId");
+  const query = clubId ? `?clubId=${encodeURIComponent(clubId)}` : "";
+
+  try {
+    const response = await fetchWithCoreFallback(`/api/v1/admin/score-records${query}`, {
+      method: "GET",
+      headers: createForwardHeaders("application/json", authorization),
+      cache: "no-store"
+    });
+    const data = await parseJsonSafely<BackendResponse<BackendScoreRecord[]>>(response);
+
+    if (!response.ok) {
+      return createFailureResponse(response.status, data?.code, data?.message, failure);
+    }
+
+    return NextResponse.json(
+      {
+        success: true,
+        data: Array.isArray(data?.data) ? data.data.map((item) => normalizeScoreRecord(item)) : []
+      },
+      { headers: NO_STORE_HEADERS }
+    );
+  } catch {
+    return createUnavailableResponse(failure);
+  }
+}
+
+export async function proxyAdminScoreRecordCreate(request: Request, failure: FailureConfig) {
+  const authorization = request.headers.get("authorization");
+  const body = await request.text();
+
+  try {
+    const response = await fetchWithCoreFallback("/api/v1/admin/score-records", {
+      method: "POST",
+      headers: createForwardHeaders("application/json", authorization),
+      body,
+      cache: "no-store"
+    });
+    const data = await parseJsonSafely<BackendResponse<BackendScoreRecord>>(response);
+
+    if (!response.ok) {
+      return createFailureResponse(response.status, data?.code, data?.message, failure);
+    }
+
+    return NextResponse.json(
+      {
+        success: true,
+        data: normalizeScoreRecord(data?.data)
+      },
+      { headers: NO_STORE_HEADERS }
+    );
+  } catch {
+    return createUnavailableResponse(failure);
+  }
+}
+
+export async function proxyAdminScoreRecordDelete(
+  request: Request,
+  recordId: string,
+  failure: FailureConfig
+) {
+  const authorization = request.headers.get("authorization");
+
+  try {
+    const response = await fetchWithCoreFallback(`/api/v1/admin/score-records/${encodeURIComponent(recordId)}`, {
+      method: "DELETE",
+      headers: createForwardHeaders("application/json", authorization),
+      cache: "no-store"
+    });
+    const data = await parseJsonSafely<BackendResponse<BackendScoreRecord>>(response);
+
+    if (!response.ok) {
+      return createFailureResponse(response.status, data?.code, data?.message, failure);
+    }
+
+    return NextResponse.json({ success: true }, { headers: NO_STORE_HEADERS });
   } catch {
     return createUnavailableResponse(failure);
   }

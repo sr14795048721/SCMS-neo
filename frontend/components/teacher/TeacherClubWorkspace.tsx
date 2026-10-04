@@ -19,6 +19,7 @@ import {
 } from "../../lib/manager/clubClient";
 import {
   createManagerScoreRecordRequest,
+  deleteManagerScoreRecordRequest,
   fetchManagerScoreRankingsRequest,
   fetchManagerScoreRecordsRequest,
   fetchManagerScoreRulesRequest
@@ -99,6 +100,8 @@ export function TeacherClubWorkspace({ clubId }: { clubId: number }) {
   const [scoreReason, setScoreReason] = useState("");
   const [scoreSubmitting, setScoreSubmitting] = useState(false);
   const [pendingRequestActionId, setPendingRequestActionId] = useState<number | null>(null);
+  const [revokingRecordId, setRevokingRecordId] = useState<number | null>(null);
+  const currentUserId = portal.managerInfo?.userId ?? 0;
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "auto" });
@@ -566,6 +569,7 @@ export function TeacherClubWorkspace({ clubId }: { clubId: number }) {
                     <th>{t("workspace.records.columns.delta")}</th>
                     <th>{t("workspace.records.columns.reason")}</th>
                     <th>{t("workspace.records.columns.time")}</th>
+                    <th>{t("workspace.records.columns.actions")}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -578,6 +582,21 @@ export function TeacherClubWorkspace({ clubId }: { clubId: number }) {
                       <td>{record.scoreDelta > 0 ? `+${record.scoreDelta}` : record.scoreDelta}</td>
                       <td>{record.reason || t("workspace.records.reasonFallback")}</td>
                       <td>{formatDateTime(record.createdAt, t("common.timeFallback"))}</td>
+                      <td>
+                        {record.operatorUserId === currentUserId ? (
+                          <button
+                            type="button"
+                            className={styles.dangerButton}
+                            onClick={() => void handleRevokeRecord(record)}
+                            disabled={revokingRecordId === record.id}
+                          >
+                            <i className="fas fa-rotate-left" />
+                            {revokingRecordId === record.id ? t("workspace.records.revoking") : t("workspace.records.revoke")}
+                          </button>
+                        ) : (
+                          <span>—</span>
+                        )}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -755,6 +774,52 @@ export function TeacherClubWorkspace({ clubId }: { clubId: number }) {
       void loadAllData(rankingRange);
     } finally {
       setScoreSubmitting(false);
+    }
+  }
+
+  async function handleRevokeRecord(record: ManagerScoreRecord) {
+    if (revokingRecordId) {
+      return;
+    }
+
+    const accepted = await confirm.confirm({
+      title: t("workspace.records.revokeConfirmTitle"),
+      message: t("workspace.records.revokeConfirmMessage", {
+        name: record.displayName || t("common.nameFallback"),
+        delta: record.scoreDelta > 0 ? `+${record.scoreDelta}` : record.scoreDelta
+      }),
+      confirmText: t("workspace.records.revoke"),
+      cancelText: t("common.cancel"),
+      tone: "danger"
+    });
+    if (!accepted) {
+      return;
+    }
+
+    setRevokingRecordId(record.id);
+    try {
+      const response = await deleteManagerScoreRecordRequest(clubId, record.id);
+      if (!response) {
+        notify.warning(t("common.loginRequired"));
+        router.replace("/login");
+        return;
+      }
+
+      if (!(await portal.handleAuthStatus(response.status))) {
+        return;
+      }
+
+      const result = (await response.json().catch(() => null)) as MutationResponse | null;
+      if (!response.ok || result?.success !== true) {
+        notify.error(result?.message || t("workspace.records.revokeFailed"));
+        return;
+      }
+
+      notify.success(t("workspace.records.revoked"));
+      setRecords((prev) => prev.filter((item) => item.id !== record.id));
+      void loadRankings(rankingRange);
+    } finally {
+      setRevokingRecordId(null);
     }
   }
 

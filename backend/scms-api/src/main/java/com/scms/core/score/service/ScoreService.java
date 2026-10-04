@@ -14,6 +14,8 @@ import com.scms.core.score.domain.ScoreRecordEntity;
 import com.scms.core.score.domain.ScoreRuleEntity;
 import com.scms.core.score.domain.ScoreRuleScope;
 import com.scms.core.score.domain.ScoreRuleStatus;
+import com.scms.core.score.dto.AdminScoreRecordMutationRequest;
+import com.scms.core.score.dto.AdminScoreRecordResponse;
 import com.scms.core.score.dto.AdminScoreRuleMutationRequest;
 import com.scms.core.score.dto.ClubScoreRankingResponse;
 import com.scms.core.score.dto.ClubScoreRecordMutationRequest;
@@ -246,6 +248,106 @@ public class ScoreService {
     }
 
     @Transactional(readOnly = true)
+    public List<AdminScoreRecordResponse> listAdminScores(Long clubId) {
+        requireAdmin();
+        List<ScoreRecordEntity> records = clubId == null
+                ? scoreRecordRepository.findAllByOrderByCreatedAtDescIdDesc()
+                : scoreRecordRepository.findAllByClubIdOrderByCreatedAtDescIdDesc(clubId);
+        return buildAdminScoreRecords(records);
+    }
+
+    @Transactional
+    public AdminScoreRecordResponse addAdminScore(AdminScoreRecordMutationRequest request) {
+        AuthenticatedUser admin = requireAdmin();
+        ClubEntity club = getRequiredClub(request.clubId());
+
+        Long userId = request.userId();
+        if (userId == null || userId <= 0) {
+            throw new BusinessException(ErrorCode.VALIDATION_ERROR, "target user is invalid");
+        }
+        if (!clubStudentMemberRepository.existsByClubIdAndStudentUserId(club.getId(), userId)) {
+            throw new BusinessException(ErrorCode.VALIDATION_ERROR, "target user is not a club member");
+        }
+
+        ScoreRuleEntity rule = null;
+        Integer scoreDelta = request.scoreDelta();
+        if (request.ruleId() != null) {
+            rule = getRequiredRule(request.ruleId());
+            if (rule.getStatus() != ScoreRuleStatus.ACTIVE) {
+                throw new BusinessException(ErrorCode.CONFLICT, "score rule is inactive");
+            }
+            if (rule.getScopeType() == ScoreRuleScope.CLUB && !Objects.equals(rule.getClubId(), club.getId())) {
+                throw new BusinessException(ErrorCode.FORBIDDEN, "score rule does not belong to the club");
+            }
+            scoreDelta = rule.getScoreDelta();
+        }
+        if (scoreDelta == null || scoreDelta == 0) {
+            throw new BusinessException(ErrorCode.VALIDATION_ERROR, "score delta must not be zero");
+        }
+
+        String reason = trimToNull(request.reason());
+        if (reason == null) {
+            reason = rule != null ? "Applied rule: " + rule.getName() : "Manual score adjustment";
+        }
+
+        ScoreRecordEntity entity = new ScoreRecordEntity();
+        entity.setClubId(club.getId());
+        entity.setUserId(userId);
+        entity.setRuleId(rule == null ? null : rule.getId());
+        entity.setScoreDelta(scoreDelta);
+        entity.setReason(reason);
+        entity.setOperatorUserId(admin.userId());
+        ScoreRecordEntity saved = scoreRecordRepository.save(entity);
+
+        auditService.create("ADMIN_SCORE_CREATED", admin.userId(), "SCORE_RECORD", String.valueOf(saved.getId()), "Administrator created a score record");
+
+        Map<Long, UserEntity> studentMap = loadUserMap(List.of(userId));
+        Map<Long, StudentInfoEntity> studentInfoMap = loadStudentInfoMap(List.of(userId));
+
+        return new AdminScoreRecordResponse(
+                saved.getId(),
+                club.getId(),
+                club.getName(),
+                saved.getUserId(),
+                defaultString(studentMap.get(userId) != null ? studentMap.get(userId).getUsername() : ""),
+                resolveStudentDisplayName(userId, studentMap, studentInfoMap),
+                defaultString(studentInfoMap.get(userId) != null ? studentInfoMap.get(userId).getStudentNo() : ""),
+                saved.getRuleId(),
+                rule == null ? "" : rule.getName(),
+                saved.getScoreDelta(),
+                saved.getReason(),
+                saved.getOperatorUserId(),
+                admin.username(),
+                saved.getCreatedAt()
+        );
+    }
+
+    @Transactional
+    public void deleteAdminScore(Long recordId) {
+        AuthenticatedUser admin = requireAdmin();
+        ScoreRecordEntity record = getRequiredRecord(recordId);
+        ensureScoreRecordRevocable(record);
+        scoreRecordRepository.delete(record);
+        auditService.create("ADMIN_SCORE_DELETED", admin.userId(), "SCORE_RECORD", String.valueOf(recordId), "Administrator revoked a score record");
+    }
+
+    @Transactional
+    public void deleteClubScoreRecord(Long clubId, Long recordId) {
+        AuthenticatedUser operator = requireAdminOrManagerForClub(clubId);
+        getRequiredClub(clubId);
+        ScoreRecordEntity record = getRequiredRecord(recordId);
+        if (!Objects.equals(record.getClubId(), clubId)) {
+            throw new BusinessException(ErrorCode.NOT_FOUND, "score record not found in club");
+        }
+        if (!operator.role().isSystemAdmin() && !Objects.equals(record.getOperatorUserId(), operator.userId())) {
+            throw new BusinessException(ErrorCode.FORBIDDEN, "club manager can only revoke own score records");
+        }
+        ensureScoreRecordRevocable(record);
+        scoreRecordRepository.delete(record);
+        auditService.create("CLUB_SCORE_DELETED", operator.userId(), "SCORE_RECORD", String.valueOf(recordId), "Club score record revoked");
+    }
+
+    @Transactional(readOnly = true)
     public ScoreSummaryResponse getMySummary() {
         AuthenticatedUser student = requireStudent();
         List<ClubStudentMemberEntity> memberships = clubStudentMemberRepository.findAllByStudentUserId(student.userId());
@@ -418,6 +520,62 @@ public class ScoreService {
     private ClubEntity getRequiredClub(Long clubId) {
         return clubRepository.findById(clubId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND, "club not found"));
+    }
+
+    private ScoreRecordEntity getRequiredRecord(Long recordId) {
+        return scoreRecordRepository.findById(recordId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND, "score record not found"));
+    }
+
+    private void ensureScoreRecordRevocable(ScoreRecordEntity record) {
+        long balanceAfter = scoreBalanceService.getBalance(record.getUserId()) - record.getScoreDelta();
+        if (balanceAfter < 0) {
+            throw new BusinessException(ErrorCode.CONFLICT, "revoking this record would make the student score balance negative");
+        }
+    }
+
+    private List<AdminScoreRecordResponse> buildAdminScoreRecords(List<ScoreRecordEntity> records) {
+        if (records.isEmpty()) {
+            return List.of();
+        }
+        List<Long> clubIds = records.stream().map(ScoreRecordEntity::getClubId).filter(Objects::nonNull).distinct().toList();
+        List<Long> userIds = records.stream().map(ScoreRecordEntity::getUserId).filter(Objects::nonNull).distinct().toList();
+        List<Long> operatorIds = records.stream().map(ScoreRecordEntity::getOperatorUserId).filter(Objects::nonNull).distinct().toList();
+        List<Long> ruleIds = records.stream().map(ScoreRecordEntity::getRuleId).filter(Objects::nonNull).distinct().toList();
+        Map<Long, ClubEntity> clubMap = loadClubMap(clubIds);
+        Map<Long, UserEntity> studentMap = loadUserMap(userIds);
+        Map<Long, UserEntity> operatorMap = loadUserMap(operatorIds);
+        Map<Long, StudentInfoEntity> studentInfoMap = loadStudentInfoMap(userIds);
+        Map<Long, ScoreRuleEntity> ruleMap = ruleIds.isEmpty()
+                ? Map.of()
+                : scoreRuleRepository.findAllById(ruleIds).stream()
+                .collect(Collectors.toMap(ScoreRuleEntity::getId, rule -> rule));
+
+        return records.stream()
+                .map(record -> {
+                    ClubEntity club = record.getClubId() == null ? null : clubMap.get(record.getClubId());
+                    UserEntity student = record.getUserId() == null ? null : studentMap.get(record.getUserId());
+                    UserEntity operator = record.getOperatorUserId() == null ? null : operatorMap.get(record.getOperatorUserId());
+                    ScoreRuleEntity rule = record.getRuleId() == null ? null : ruleMap.get(record.getRuleId());
+                    StudentInfoEntity studentInfo = record.getUserId() == null ? null : studentInfoMap.get(record.getUserId());
+                    return new AdminScoreRecordResponse(
+                            record.getId(),
+                            record.getClubId(),
+                            club == null ? "" : club.getName(),
+                            record.getUserId(),
+                            defaultString(student == null ? "" : student.getUsername()),
+                            record.getUserId() == null ? "" : resolveStudentDisplayName(record.getUserId(), studentMap, studentInfoMap),
+                            defaultString(studentInfo == null ? "" : studentInfo.getStudentNo()),
+                            record.getRuleId(),
+                            rule == null ? "" : rule.getName(),
+                            record.getScoreDelta(),
+                            record.getReason(),
+                            record.getOperatorUserId(),
+                            defaultString(operator == null ? "" : operator.getUsername()),
+                            record.getCreatedAt()
+                    );
+                })
+                .toList();
     }
 
     private AuthenticatedUser requireAdmin() {

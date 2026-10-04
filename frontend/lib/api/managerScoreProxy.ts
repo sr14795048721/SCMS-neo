@@ -23,7 +23,7 @@ const NO_STORE_HEADERS = {
 export async function proxyManagerScoreRequest(
   request: Request,
   path: string,
-  method: "GET" | "POST",
+  method: "GET" | "POST" | "DELETE",
   failure: FailureConfig
 ) {
   const authorization = request.headers.get("authorization");

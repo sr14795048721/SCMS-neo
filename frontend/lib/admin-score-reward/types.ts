@@ -25,6 +25,31 @@ export type AdminScoreRuleMutationPayload = {
   status: ScoreRuleStatus;
 };
 
+export type AdminScoreRecord = {
+  id: number;
+  clubId: number;
+  clubName: string;
+  userId: number;
+  username: string;
+  displayName: string;
+  studentNo: string;
+  ruleId: number | null;
+  ruleName: string;
+  scoreDelta: number;
+  reason: string;
+  operatorUserId: number;
+  operatorName: string;
+  createdAt: string | null;
+};
+
+export type AdminScoreRecordMutationPayload = {
+  clubId: number;
+  userId: number;
+  ruleId: number | null;
+  scoreDelta: number;
+  reason: string;
+};
+
 export type AdminRewardItem = {
   id: number;
   name: string;

@@ -28,6 +28,13 @@ export async function createManagerScoreRecordRequest(clubId: number, payload: C
   });
 }
 
+export async function deleteManagerScoreRecordRequest(clubId: number, recordId: number) {
+  return authorizedFetch(`/api/manager/clubs/${clubId}/score-records/${recordId}`, {
+    method: "DELETE",
+    cache: "no-store"
+  });
+}
+
 export async function fetchManagerScoreRankingsRequest(clubId: number, range: string) {
   const suffix = range ? `?range=${encodeURIComponent(range)}` : "";
   return authorizedFetch(`/api/manager/clubs/${clubId}/score-rankings${suffix}`, {
