@@ -1,3 +1,0 @@
-file:
-  minio:
-    endpoint: ${FILE_MINIO_ENDPOINT:http://minio:9000}

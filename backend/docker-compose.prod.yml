@@ -17,22 +17,14 @@ services:
       timeout: 5s
       retries: 10
 
-  redis:
-    image: redis:7-alpine
-    container_name: scms-redis
-    command: ["redis-server", "--appendonly", "yes"]
-    restart: unless-stopped
-    volumes:
-      - redis_data:/data
-
-  core-service:
+  api:
     build:
       context: .
-      dockerfile: core-service/Dockerfile
+      dockerfile: scms-api/Dockerfile
       args:
         INSTALL_FFMPEG: ${INSTALL_FFMPEG:-true}
         UBUNTU_APT_MIRROR: ${UBUNTU_APT_MIRROR:-}
-    container_name: scms-core
+    container_name: scms-api
     restart: unless-stopped
     environment:
       SPRING_PROFILES_ACTIVE: prod
@@ -41,9 +33,6 @@ services:
       DB_NAME: ${DB_NAME}
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASSWORD}
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
-      FILE_SERVICE_URL: http://core-service:8081
       JWT_SECRET: ${JWT_SECRET}
       SCMS_JWT_ACCESS_EXPIRATION_MINUTES: ${SCMS_JWT_ACCESS_EXPIRATION_MINUTES:-120}
       SCMS_JWT_REFRESH_EXPIRATION_DAYS: ${SCMS_JWT_REFRESH_EXPIRATION_DAYS:-30}
@@ -81,28 +70,32 @@ services:
       - ./data/core-reward-images:/app/data/reward-images
       - ./data/core-manager-avatars:/app/data/manager-avatars
       - ./data/core-student-avatars:/app/data/student-avatars
-    depends_on:
-      postgres:
-        condition: service_healthy
-      redis:
-        condition: service_started
-
-  gateway-service:
-    build:
-      context: .
-      dockerfile: gateway-service/Dockerfile
-    container_name: scms-gateway
-    restart: unless-stopped
-    environment:
-      SPRING_PROFILES_ACTIVE: docker
-      CORE_SERVICE_URL: http://core-service:8081
-      FILE_SERVICE_URL: http://core-service:8081
-      JWT_SECRET: ${JWT_SECRET}
     ports:
       - "18080:8080"
     depends_on:
-      - core-service
+      postgres:
+        condition: service_healthy
+
+  web:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    container_name: scms-web
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      BACKEND_BASE_URL: http://api:8080
+      FEEDBACK_SMTP_HOST: ${FEEDBACK_SMTP_HOST:-}
+      FEEDBACK_SMTP_PORT: ${FEEDBACK_SMTP_PORT:-465}
+      FEEDBACK_SMTP_SECURE: ${FEEDBACK_SMTP_SECURE:-true}
+      FEEDBACK_SMTP_USER: ${FEEDBACK_SMTP_USER:-}
+      FEEDBACK_SMTP_PASS: ${FEEDBACK_SMTP_PASS:-}
+      FEEDBACK_SMTP_FROM: ${FEEDBACK_SMTP_FROM:-}
+      FEEDBACK_SMTP_TO: ${FEEDBACK_SMTP_TO:-}
+    ports:
+      - "10056:3001"
+    depends_on:
+      - api
 
 volumes:
-  redis_data:
   postgres_data:

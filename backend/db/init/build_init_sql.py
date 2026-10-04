@@ -16,7 +16,7 @@ import zlib
 from pathlib import Path
 
 BACKEND_DIR = Path(__file__).resolve().parents[2]
-MIGRATION_DIR = BACKEND_DIR / "core-service" / "src" / "main" / "resources" / "db" / "migration"
+MIGRATION_DIR = BACKEND_DIR / "scms-api" / "src" / "main" / "resources" / "db" / "migration"
 OUTPUT = Path(__file__).resolve().parent / "schema_full.sql"
 
 

@@ -1,14 +1,12 @@
 # SCMS+ Backend (2C2G Lightweight Edition)
 
-SCMS+ is a lightweight microservice backend for a student club management system optimized for low-resource development machines (2 CPU / 2 GB memory).
+SCMS+ is a lightweight monolithic backend for a student club management system optimized for low-resource development machines (2 CPU / 2 GB memory).
 
-## Services
+## Service
 
-- `gateway-service` (`8080`): unified API entry and JWT pre-check.
-- `core-service` (`8081`): auth, user, club, activity, registration, notification, audit, report.
-- `file-service` (`8082`, stage 2): MinIO-based file upload/download.
+- `scms-api` (`8080`): auth (JWT), user, club, activity, registration, notification, audit, report — all in one Spring Boot process.
 
-## Stage 1 Quick Start
+## Quick Start
 
 1. Build (optional if you use `docker compose ... --build`):
 
@@ -32,12 +30,11 @@ docker compose up -d
 The development database name is `scms_dev` (inside Docker Postgres).
 To avoid conflicts with a locally installed PostgreSQL instance, the host port is mapped to `5433`.
 
-Uploaded reward images are persisted on the host under `backend/data/core-reward-images` via the Docker volume mount for `core-service`.
+Uploaded reward images are persisted on the host under `backend/data/core-reward-images` via the Docker volume mount for `api`.
 
-3. Health checks:
+3. Health check:
 
-- Gateway: `http://localhost:8080/actuator/health`
-- Core: `http://localhost:8081/actuator/health`
+- API: `http://localhost:8080/actuator/health`
 
 4. Default account:
 
@@ -65,15 +62,7 @@ docker compose down -v
 docker compose up -d --build
 ```
 
-## Stage 2 Optional Components
-
-Run extra middleware and file service:
-
-```bash
-docker compose -f docker-compose.yml -f docker-compose.stage2.yml up -d --build
-```
-
-## Stage 3 Optional Observability
+## Optional Observability
 
 ```bash
 docker compose -f docker-compose.yml -f docker-compose.observability.yml up -d
@@ -88,7 +77,7 @@ All API endpoints use `/api/v1/**`.
 
 ## Unified Error Response
 
-All backend errors (gateway + core) use a unified shape:
+All backend errors use a unified shape:
 
 ```json
 {
@@ -118,7 +107,7 @@ SPRING_PROFILES_ACTIVE=prod
 
 Production does not create default `admin / admin123` accounts.
 
-To safely create the first administrator once, start `core-service` with:
+To safely create the first administrator once, start `api` with:
 
 ```bash
 SPRING_PROFILES_ACTIVE=prod
@@ -146,7 +135,7 @@ Use this mechanism only for the first production administrator. All later admini
 
 ## Production Hidden Super Administrator Initialization
 
-If you need a hidden `SUPER_ADMIN` account for top-level system testing, start `core-service` with:
+If you need a hidden `SUPER_ADMIN` account for top-level system testing, start `api` with:
 
 ```bash
 SPRING_PROFILES_ACTIVE=prod
@@ -178,12 +167,10 @@ After the hidden super administrator is created:
 
 ```text
 .
-├── core-service
-├── gateway-service
-├── file-service
+├── scms-api          # 单体（原 core-service + 网关鉴权合并）
 ├── deploy
-│   ├── helm
-│   └── k8s
+│   ├── monitoring
+│   └── nginx
 └── docs
 ```
 

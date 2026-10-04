@@ -1,22 +1,11 @@
 export const DEFAULT_BACKEND_BASE_URL = "http://localhost:8080";
-export const DEFAULT_CORE_SERVICE_BASE_URL = "http://localhost:8081";
 
 export function resolveBackendBaseUrl(): string {
   return process.env.BACKEND_BASE_URL || DEFAULT_BACKEND_BASE_URL;
 }
 
 export function resolveCoreServiceBaseUrl(): string {
-  const configured = process.env.CORE_SERVICE_BASE_URL;
-  if (configured) {
-    return configured;
-  }
-
-  const backendBase = resolveBackendBaseUrl();
-  if (backendBase.endsWith(":8080")) {
-    return backendBase.replace(/:8080$/, ":8081");
-  }
-
-  return DEFAULT_CORE_SERVICE_BASE_URL;
+  return resolveBackendBaseUrl();
 }
 
 export async function parseJsonSafely<T>(response: Response): Promise<T | null> {

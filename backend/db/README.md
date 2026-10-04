@@ -1,7 +1,7 @@
 # SCMS+ 数据库设计与初始化指南
 
 - 数据库：PostgreSQL 16+，库名 `scms_dev`，用户/密码 `scms` / `scms`
-- 结构来源：`core-service/src/main/resources/db/migration/` 的 Flyway 迁移链 `V1..V33`（后端以 `ddl-auto=validate` 启动，表结构必须与 JPA 实体完全一致，迁移链即为唯一权威定义）
+- 结构来源：`scms-api/src/main/resources/db/migration/` 的 Flyway 迁移链 `V1..V33`（后端以 `ddl-auto=validate` 启动，表结构必须与 JPA 实体完全一致，迁移链即为唯一权威定义）
 - 规模：41 张业务表（40 个 JPA 实体 + 1 张 `@ElementCollection` 集合表 `club_duty_permissions`），含索引、约束与业务种子数据（社团工作台项目、职责任免等）
 
 ## 快速开始
@@ -14,10 +14,10 @@
 
 ```bash
 cd backend
-docker compose up -d postgres redis
+docker compose up -d postgres
 ```
 
-随后启动 `core-service`，Flyway 校验历史记录与校验和全部匹配，直接通过。
+随后启动 `api` 服务（`docker compose up -d api`），Flyway 校验历史记录与校验和全部匹配，直接通过。
 
 > 注意：官方 postgres 镜像只在数据卷**首次**初始化时执行该目录。若 `pg_data` 卷已存在（旧库/空库），需 `docker compose down -v` 删除卷后重启才会重新初始化。
 
@@ -34,7 +34,7 @@ psql -h localhost -p 5432 -U scms -d scms_dev -f db/init/schema_full.sql
 对一个全新的空库直接启动后端，Flyway 会按 `V1..V33` 自动完成建库：
 
 ```bash
-cd backend/core-service
+cd backend/scms-api
 mvn spring-boot:run   # DB_HOST/DB_PORT/DB_NAME/DB_USER/DB_PASSWORD 见 application.yml
 ```
 

@@ -21,29 +21,14 @@ services:
       timeout: 5s
       retries: 5
 
-  redis:
-    image: redis:7-alpine
-    container_name: scms-redis
-    command: ["redis-server", "--appendonly", "yes"]
-   # ports:
-   #   - "6379:6379"
-    mem_limit: 256m
-    volumes:
-      - redis_data:/data
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
-  core-service:
+  api:
     build:
       context: .
-      dockerfile: core-service/Dockerfile
+      dockerfile: scms-api/Dockerfile
       args:
         INSTALL_FFMPEG: ${INSTALL_FFMPEG:-false}
         UBUNTU_APT_MIRROR: ${UBUNTU_APT_MIRROR:-}
-    container_name: scms-core
+    container_name: scms-api
     environment:
       SPRING_PROFILES_ACTIVE: docker
       DB_HOST: postgres
@@ -51,9 +36,6 @@ services:
       DB_NAME: scms_dev
       DB_USER: scms
       DB_PASSWORD: scms
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
-      FILE_SERVICE_URL: http://core-service:8081
       JWT_SECRET: "change-this-super-secret-key-change-this-super-secret-key"
       EVENTS_MODE: sync
       SCMS_BOOTSTRAP_DEFAULT_USERS: ${SCMS_BOOTSTRAP_DEFAULT_USERS:-true}
@@ -65,7 +47,7 @@ services:
       SCMS_STORAGE_NEWS_ROOT: /app/data/news
       SCMS_STORAGE_REWARD_IMAGE_ROOT: /app/data/reward-images
     ports:
-      - "8081:8081"
+      - "8080:8080"
     mem_limit: 768m
     volumes:
       - ./data/core-banners:/app/data/banners
@@ -74,25 +56,6 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-      redis:
-        condition: service_healthy
-
-  gateway-service:
-    build:
-      context: .
-      dockerfile: gateway-service/Dockerfile
-    container_name: scms-gateway
-    environment:
-      SPRING_PROFILES_ACTIVE: docker
-      CORE_SERVICE_URL: http://core-service:8081
-      FILE_SERVICE_URL: http://core-service:8081
-      JWT_SECRET: "change-this-super-secret-key-change-this-super-secret-key"
-    ports:
-      - "18080:8080"
-    mem_limit: 384m
-    depends_on:
-      - core-service
 
 volumes:
   pg_data:
-  redis_data:

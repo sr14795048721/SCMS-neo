@@ -1,10 +1,54 @@
-version: '3.8'
+name: scms-plus
+
 services:
-  scms-plus:
-    build: .
-    container_name: scms-plus
-    ports:
-      - "10056:3001"
+  postgres:
+    image: postgres:16
+    container_name: scms-postgres
     restart: unless-stopped
     environment:
-      - NODE_ENV=production
+      POSTGRES_DB: ${DB_NAME:-scms}
+      POSTGRES_USER: ${DB_USER:-scms}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-scms}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-scms} -d ${DB_NAME:-scms}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  api:
+    build:
+      context: ./backend
+      dockerfile: scms-api/Dockerfile
+    container_name: scms-api
+    restart: unless-stopped
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: ${DB_NAME:-scms}
+      DB_USER: ${DB_USER:-scms}
+      DB_PASSWORD: ${DB_PASSWORD:-scms}
+      JWT_SECRET: ${JWT_SECRET:-change-me-in-production}
+      SCMS_BOOTSTRAP_DEFAULT_USERS: "true"
+    ports:
+      - "18080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  web:
+    build: .
+    container_name: scms-web
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      BACKEND_BASE_URL: http://api:8080
+    ports:
+      - "10056:3001"
+    depends_on:
+      - api
+
+volumes:
+  postgres_data:
