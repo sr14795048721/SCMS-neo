@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { PaginationBar } from "../common/PaginationBar";
 import { PortalShell } from "../portal/PortalShell";
@@ -175,7 +176,8 @@ export function TeacherAttendancePage({ clubId }: { clubId: number }) {
   const activeRuleOptions = useMemo(() => rules.filter((rule) => rule.status === "ACTIVE"), [rules]);
   const openSessionCount = useMemo(() => sessions.filter((session) => session.status === "OPEN").length, [sessions]);
   const shareToken = selectedSession?.session.shareToken || "";
-  const shareUrl = shareOrigin && shareToken ? `${shareOrigin}/attendance/sign/${shareToken}` : "";
+  // 复制分享用的绝对链接：/scms 与 next.config.mjs 的 basePath 保持一致（原生 <a> 与字符串拼接不会自动带 basePath）
+  const shareUrl = shareOrigin && shareToken ? `${shareOrigin}/scms/attendance/sign/${shareToken}` : "";
 
   if (portal.checking) {
     return (
@@ -378,10 +380,10 @@ export function TeacherAttendancePage({ clubId }: { clubId: number }) {
                         <i className="fas fa-copy" />
                         {t("actions.copyShareLink")}
                       </button>
-                      <a className={styles.secondaryButton} href={`/attendance/sign/${shareToken}`} target="_blank" rel="noreferrer">
+                      <Link className={styles.secondaryButton} href={`/attendance/sign/${shareToken}`} target="_blank" rel="noreferrer">
                         <i className="fas fa-arrow-up-right-from-square" />
                         {t("actions.openSignPage")}
-                      </a>
+                      </Link>
                     </div>
                   </section>
                 ) : null}
