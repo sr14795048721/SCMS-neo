@@ -38,6 +38,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyCollection;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -188,6 +189,29 @@ class PublicAttendanceServiceTest {
 
         assertEquals(ErrorCode.CONFLICT, exception.getErrorCode());
         verify(clubStudentMemberRepository, never()).findAllByClubId(any());
+    }
+
+    @Test
+    void signShouldAutoCreateRecordWhenMemberJoinedAfterSessionCreated() {
+        AttendanceSessionEntity session = session(AttendanceSessionStatus.OPEN);
+        ClubStudentMemberEntity member = member(3L, 21L, ClubMemberRole.MEMBER);
+        StudentInfoEntity info = studentInfo(21L, "张三", "2025001");
+
+        when(attendanceSessionRepository.findByShareToken(SHARE_TOKEN)).thenReturn(Optional.of(session));
+        when(clubStudentMemberRepository.findAllByClubId(3L)).thenReturn(List.of(member));
+        when(studentInfoRepository.findAllByUserIdIn(anyCollection())).thenReturn(List.of(info));
+        when(attendanceRecordRepository.findBySessionIdAndStudentUserId(15L, 21L)).thenReturn(Optional.empty());
+        when(attendanceRecordRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
+        when(signatureStorageService.storeSignature(SIGNATURE_DATA_URL)).thenReturn("sig-1.png");
+
+        PublicAttendanceSignResponse response = service.sign(
+                SHARE_TOKEN,
+                new PublicAttendanceSignRequest("张三", "2025001", SIGNATURE_DATA_URL)
+        );
+
+        assertEquals("张三", response.displayName());
+        assertNotNull(response.checkInAt());
+        verify(attendanceRecordRepository, times(2)).save(any());
     }
 
     private AttendanceSessionEntity session(AttendanceSessionStatus status) {

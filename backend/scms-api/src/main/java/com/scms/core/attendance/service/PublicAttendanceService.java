@@ -107,9 +107,18 @@ public class PublicAttendanceService {
             throw new BusinessException(ErrorCode.NOT_FOUND, "姓名或学号与社团成员不匹配，请核对后重试");
         }
 
+        Long matchedStudentUserId = matchedMember.getStudentUserId();
         AttendanceRecordEntity record = attendanceRecordRepository
-                .findBySessionIdAndStudentUserId(session.getId(), matchedMember.getStudentUserId())
-                .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND, "你不在本次签到名单中，请联系社团干部"));
+                .findBySessionIdAndStudentUserId(session.getId(), matchedStudentUserId)
+                .orElseGet(() -> {
+                    // 成员在会话创建后才加入社团：场次未预生成记录，自动补建待签到记录，避免"不在名单中"
+                    AttendanceRecordEntity created = new AttendanceRecordEntity();
+                    created.setSessionId(session.getId());
+                    created.setStudentUserId(matchedStudentUserId);
+                    created.setStatus(AttendanceRecordStatus.PENDING);
+                    created.setSettled(false);
+                    return attendanceRecordRepository.save(created);
+                });
         if (record.getStatus() != AttendanceRecordStatus.PENDING) {
             throw new BusinessException(ErrorCode.CONFLICT, "你已完成签到，请勿重复签到");
         }
