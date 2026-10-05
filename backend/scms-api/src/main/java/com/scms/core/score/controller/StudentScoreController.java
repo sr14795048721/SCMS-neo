@@ -5,6 +5,7 @@ import com.scms.core.common.web.ApiResponseFactory;
 import com.scms.core.score.dto.ClubScoreRankingResponse;
 import com.scms.core.score.dto.ScoreSummaryResponse;
 import com.scms.core.score.dto.SchoolScoreRankingResponse;
+import com.scms.core.score.dto.StudentScoreRecordResponse;
 import com.scms.core.score.service.ScoreService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +31,11 @@ public class StudentScoreController {
     @GetMapping("/score-summary")
     public ApiResponse<ScoreSummaryResponse> getSummary() {
         return responseFactory.success(scoreService.getMySummary());
+    }
+
+    @GetMapping("/score-records")
+    public ApiResponse<List<StudentScoreRecordResponse>> getMyScoreRecords() {
+        return responseFactory.success(scoreService.getMyScoreRecords());
     }
 
     @GetMapping("/club-rankings")

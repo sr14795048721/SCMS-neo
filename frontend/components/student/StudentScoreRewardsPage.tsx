@@ -13,11 +13,13 @@ import {
   fetchStudentRewardOrdersRequest,
   fetchStudentRewardsRequest,
   fetchStudentSchoolRankingsRequest,
+  fetchStudentScoreRecordsRequest,
   fetchStudentScoreSummaryRequest,
   StudentClubRankingsResponse,
   StudentRewardOrdersResponse,
   StudentRewardsResponse,
   StudentSchoolRankingsResponse,
+  StudentScoreRecordsResponse,
   StudentScoreSummaryResponse
 } from "../../lib/student/client";
 import { useStudentPortalState } from "../../lib/student/useStudentPortalState";
@@ -26,6 +28,7 @@ import {
   StudentRewardItem,
   StudentRewardOrder,
   StudentSchoolRankingItem,
+  StudentScoreRecord,
   StudentScoreSummary
 } from "../../lib/student/types";
 import { paginateItems } from "../../lib/pagination";
@@ -52,11 +55,13 @@ export function StudentScoreRewardsPage() {
   const [schoolRankings, setSchoolRankings] = useState<StudentSchoolRankingItem[]>([]);
   const [rewards, setRewards] = useState<StudentRewardItem[]>([]);
   const [orders, setOrders] = useState<StudentRewardOrder[]>([]);
+  const [records, setRecords] = useState<StudentScoreRecord[]>([]);
   const [loading, setLoading] = useState(true);
   const [redeemingRewardId, setRedeemingRewardId] = useState<number | null>(null);
   const [rewardAssetUrls, setRewardAssetUrls] = useState<Record<number, string>>({});
   const [rewardPage, setRewardPage] = useState(1);
   const [orderPage, setOrderPage] = useState(1);
+  const [recordPage, setRecordPage] = useState(1);
   const [clubRankingPage, setClubRankingPage] = useState(1);
   const [schoolRankingPage, setSchoolRankingPage] = useState(1);
 
@@ -86,6 +91,7 @@ export function StudentScoreRewardsPage() {
   const pendingOrderCount = useMemo(() => orders.filter((item) => item.status === "PENDING").length, [orders]);
   const pagedRewards = useMemo(() => paginateItems(rewards, rewardPage, REWARDS_PAGE_SIZE), [rewardPage, rewards]);
   const pagedOrders = useMemo(() => paginateItems(orders, orderPage, 6), [orderPage, orders]);
+  const pagedRecords = useMemo(() => paginateItems(records, recordPage, 8), [recordPage, records]);
   const pagedClubRankings = useMemo(() => paginateItems(clubRankings, clubRankingPage, 6), [clubRankingPage, clubRankings]);
   const pagedSchoolRankings = useMemo(() => paginateItems(schoolRankings, schoolRankingPage, 6), [schoolRankingPage, schoolRankings]);
 
@@ -146,6 +152,80 @@ export function StudentScoreRewardsPage() {
             <strong>{pendingOrderCount}</strong>
             <p>{t("summary.pendingHint")}</p>
           </article>
+        </section>
+
+        <section className={styles.panel}>
+          <div className={styles.panelHead}>
+            <div>
+              <h2 className={styles.panelTitle}>
+                <i className="fas fa-list-ol" />
+                {t("records.title")}
+              </h2>
+              <p className={styles.panelDescription}>{t("records.description")}</p>
+            </div>
+          </div>
+
+          {loading ? (
+            <div className={styles.emptyPanel}>
+              <p>{t("common.loading")}</p>
+            </div>
+          ) : records.length ? (
+            <>
+              <div className={styles.ordersList}>
+                {pagedRecords.items.map((record) => (
+                  <article key={record.id} className={styles.orderCard}>
+                    <div className={styles.head}>
+                      <div>
+                        <h3 className={styles.title}>
+                          {record.ruleName || record.reason || t("records.manualAdjustment")}
+                        </h3>
+                        <p className={styles.clubName}>{record.clubName || t("common.notSet")}</p>
+                      </div>
+                      <span
+                        className={`${styles.statusBadge} ${
+                          record.scoreDelta > 0 ? styles.statusActive : styles.statusInactive
+                        }`}
+                      >
+                        {formatSignedDelta(record.scoreDelta)}
+                      </span>
+                    </div>
+                    <div className={styles.orderMeta}>
+                      {record.reason ? (
+                        <div className={styles.listRow}>
+                          <span className={styles.subtleText}>{t("records.reason")}</span>
+                          <strong className={styles.tablePrimary}>{record.reason}</strong>
+                        </div>
+                      ) : null}
+                      <div className={styles.listRow}>
+                        <span className={styles.subtleText}>{t("records.time")}</span>
+                        <strong className={styles.tablePrimary}>
+                          {formatDateTime(record.createdAt, t("common.timeFallback"))}
+                        </strong>
+                      </div>
+                      {record.operatorName ? (
+                        <div className={styles.listRow}>
+                          <span className={styles.subtleText}>{t("records.operator")}</span>
+                          <strong className={styles.tablePrimary}>{record.operatorName}</strong>
+                        </div>
+                      ) : null}
+                    </div>
+                  </article>
+                ))}
+              </div>
+              <PaginationBar
+                currentPage={pagedRecords.page}
+                totalPages={pagedRecords.totalPages}
+                prevLabel={tPagination("prev")}
+                nextLabel={tPagination("next")}
+                pageLabel={tPagination("status", { page: pagedRecords.page, total: pagedRecords.totalPages })}
+                onPageChange={setRecordPage}
+              />
+            </>
+          ) : (
+            <div className={styles.emptyPanel}>
+              <p>{t("records.empty")}</p>
+            </div>
+          )}
         </section>
 
         <section className={styles.layout}>
@@ -457,14 +537,15 @@ export function StudentScoreRewardsPage() {
       setSummary(nextSummary);
 
       const primaryClubId = nextSummary.clubs[0]?.clubId || 0;
-      const [clubRankingsResponse, schoolRankingsResponse, rewardsResponse, ordersResponse] = await Promise.all([
+      const [clubRankingsResponse, schoolRankingsResponse, rewardsResponse, ordersResponse, recordsResponse] = await Promise.all([
         primaryClubId ? fetchStudentClubRankingsRequest(primaryClubId, "all") : Promise.resolve(null),
         fetchStudentSchoolRankingsRequest(),
         fetchStudentRewardsRequest(),
-        fetchStudentRewardOrdersRequest()
+        fetchStudentRewardOrdersRequest(),
+        fetchStudentScoreRecordsRequest()
       ]);
 
-      const followUpResponses = [clubRankingsResponse, schoolRankingsResponse, rewardsResponse, ordersResponse].filter(Boolean) as Response[];
+      const followUpResponses = [clubRankingsResponse, schoolRankingsResponse, rewardsResponse, ordersResponse, recordsResponse].filter(Boolean) as Response[];
       for (const response of followUpResponses) {
         if (!(await portal.handleAuthStatus(response.status))) {
           return;
@@ -482,6 +563,9 @@ export function StudentScoreRewardsPage() {
         : null;
       const ordersResult = ordersResponse
         ? ((await ordersResponse.json().catch(() => null)) as StudentRewardOrdersResponse | null)
+        : null;
+      const recordsResult = recordsResponse
+        ? ((await recordsResponse.json().catch(() => null)) as StudentScoreRecordsResponse | null)
         : null;
 
       setClubRankings(
@@ -503,6 +587,10 @@ export function StudentScoreRewardsPage() {
         ordersResponse?.ok && ordersResult?.success && Array.isArray(ordersResult.data) ? ordersResult.data : []
       );
       setOrderPage(1);
+      setRecords(
+        recordsResponse?.ok && recordsResult?.success && Array.isArray(recordsResult.data) ? recordsResult.data : []
+      );
+      setRecordPage(1);
       setClubRankingPage(1);
       setSchoolRankingPage(1);
       await loadRewardAssets(nextRewards);
@@ -600,4 +688,8 @@ function formatDateTime(value: string | null, fallback: string) {
     hour: "2-digit",
     minute: "2-digit"
   }).format(date);
+}
+
+function formatSignedDelta(value: number) {
+  return value > 0 ? `+${value}` : String(value);
 }

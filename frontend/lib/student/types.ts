@@ -101,6 +101,18 @@ export type StudentScoreSummary = {
   clubs: StudentScoreSummaryClub[];
 };
 
+export type StudentScoreRecord = {
+  id: number;
+  clubId: number;
+  clubName: string;
+  ruleId: number | null;
+  ruleName: string;
+  scoreDelta: number;
+  reason: string;
+  operatorName: string;
+  createdAt: string | null;
+};
+
 export type StudentClubRankingItem = {
   rank: number;
   userId: number;

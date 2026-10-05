@@ -72,6 +72,18 @@ type BackendRewardOrder = {
   rejectedAt?: string | null;
 };
 
+type BackendScoreRecord = {
+  id?: number;
+  clubId?: number;
+  clubName?: string;
+  ruleId?: number | null;
+  ruleName?: string;
+  scoreDelta?: number;
+  reason?: string;
+  operatorName?: string;
+  createdAt?: string | null;
+};
+
 const NO_STORE_HEADERS = {
   "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
   Pragma: "no-cache",
@@ -160,12 +172,35 @@ function normalizeRewardOrder(item?: BackendRewardOrder | null) {
   };
 }
 
+function normalizeScoreRecord(item?: BackendScoreRecord | null) {
+  return {
+    id: Number(item?.id || 0),
+    clubId: Number(item?.clubId || 0),
+    clubName: String(item?.clubName || ""),
+    ruleId: item?.ruleId == null ? null : Number(item.ruleId),
+    ruleName: String(item?.ruleName || ""),
+    scoreDelta: Number(item?.scoreDelta || 0),
+    reason: String(item?.reason || ""),
+    operatorName: String(item?.operatorName || ""),
+    createdAt: item?.createdAt ? String(item.createdAt) : null
+  };
+}
+
 export async function proxyStudentScoreSummary(request: Request, failure: FailureConfig) {
   return proxyCollectionRequest<BackendScoreSummary, ReturnType<typeof normalizeSummary>>(
     request,
     "/api/v1/students/me/score-summary",
     failure,
     (data) => normalizeSummary(data)
+  );
+}
+
+export async function proxyStudentScoreRecords(request: Request, failure: FailureConfig) {
+  return proxyCollectionRequest<BackendScoreRecord[], ReturnType<typeof normalizeScoreRecord>[]>(
+    request,
+    "/api/v1/students/me/score-records",
+    failure,
+    (data) => Array.isArray(data) ? data.map((item) => normalizeScoreRecord(item)) : []
   );
 }
 

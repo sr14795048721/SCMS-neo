@@ -10,6 +10,7 @@ import {
   StudentRewardOrder,
   StudentRewardItem,
   StudentSchoolRankingItem,
+  StudentScoreRecord,
   StudentScoreSummary,
   UpdateStudentInfoPayload
 } from "./types";
@@ -154,6 +155,13 @@ export async function fetchStudentScoreSummaryRequest() {
   });
 }
 
+export async function fetchStudentScoreRecordsRequest() {
+  return authorizedFetch("/api/student/score-records", {
+    method: "GET",
+    cache: "no-store"
+  });
+}
+
 export async function fetchStudentClubRankingsRequest(clubId: number, range = "all") {
   const query = new URLSearchParams({
     clubId: String(clubId),
@@ -215,6 +223,12 @@ export type StudentDiscoverClubsResponse = {
 export type StudentScoreSummaryResponse = {
   success?: boolean;
   data?: StudentScoreSummary;
+  message?: string;
+};
+
+export type StudentScoreRecordsResponse = {
+  success?: boolean;
+  data?: StudentScoreRecord[];
   message?: string;
 };
 

@@ -24,6 +24,7 @@ import com.scms.core.score.dto.ScoreRuleResponse;
 import com.scms.core.score.dto.ScoreSummaryClubResponse;
 import com.scms.core.score.dto.ScoreSummaryResponse;
 import com.scms.core.score.dto.SchoolScoreRankingResponse;
+import com.scms.core.score.dto.StudentScoreRecordResponse;
 import com.scms.core.score.repository.ClubScoreTotalProjection;
 import com.scms.core.score.repository.ScoreRecordRepository;
 import com.scms.core.score.repository.ScoreRuleRepository;
@@ -373,6 +374,13 @@ public class ScoreService {
     }
 
     @Transactional(readOnly = true)
+    public List<StudentScoreRecordResponse> getMyScoreRecords() {
+        AuthenticatedUser student = requireStudent();
+        List<ScoreRecordEntity> records = scoreRecordRepository.findAllByUserIdOrderByCreatedAtDescIdDesc(student.userId());
+        return buildStudentScoreRecords(records);
+    }
+
+    @Transactional(readOnly = true)
     public List<ClubScoreRankingResponse> getClubRankings(Long clubId, String range) {
         requireStudent();
         getRequiredClub(clubId);
@@ -571,6 +579,40 @@ public class ScoreService {
                             record.getScoreDelta(),
                             record.getReason(),
                             record.getOperatorUserId(),
+                            defaultString(operator == null ? "" : operator.getUsername()),
+                            record.getCreatedAt()
+                    );
+                })
+                .toList();
+    }
+
+    private List<StudentScoreRecordResponse> buildStudentScoreRecords(List<ScoreRecordEntity> records) {
+        if (records.isEmpty()) {
+            return List.of();
+        }
+        List<Long> clubIds = records.stream().map(ScoreRecordEntity::getClubId).filter(Objects::nonNull).distinct().toList();
+        List<Long> operatorIds = records.stream().map(ScoreRecordEntity::getOperatorUserId).filter(Objects::nonNull).distinct().toList();
+        List<Long> ruleIds = records.stream().map(ScoreRecordEntity::getRuleId).filter(Objects::nonNull).distinct().toList();
+        Map<Long, ClubEntity> clubMap = loadClubMap(clubIds);
+        Map<Long, UserEntity> operatorMap = loadUserMap(operatorIds);
+        Map<Long, ScoreRuleEntity> ruleMap = ruleIds.isEmpty()
+                ? Map.of()
+                : scoreRuleRepository.findAllById(ruleIds).stream()
+                .collect(Collectors.toMap(ScoreRuleEntity::getId, rule -> rule));
+
+        return records.stream()
+                .map(record -> {
+                    ClubEntity club = record.getClubId() == null ? null : clubMap.get(record.getClubId());
+                    UserEntity operator = record.getOperatorUserId() == null ? null : operatorMap.get(record.getOperatorUserId());
+                    ScoreRuleEntity rule = record.getRuleId() == null ? null : ruleMap.get(record.getRuleId());
+                    return new StudentScoreRecordResponse(
+                            record.getId(),
+                            record.getClubId(),
+                            club == null ? "" : club.getName(),
+                            record.getRuleId(),
+                            rule == null ? "" : rule.getName(),
+                            record.getScoreDelta(),
+                            record.getReason(),
                             defaultString(operator == null ? "" : operator.getUsername()),
                             record.getCreatedAt()
                     );

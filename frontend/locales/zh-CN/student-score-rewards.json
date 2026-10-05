@@ -58,6 +58,15 @@
       "rejected": "已驳回"
     }
   },
+  "records": {
+    "title": "积分明细",
+    "description": "每一笔积分的来源、变动与经手人都能在这里看到。",
+    "manualAdjustment": "手动调整",
+    "reason": "说明",
+    "time": "时间",
+    "operator": "经手人",
+    "empty": "当前还没有积分记录。"
+  },
   "rankings": {
     "clubTitle": "社团积分排行",
     "clubDescription": "以下为 {name} 内部积分排名。",
