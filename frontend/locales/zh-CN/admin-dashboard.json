@@ -72,6 +72,10 @@
     "systemSettings": {
       "title": "系统设置",
       "description": "配置项管理"
+    },
+    "versionChangelog": {
+      "title": "版本日志",
+      "description": "查看并维护版本更新记录"
     }
   }
 }

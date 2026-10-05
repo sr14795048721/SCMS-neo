@@ -1,0 +1,20 @@
+{
+  "meta": {
+    "title": "版本更新日志",
+    "description": "查看系统版本更新信息"
+  },
+  "header": {
+    "title": "版本更新日志"
+  },
+  "common": {
+    "loading": "加载中...",
+    "refresh": "刷新",
+    "loginRequired": "请先登录后继续",
+    "timeFallback": "时间待定"
+  },
+  "list": {
+    "title": "版本更新日志",
+    "description": "系统每次更新发布的版本说明。",
+    "empty": "暂无版本更新记录"
+  }
+}

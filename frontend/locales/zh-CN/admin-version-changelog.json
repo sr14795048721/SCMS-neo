@@ -1,0 +1,44 @@
+{
+  "meta": {
+    "title": "版本更新日志",
+    "description": "查看并维护系统版本更新日志"
+  },
+  "header": {
+    "title": "版本更新日志",
+    "logout": "退出登录"
+  },
+  "common": {
+    "loading": "加载中...",
+    "loginRequired": "请先登录后继续",
+    "timeFallback": "时间待定"
+  },
+  "list": {
+    "title": "版本更新日志",
+    "empty": "暂无版本更新记录"
+  },
+  "actions": {
+    "create": "新增版本",
+    "edit": "编辑",
+    "delete": "删除",
+    "deleting": "删除中...",
+    "save": "保存",
+    "saving": "保存中...",
+    "cancel": "取消"
+  },
+  "form": {
+    "version": "版本号",
+    "releasedAt": "发布日期",
+    "title": "标题",
+    "content": "更新内容",
+    "contentPlaceholder": "每行一条更新点，例如：\n新增：xxx\n修复：xxx"
+  },
+  "messages": {
+    "fillRequired": "请完整填写版本号、标题与更新内容",
+    "saveFailed": "保存失败，请稍后重试",
+    "created": "版本更新日志已新增",
+    "updated": "版本更新日志已更新",
+    "deleteConfirm": "确定删除 {version} 的更新日志吗？",
+    "deleteFailed": "删除失败，请稍后重试",
+    "deleted": "版本更新日志已删除"
+  }
+}

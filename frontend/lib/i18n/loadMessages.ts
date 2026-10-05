@@ -26,6 +26,7 @@ const LOADERS: Record<LocaleCode, LocaleLoaders> = {
     adminHomeConfig: () => import("../../locales/zh-CN/admin-home-config.json"),
     adminLoginConfig: () => import("../../locales/zh-CN/admin-login-config.json"),
     adminAppReleases: () => import("../../locales/zh-CN/admin-app-releases.json"),
+    adminVersionChangelog: () => import("../../locales/zh-CN/admin-version-changelog.json"),
     teacherDashboard: () => import("../../locales/zh-CN/teacher-dashboard.json"),
     teacherClubs: () => import("../../locales/zh-CN/teacher-clubs.json"),
     teacherAttendance: () => import("../../locales/zh-CN/teacher-attendance.json"),
@@ -40,7 +41,8 @@ const LOADERS: Record<LocaleCode, LocaleLoaders> = {
     studentClubCadre: () => import("../../locales/zh-CN/student-club-cadre.json"),
     studentScoreRewards: () => import("../../locales/zh-CN/student-score-rewards.json"),
     studentProfile: () => import("../../locales/zh-CN/student-profile.json"),
-    publicAttendanceSign: () => import("../../locales/zh-CN/public-attendance-sign.json")
+    publicAttendanceSign: () => import("../../locales/zh-CN/public-attendance-sign.json"),
+    teacherVersionChangelog: () => import("../../locales/zh-CN/teacher-version-changelog.json")
   }
 };
 

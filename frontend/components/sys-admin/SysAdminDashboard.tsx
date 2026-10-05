@@ -145,6 +145,13 @@ const baseMenuItems: MenuItemConfig[] = [
     descriptionKey: "menu.systemSettings.description",
     path: "/sys-admin/system-settings",
     enabled: true
+  },
+  {
+    icon: "fas fa-clock-rotate-left",
+    titleKey: "menu.versionChangelog.title",
+    descriptionKey: "menu.versionChangelog.description",
+    path: "/sys-admin/version-changelog",
+    enabled: true
   }
 ];
 

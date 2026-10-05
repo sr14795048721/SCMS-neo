@@ -63,6 +63,10 @@
     "createClub": {
       "title": "申请创建社团",
       "description": "提交建社申请并跟进管理员审核结果"
+    },
+    "versionChangelog": {
+      "title": "版本日志",
+      "description": "查看系统版本更新记录"
     }
   },
   "messages": {

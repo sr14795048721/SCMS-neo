@@ -22,6 +22,7 @@ export type I18nNamespace =
   | "adminHomeConfig"
   | "adminLoginConfig"
   | "adminAppReleases"
+  | "adminVersionChangelog"
   | "teacherDashboard"
   | "teacherClubs"
   | "teacherAttendance"
@@ -36,7 +37,8 @@ export type I18nNamespace =
   | "studentClubCadre"
   | "studentScoreRewards"
   | "studentProfile"
-  | "publicAttendanceSign";
+  | "publicAttendanceSign"
+  | "teacherVersionChangelog";
 export type MessageMap = Record<string, string>;
 export type NamespaceMessages = Record<I18nNamespace, MessageMap>;
 export type TranslationVars = Record<string, string | number>;

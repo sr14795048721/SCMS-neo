@@ -72,6 +72,13 @@ const shortcutItems: ShortcutItem[] = [
     descriptionKey: "shortcuts.createClub.description",
     path: "/club-admin/create-club-apply",
     enabled: true
+  },
+  {
+    icon: "fas fa-clock-rotate-left",
+    titleKey: "shortcuts.versionChangelog.title",
+    descriptionKey: "shortcuts.versionChangelog.description",
+    path: "/club-admin/version-changelog",
+    enabled: true
   }
 ];
 
