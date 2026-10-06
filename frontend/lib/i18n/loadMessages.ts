@@ -27,6 +27,7 @@ const LOADERS: Record<LocaleCode, LocaleLoaders> = {
     adminLoginConfig: () => import("../../locales/zh-CN/admin-login-config.json"),
     adminAppReleases: () => import("../../locales/zh-CN/admin-app-releases.json"),
     adminVersionChangelog: () => import("../../locales/zh-CN/admin-version-changelog.json"),
+    adminCompetitions: () => import("../../locales/zh-CN/admin-competitions.json"),
     teacherDashboard: () => import("../../locales/zh-CN/teacher-dashboard.json"),
     teacherClubs: () => import("../../locales/zh-CN/teacher-clubs.json"),
     teacherAttendance: () => import("../../locales/zh-CN/teacher-attendance.json"),

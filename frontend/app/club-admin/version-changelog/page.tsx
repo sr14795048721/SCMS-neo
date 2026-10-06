@@ -7,8 +7,8 @@ export async function generateMetadata(): Promise<Metadata> {
   const messages = await loadInitialMessages(locale, ["teacherVersionChangelog"]);
 
   return {
-    title: messages.teacherVersionChangelog?.["meta.title"] || "版本更新日志",
-    description: messages.teacherVersionChangelog?.["meta.description"] || "版本更新日志"
+    title: messages.teacherVersionChangelog?.["meta.title"] || "Version Changelog",
+    description: messages.teacherVersionChangelog?.["meta.description"] || "Version Changelog"
   };
 }
 

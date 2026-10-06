@@ -27,6 +27,7 @@ import com.scms.core.user.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -273,6 +274,33 @@ class ScoreServiceTest {
 
         assertEquals(ErrorCode.FORBIDDEN, exception.getErrorCode());
         verify(scoreRecordRepository, never()).delete(any(ScoreRecordEntity.class));
+    }
+
+    @Test
+    void studentShouldListOwnScoreRecords() {
+        when(currentUserProvider.getRequiredUser()).thenReturn(new AuthenticatedUser(5L, "wenkai", UserRole.STUDENT));
+
+        ScoreRecordEntity record = buildRecord(2L, 5L, 4L, 5);
+        setEntityId(record, 100L);
+        when(scoreRecordRepository.findAllByUserIdOrderByCreatedAtDescIdDesc(5L)).thenReturn(List.of(record));
+
+        com.scms.core.club.domain.ClubEntity club = new com.scms.core.club.domain.ClubEntity();
+        setEntityId(club, 2L);
+        club.setName("修远科技社");
+        when(clubRepository.findAllById(any())).thenReturn(List.of(club));
+
+        com.scms.core.user.domain.UserEntity operator = new com.scms.core.user.domain.UserEntity();
+        setEntityId(operator, 4L);
+        operator.setUsername("kgwl");
+        when(userRepository.findAllById(any())).thenReturn(List.of(operator));
+
+        var result = scoreService.getMyScoreRecords();
+
+        assertEquals(1, result.size());
+        assertEquals(2L, result.get(0).clubId());
+        assertEquals("修远科技社", result.get(0).clubName());
+        assertEquals("kgwl", result.get(0).operatorName());
+        assertEquals(5, result.get(0).scoreDelta());
     }
 
     private ScoreRecordEntity buildRecord(Long clubId, Long userId, Long operatorUserId, int scoreDelta) {

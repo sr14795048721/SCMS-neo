@@ -22,7 +22,7 @@ export function VersionChangelogTimeline({
   renderActions
 }: VersionChangelogTimelineProps) {
   if (loading) {
-    return <p className={styles.versionEmpty}>{loadingLabel || "加载中..."}</p>;
+    return <p className={styles.versionEmpty}>{loadingLabel || "Loading..."}</p>;
   }
 
   if (!items.length) {

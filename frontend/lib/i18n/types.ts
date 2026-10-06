@@ -23,6 +23,7 @@ export type I18nNamespace =
   | "adminLoginConfig"
   | "adminAppReleases"
   | "adminVersionChangelog"
+  | "adminCompetitions"
   | "teacherDashboard"
   | "teacherClubs"
   | "teacherAttendance"

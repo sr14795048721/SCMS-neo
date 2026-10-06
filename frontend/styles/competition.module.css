@@ -1,0 +1,325 @@
+.section {
+  padding: 24px;
+  border-radius: 20px;
+  background: #ffffff;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.02);
+}
+
+.sectionHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+
+.sectionHead h2 {
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #1e1e2f;
+  font-size: 1.2rem;
+}
+
+.headActions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.primaryButton {
+  background: #1e1e2f;
+  color: #ffffff;
+  border: none;
+  font-size: 13px;
+  line-height: 1;
+  padding: 9px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.primaryButton:hover:not(:disabled) {
+  filter: brightness(1.15);
+}
+
+.primaryButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.secondaryButton {
+  background: transparent;
+  border: 1px solid #e5e7eb;
+  color: #6b7280;
+  font-size: 13px;
+  line-height: 1;
+  padding: 9px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.secondaryButton:hover:not(:disabled) {
+  border-color: #1e1e2f;
+  color: #1e1e2f;
+}
+
+.secondaryButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.dangerButton {
+  background: transparent;
+  border: 1px solid #fecaca;
+  color: #dc2626;
+  font-size: 12px;
+  line-height: 1;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.dangerButton:hover:not(:disabled) {
+  background: #fef2f2;
+}
+
+.dangerButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.actionButton {
+  border: 1px solid #e5e7eb;
+  background: transparent;
+  color: #6b7280;
+  font-size: 12px;
+  line-height: 1;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.actionButton:hover:not(:disabled) {
+  border-color: #1e1e2f;
+  color: #1e1e2f;
+}
+
+.actionButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.item {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.itemHead {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.itemTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0;
+  word-break: break-all;
+}
+
+.itemMeta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.itemBody {
+  font-size: 13px;
+  color: #374151;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+.itemActions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  line-height: 1;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.tagBlue {
+  background: #e3f2fd;
+  color: #1976d2;
+}
+
+.tagGreen {
+  background: #e8f5e9;
+  color: #388e3c;
+}
+
+.tagGray {
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+.tagOrange {
+  background: #fff3e0;
+  color: #f57c00;
+}
+
+.tagRed {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.empty {
+  padding: 24px 16px;
+  text-align: center;
+  color: #6b7280;
+  font-size: 13px;
+  margin: 0;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  border: 1px dashed #e5e7eb;
+  border-radius: 10px;
+  background: #fafafa;
+  margin-bottom: 16px;
+}
+
+.formRow {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.formRow .formLabel {
+  flex: 1 1 160px;
+}
+
+.formLabel {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  color: #374151;
+}
+
+.formInput,
+.formSelect,
+.formTextarea {
+  width: 100%;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 14px;
+  color: #1f2937;
+  background: #ffffff;
+  box-sizing: border-box;
+}
+
+.formInput:focus,
+.formSelect:focus,
+.formTextarea:focus {
+  outline: none;
+  border-color: #1e1e2f;
+}
+
+.formTextarea {
+  resize: vertical;
+  font-family: inherit;
+  line-height: 1.6;
+}
+
+.formCheckRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #374151;
+}
+
+.formActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.filters {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.filterButton {
+  border: 1px solid #e5e7eb;
+  background: transparent;
+  color: #6b7280;
+  font-size: 12px;
+  line-height: 1;
+  padding: 7px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.filterButtonActive {
+  background: #1e1e2f;
+  color: #ffffff;
+  border-color: #1e1e2f;
+}
+
+.link {
+  color: #1e40af;
+  text-decoration: underline;
+  word-break: break-all;
+}

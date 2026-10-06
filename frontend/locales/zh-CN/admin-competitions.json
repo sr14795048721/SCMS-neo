@@ -1,0 +1,105 @@
+{
+  "meta": {
+    "title": "赛事追踪 - SCMS Plus",
+    "description": "跟踪关注的比赛来源与赛事信息"
+  },
+  "header": {
+    "title": "赛事追踪",
+    "logout": "退出登录"
+  },
+  "actions": {
+    "save": "保存",
+    "saving": "保存中...",
+    "cancel": "取消",
+    "edit": "编辑",
+    "delete": "删除"
+  },
+  "common": {
+    "loading": "加载中...",
+    "loginRequired": "登录已失效，请重新登录"
+  },
+  "sources": {
+    "title": "来源管理",
+    "add": "添加来源",
+    "empty": "还没有关注的来源，点击右上角添加",
+    "typeWebsite": "官网",
+    "typeWechat": "公众号",
+    "enabled": "已启用",
+    "disabled": "已停用",
+    "scanOn": "自动扫描",
+    "scan": "立即扫描",
+    "scanning": "扫描中...",
+    "form": {
+      "name": "来源名称",
+      "type": "来源类型",
+      "url": "官网地址",
+      "wechatName": "公众号名称",
+      "wechatNamePlaceholder": "公众号暂不支持自动扫描，用下方导入",
+      "enabled": "启用该来源",
+      "scanEnabled": "每天 08:00 自动扫描官网"
+    }
+  },
+  "leads": {
+    "title": "待确认线索",
+    "empty": "暂无线索，可点击来源的“立即扫描”或从公众号导入",
+    "confirm": "确认并入库",
+    "ignore": "忽略",
+    "original": "原文链接",
+    "filterAll": "全部",
+    "statusPending": "待确认",
+    "statusConfirmed": "已入库",
+    "statusIgnored": "已忽略"
+  },
+  "competitions": {
+    "title": "赛事库",
+    "add": "手动添加赛事",
+    "empty": "暂无赛事记录",
+    "statusUpcoming": "未开始",
+    "statusOngoing": "进行中",
+    "statusEnded": "已结束",
+    "meta": {
+      "deadline": "报名截止",
+      "start": "开始",
+      "original": "官方链接"
+    },
+    "form": {
+      "name": "赛事名称",
+      "status": "状态",
+      "category": "类别",
+      "scope": "参赛对象",
+      "applyDeadline": "报名截止日期",
+      "startDate": "开始日期",
+      "endDate": "结束日期",
+      "url": "官方链接",
+      "note": "备注"
+    }
+  },
+  "import": {
+    "title": "公众号文章导入",
+    "hint": "将公众号/网页文章链接与内容粘贴到这里，系统会按关键词筛选出比赛相关信息，进入“待确认线索”。",
+    "submit": "导入",
+    "form": {
+      "url": "文章链接",
+      "title": "标题（可选）",
+      "content": "文章内容（可选）",
+      "contentPlaceholder": "粘贴文章正文..."
+    }
+  },
+  "messages": {
+    "fillRequired": "请填写必填项",
+    "saveFailed": "保存失败",
+    "created": "创建成功",
+    "updated": "更新成功",
+    "deleted": "已删除",
+    "deleteFailed": "删除失败",
+    "deleteSourceConfirm": "确定删除来源「{name}」吗？",
+    "deleteCompetitionConfirm": "确定删除赛事「{name}」吗？",
+    "scanFailed": "扫描失败",
+    "scanned": "扫描完成，新增 {count} 条线索",
+    "ignored": "已忽略该线索",
+    "ignoreFailed": "操作失败",
+    "confirmed": "已确认并加入赛事库",
+    "importFailed": "导入失败",
+    "imported": "导入成功，新增 {count} 条线索"
+  }
+}

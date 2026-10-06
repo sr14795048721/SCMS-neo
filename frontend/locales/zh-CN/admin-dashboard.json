@@ -76,6 +76,10 @@
     "versionChangelog": {
       "title": "版本日志",
       "description": "查看并维护版本更新记录"
+    },
+    "competitionTracking": {
+      "title": "赛事追踪",
+      "description": "跟踪比赛来源与赛事消息"
     }
   }
 }

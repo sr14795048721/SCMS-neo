@@ -152,6 +152,13 @@ const baseMenuItems: MenuItemConfig[] = [
     descriptionKey: "menu.versionChangelog.description",
     path: "/sys-admin/version-changelog",
     enabled: true
+  },
+  {
+    icon: "fas fa-trophy",
+    titleKey: "menu.competitionTracking.title",
+    descriptionKey: "menu.competitionTracking.description",
+    path: "/sys-admin/competitions",
+    enabled: true
   }
 ];
 
